@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebtoonDownloader", "WebtoonDownloader\WebtoonDownloader.csproj", "{371535B2-15D2-4435-AC4E-D59E3ACDD254}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebtoonDownloader", "TestWebtoonDownloader\TestWebtoonDownloader.csproj", "{4773AEAC-56BA-4848-87D7-A60475C080BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibWebtoonDownloader", "LibWebtoonDownloader\LibWebtoonDownloader.csproj", "{0EB33C86-E9DD-418A-86EA-119F11116ACE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{371535B2-15D2-4435-AC4E-D59E3ACDD254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{371535B2-15D2-4435-AC4E-D59E3ACDD254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{371535B2-15D2-4435-AC4E-D59E3ACDD254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{371535B2-15D2-4435-AC4E-D59E3ACDD254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4773AEAC-56BA-4848-87D7-A60475C080BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4773AEAC-56BA-4848-87D7-A60475C080BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4773AEAC-56BA-4848-87D7-A60475C080BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4773AEAC-56BA-4848-87D7-A60475C080BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EB33C86-E9DD-418A-86EA-119F11116ACE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EB33C86-E9DD-418A-86EA-119F11116ACE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EB33C86-E9DD-418A-86EA-119F11116ACE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EB33C86-E9DD-418A-86EA-119F11116ACE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8D3E5C5-5A46-41DA-97BD-F9620A3B535D}
+	EndGlobalSection
+EndGlobal
