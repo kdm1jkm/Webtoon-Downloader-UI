@@ -10,13 +10,33 @@ namespace TestWebtoonDownloader
     {
         static void Main(string[] args)
         {
-            Webtoon webtoon = new Webtoon();
+            Webtoon newWebtoon = new Webtoon();
 
-            Console.WriteLine(webtoon.setWebtoonByName("유미의 세포들"));
+            //Task newTask = new Task()
+            //{
+            //    TitleId = Webtoon.GetIdByName("치즈인더트랩"),
+            //    No = Webtoon.GetLatestEpisode(Webtoon.GetIdByName("치즈인더트랩")),
+            //    Format = new WebtoonFormat()
+            //    {
+            //        Html = true,
+            //        Zip = true
+            //    }
+            //};
 
-            Console.WriteLine(webtoon.setEpisodeLast());
+            //newWebtoon.AddTask(newTask);
 
-            webtoon.download();
+            //newWebtoon.DoTask();
+
+            //MetaData newMetaData = MetaData.Load(@"src\연애혁명_292\metaData.dat");
+
+            //Webtoon.MakeHtml(newMetaData);
+
+            newWebtoon.AddFavoriteTasks("2019.12.19", "2019.12.20", Webtoon.GetWebtoonInfos());
+
+            while(newWebtoon.GetTasks.Count != 0)
+            {
+                newWebtoon.DoTask();
+            }
         }
     }
 }

@@ -28,160 +28,213 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tBox_WebtoonName = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.radioButton1 = new System.Windows.Forms.RadioButton();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radioButton3 = new System.Windows.Forms.RadioButton();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.tBox_titleId = new System.Windows.Forms.TextBox();
+            this.num_StartNo = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button2 = new System.Windows.Forms.Button();
+            this.num_endNo = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.checkBox_SelectAll = new System.Windows.Forms.CheckBox();
+            this.btn_FileManagement = new System.Windows.Forms.Button();
+            this.btn_ModifyFavorite = new System.Windows.Forms.Button();
+            this.btn_AddFavorite = new System.Windows.Forms.Button();
+            this.btn_AddTask = new System.Windows.Forms.Button();
+            this.checkBox_HTML = new System.Windows.Forms.CheckBox();
+            this.checkBox_zip = new System.Windows.Forms.CheckBox();
+            this.btn_Search = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            this.btn_TogglePause = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(58, 38);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 0;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 42);
+            this.label1.Location = new System.Drawing.Point(12, 15);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "titleId";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "웹툰명";
             // 
-            // textBox2
+            // tBox_WebtoonName
             // 
-            this.textBox2.Location = new System.Drawing.Point(58, 7);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 21);
-            this.textBox2.TabIndex = 2;
+            this.tBox_WebtoonName.Location = new System.Drawing.Point(59, 12);
+            this.tBox_WebtoonName.Name = "tBox_WebtoonName";
+            this.tBox_WebtoonName.Size = new System.Drawing.Size(97, 21);
+            this.tBox_WebtoonName.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 11);
+            this.label2.Location = new System.Drawing.Point(12, 41);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 12);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "웹툰명";
+            this.label2.Size = new System.Drawing.Size(34, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "titleId";
             // 
-            // button1
+            // tBox_titleId
             // 
-            this.button1.Location = new System.Drawing.Point(164, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 21);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "검색";
-            this.button1.UseVisualStyleBackColor = true;
+            this.tBox_titleId.Location = new System.Drawing.Point(59, 38);
+            this.tBox_titleId.Name = "tBox_titleId";
+            this.tBox_titleId.Size = new System.Drawing.Size(151, 21);
+            this.tBox_titleId.TabIndex = 3;
             // 
-            // radioButton1
+            // num_StartNo
             // 
-            this.radioButton1.AutoSize = true;
-            this.radioButton1.Location = new System.Drawing.Point(282, 9);
-            this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(92, 16);
-            this.radioButton1.TabIndex = 5;
-            this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "radioButton1";
-            this.radioButton1.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(282, 32);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(92, 16);
-            this.radioButton2.TabIndex = 6;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "radioButton2";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radioButton3
-            // 
-            this.radioButton3.AutoSize = true;
-            this.radioButton3.Location = new System.Drawing.Point(282, 55);
-            this.radioButton3.Name = "radioButton3";
-            this.radioButton3.Size = new System.Drawing.Size(92, 16);
-            this.radioButton3.TabIndex = 7;
-            this.radioButton3.TabStop = true;
-            this.radioButton3.Text = "radioButton3";
-            this.radioButton3.UseVisualStyleBackColor = true;
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(380, 4);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(51, 21);
-            this.numericUpDown1.TabIndex = 8;
+            this.num_StartNo.Location = new System.Drawing.Point(13, 65);
+            this.num_StartNo.Name = "num_StartNo";
+            this.num_StartNo.Size = new System.Drawing.Size(40, 21);
+            this.num_StartNo.TabIndex = 4;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(437, 13);
+            this.label3.Location = new System.Drawing.Point(57, 69);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(14, 12);
-            this.label3.TabIndex = 9;
-            this.label3.Text = "~";
+            this.label3.Size = new System.Drawing.Size(30, 12);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "화 ~";
             // 
-            // numericUpDown2
+            // num_endNo
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(457, 4);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(51, 21);
-            this.numericUpDown2.TabIndex = 8;
+            this.num_endNo.Location = new System.Drawing.Point(93, 65);
+            this.num_endNo.Name = "num_endNo";
+            this.num_endNo.Size = new System.Drawing.Size(40, 21);
+            this.num_endNo.TabIndex = 4;
             // 
-            // button2
+            // label4
             // 
-            this.button2.Location = new System.Drawing.Point(161, 93);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(213, 55);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(139, 69);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(17, 12);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "화";
+            // 
+            // checkBox_SelectAll
+            // 
+            this.checkBox_SelectAll.AutoSize = true;
+            this.checkBox_SelectAll.Location = new System.Drawing.Point(162, 68);
+            this.checkBox_SelectAll.Name = "checkBox_SelectAll";
+            this.checkBox_SelectAll.Size = new System.Drawing.Size(48, 16);
+            this.checkBox_SelectAll.TabIndex = 6;
+            this.checkBox_SelectAll.Text = "전체";
+            this.checkBox_SelectAll.UseVisualStyleBackColor = true;
+            // 
+            // btn_FileManagement
+            // 
+            this.btn_FileManagement.Location = new System.Drawing.Point(239, 12);
+            this.btn_FileManagement.Name = "btn_FileManagement";
+            this.btn_FileManagement.Size = new System.Drawing.Size(106, 21);
+            this.btn_FileManagement.TabIndex = 7;
+            this.btn_FileManagement.Text = "파일관리";
+            this.btn_FileManagement.UseVisualStyleBackColor = true;
+            // 
+            // btn_ModifyFavorite
+            // 
+            this.btn_ModifyFavorite.Location = new System.Drawing.Point(239, 63);
+            this.btn_ModifyFavorite.Name = "btn_ModifyFavorite";
+            this.btn_ModifyFavorite.Size = new System.Drawing.Size(106, 21);
+            this.btn_ModifyFavorite.TabIndex = 7;
+            this.btn_ModifyFavorite.Text = "관심웹툰 수정";
+            this.btn_ModifyFavorite.UseVisualStyleBackColor = true;
+            // 
+            // btn_AddFavorite
+            // 
+            this.btn_AddFavorite.Location = new System.Drawing.Point(239, 90);
+            this.btn_AddFavorite.Name = "btn_AddFavorite";
+            this.btn_AddFavorite.Size = new System.Drawing.Size(106, 21);
+            this.btn_AddFavorite.TabIndex = 7;
+            this.btn_AddFavorite.Text = "관심웹툰 다운";
+            this.btn_AddFavorite.UseVisualStyleBackColor = true;
+            // 
+            // btn_AddTask
+            // 
+            this.btn_AddTask.Location = new System.Drawing.Point(12, 90);
+            this.btn_AddTask.Name = "btn_AddTask";
+            this.btn_AddTask.Size = new System.Drawing.Size(198, 21);
+            this.btn_AddTask.TabIndex = 7;
+            this.btn_AddTask.Text = "다운";
+            this.btn_AddTask.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_HTML
+            // 
+            this.checkBox_HTML.AutoSize = true;
+            this.checkBox_HTML.Location = new System.Drawing.Point(84, 117);
+            this.checkBox_HTML.Name = "checkBox_HTML";
+            this.checkBox_HTML.Size = new System.Drawing.Size(75, 16);
+            this.checkBox_HTML.TabIndex = 8;
+            this.checkBox_HTML.Text = "html(PC)";
+            this.checkBox_HTML.UseVisualStyleBackColor = true;
+            // 
+            // checkBox_zip
+            // 
+            this.checkBox_zip.AutoSize = true;
+            this.checkBox_zip.Location = new System.Drawing.Point(199, 117);
+            this.checkBox_zip.Name = "checkBox_zip";
+            this.checkBox_zip.Size = new System.Drawing.Size(89, 16);
+            this.checkBox_zip.TabIndex = 8;
+            this.checkBox_zip.Text = "zip(mobile)";
+            this.checkBox_zip.UseVisualStyleBackColor = true;
+            // 
+            // btn_Search
+            // 
+            this.btn_Search.Location = new System.Drawing.Point(162, 12);
+            this.btn_Search.Name = "btn_Search";
+            this.btn_Search.Size = new System.Drawing.Size(48, 21);
+            this.btn_Search.TabIndex = 9;
+            this.btn_Search.Text = "검색";
+            this.btn_Search.UseVisualStyleBackColor = true;
+            this.btn_Search.Click += new System.EventHandler(this.btn_Search_Click);
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(13, 154);
+            this.listBox1.Location = new System.Drawing.Point(12, 175);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(498, 172);
-            this.listBox1.TabIndex = 11;
+            this.listBox1.Size = new System.Drawing.Size(160, 232);
+            this.listBox1.TabIndex = 10;
+            // 
+            // btn_TogglePause
+            // 
+            this.btn_TogglePause.Location = new System.Drawing.Point(141, 139);
+            this.btn_TogglePause.Name = "btn_TogglePause";
+            this.btn_TogglePause.Size = new System.Drawing.Size(75, 23);
+            this.btn_TogglePause.TabIndex = 11;
+            this.btn_TogglePause.Text = "button1";
+            this.btn_TogglePause.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(522, 340);
+            this.ClientSize = new System.Drawing.Size(362, 531);
+            this.Controls.Add(this.btn_TogglePause);
             this.Controls.Add(this.listBox1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btn_Search);
+            this.Controls.Add(this.checkBox_zip);
+            this.Controls.Add(this.checkBox_HTML);
+            this.Controls.Add(this.btn_AddTask);
+            this.Controls.Add(this.btn_AddFavorite);
+            this.Controls.Add(this.btn_ModifyFavorite);
+            this.Controls.Add(this.btn_FileManagement);
+            this.Controls.Add(this.checkBox_SelectAll);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.num_endNo);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.numericUpDown2);
-            this.Controls.Add(this.numericUpDown1);
-            this.Controls.Add(this.radioButton3);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.num_StartNo);
+            this.Controls.Add(this.tBox_titleId);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.tBox_WebtoonName);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
             this.Name = "Form1";
             this.Text = "Naver Webtoon Downloader";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -189,19 +242,24 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox tBox_WebtoonName;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.RadioButton radioButton1;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.RadioButton radioButton3;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.TextBox tBox_titleId;
+        private System.Windows.Forms.NumericUpDown num_StartNo;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.NumericUpDown num_endNo;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.CheckBox checkBox_SelectAll;
+        private System.Windows.Forms.Button btn_FileManagement;
+        private System.Windows.Forms.Button btn_ModifyFavorite;
+        private System.Windows.Forms.Button btn_AddFavorite;
+        private System.Windows.Forms.Button btn_AddTask;
+        private System.Windows.Forms.CheckBox checkBox_HTML;
+        private System.Windows.Forms.CheckBox checkBox_zip;
+        private System.Windows.Forms.Button btn_Search;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button btn_TogglePause;
     }
 }
 
