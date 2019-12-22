@@ -214,7 +214,7 @@ namespace LibWebtoonDownloader
             Tasks = new Queue<Task>();
         }
 
-        private Queue<Task> Tasks;
+        public Queue<Task> Tasks;
         public List<Task> GetTasks { get { return Tasks.ToList(); } }
 
 

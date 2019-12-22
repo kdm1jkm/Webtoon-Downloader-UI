@@ -44,7 +44,6 @@
             this.checkBox_HTML = new System.Windows.Forms.CheckBox();
             this.checkBox_zip = new System.Windows.Forms.CheckBox();
             this.btn_Search = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
             this.btn_TogglePause = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
@@ -81,13 +80,31 @@
             this.tBox_titleId.Name = "tBox_titleId";
             this.tBox_titleId.Size = new System.Drawing.Size(151, 21);
             this.tBox_titleId.TabIndex = 3;
+            this.tBox_titleId.TextChanged += new System.EventHandler(this.tBox_titleId_TextChanged);
+            this.tBox_titleId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBox_titleId_KeyPress);
             // 
             // num_StartNo
             // 
             this.num_StartNo.Location = new System.Drawing.Point(13, 65);
+            this.num_StartNo.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_StartNo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.num_StartNo.Name = "num_StartNo";
             this.num_StartNo.Size = new System.Drawing.Size(40, 21);
             this.num_StartNo.TabIndex = 4;
+            this.num_StartNo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_StartNo.ValueChanged += new System.EventHandler(this.num_StartNo_ValueChanged);
             // 
             // label3
             // 
@@ -101,9 +118,25 @@
             // num_endNo
             // 
             this.num_endNo.Location = new System.Drawing.Point(93, 65);
+            this.num_endNo.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_endNo.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.num_endNo.Name = "num_endNo";
             this.num_endNo.Size = new System.Drawing.Size(40, 21);
             this.num_endNo.TabIndex = 4;
+            this.num_endNo.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.num_endNo.ValueChanged += new System.EventHandler(this.num_endNo_ValueChanged);
             // 
             // label4
             // 
@@ -123,6 +156,7 @@
             this.checkBox_SelectAll.TabIndex = 6;
             this.checkBox_SelectAll.Text = "전체";
             this.checkBox_SelectAll.UseVisualStyleBackColor = true;
+            this.checkBox_SelectAll.CheckedChanged += new System.EventHandler(this.checkBox_SelectAll_CheckedChanged);
             // 
             // btn_FileManagement
             // 
@@ -159,6 +193,7 @@
             this.btn_AddTask.TabIndex = 7;
             this.btn_AddTask.Text = "다운";
             this.btn_AddTask.UseVisualStyleBackColor = true;
+            this.btn_AddTask.Click += new System.EventHandler(this.btn_AddTask_Click);
             // 
             // checkBox_HTML
             // 
@@ -190,15 +225,6 @@
             this.btn_Search.UseVisualStyleBackColor = true;
             this.btn_Search.Click += new System.EventHandler(this.btn_Search_Click);
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(12, 175);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(160, 232);
-            this.listBox1.TabIndex = 10;
-            // 
             // btn_TogglePause
             // 
             this.btn_TogglePause.Location = new System.Drawing.Point(141, 139);
@@ -214,7 +240,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 531);
             this.Controls.Add(this.btn_TogglePause);
-            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.btn_Search);
             this.Controls.Add(this.checkBox_zip);
             this.Controls.Add(this.checkBox_HTML);
@@ -258,7 +283,6 @@
         private System.Windows.Forms.CheckBox checkBox_HTML;
         private System.Windows.Forms.CheckBox checkBox_zip;
         private System.Windows.Forms.Button btn_Search;
-        private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button btn_TogglePause;
     }
 }
