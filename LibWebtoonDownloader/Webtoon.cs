@@ -20,7 +20,10 @@ namespace LibWebtoonDownloader
         }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 167d449... Webtoon 구조체 대대적인 수정작업 시작
         private Queue<Task> Tasks;
         public List<Task> GetTasks { get { return Tasks.ToList(); } }
 
