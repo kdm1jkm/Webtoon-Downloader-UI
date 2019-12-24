@@ -16,9 +16,11 @@ namespace WebtoonDownloader
         {
             InitializeComponent();
             webtoonDownload = new Webtoon();
+            isExcuting = false;
         }
 
         private Webtoon webtoonDownload;
+        bool isExcuting;
 
         private void btn_Search_Click(object sender, EventArgs e)
         {
@@ -84,20 +86,22 @@ namespace WebtoonDownloader
 
         private void btn_AddTask_Click(object sender, EventArgs e)
         {
-            if(tBox_titleId.Text == "")
+            if(tBox_titleId.Text.Length == 0)
             {
                 MessageBox.Show("웹툰 id를 입력해 주세요.");
                 return;
             }
+
             int titleId = int.Parse(tBox_titleId.Text);
+
             if(!Webtoon.IsAvailable(titleId))
             {
                 MessageBox.Show("입력한 id는 존재하지 않습니다.");
                 return;
             }
+
             int startNo = int.Parse(num_StartNo.Value.ToString());
             int endNo = int.Parse(num_endNo.Value.ToString());
-
             string webtoonName = Webtoon.GetNameById(titleId);
 
             for(int i = startNo ; i <= endNo ; i++)
@@ -106,6 +110,20 @@ namespace WebtoonDownloader
 
                 string webtoonInfoString = string.Format("{0}({1})", webtoonName, i);
                 lBox_queue.Items.Add(webtoonInfoString);
+            }
+        }
+
+        private void btn_TogglePause_Click(object sender, EventArgs e)
+        {
+            if(isExcuting)
+            {
+                isExcuting = false;
+                btn_TogglePause.Text = "Start";
+            }
+            else
+            {
+                isExcuting = true;
+                btn_TogglePause.Text = "Pause";
             }
         }
     }

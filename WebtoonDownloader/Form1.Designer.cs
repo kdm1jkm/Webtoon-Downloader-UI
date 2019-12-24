@@ -228,20 +228,21 @@
             // 
             // btn_TogglePause
             // 
-            this.btn_TogglePause.Location = new System.Drawing.Point(141, 139);
+            this.btn_TogglePause.Location = new System.Drawing.Point(132, 139);
             this.btn_TogglePause.Name = "btn_TogglePause";
-            this.btn_TogglePause.Size = new System.Drawing.Size(75, 23);
+            this.btn_TogglePause.Size = new System.Drawing.Size(113, 23);
             this.btn_TogglePause.TabIndex = 11;
-            this.btn_TogglePause.Text = "button1";
+            this.btn_TogglePause.Text = "Start";
             this.btn_TogglePause.UseVisualStyleBackColor = true;
+            this.btn_TogglePause.Click += new System.EventHandler(this.btn_TogglePause_Click);
             // 
             // lBox_queue
             // 
             this.lBox_queue.FormattingEnabled = true;
             this.lBox_queue.ItemHeight = 12;
-            this.lBox_queue.Location = new System.Drawing.Point(12, 170);
+            this.lBox_queue.Location = new System.Drawing.Point(14, 168);
             this.lBox_queue.Name = "lBox_queue";
-            this.lBox_queue.Size = new System.Drawing.Size(318, 304);
+            this.lBox_queue.Size = new System.Drawing.Size(157, 340);
             this.lBox_queue.TabIndex = 12;
             // 
             // Form1
