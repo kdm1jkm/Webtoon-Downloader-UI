@@ -582,10 +582,7 @@ namespace LibWebtoonDownloader
         /// <param name="task"></param>
         public void AddTask(Task task)
         {
-            if(IsAvailable(task))
-            {
-                Tasks.Enqueue(task);
-            }
+            Tasks.Enqueue(task);
         }
 
         /// <summary>

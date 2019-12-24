@@ -98,30 +98,16 @@ namespace WebtoonDownloader
             int startNo = int.Parse(num_StartNo.Value.ToString());
             int endNo = int.Parse(num_endNo.Value.ToString());
 
-            string listText = "";
-
             string webtoonName = Webtoon.GetNameById(titleId);
 
             Console.WriteLine("시작전");
 
-            List<Task> tempTasks = new List<Task>(endNo - startNo + 1);
-
             for(int i = startNo ; i <= endNo ; i++)
             {
-                Task tempTask = new Task
-                {
-                    TitleId = titleId,
-                    No = i,
-                    Format = new WebtoonFormat
-                    {
-                        Html = checkBox_HTML.Checked,
-                        Zip = checkBox_zip.Checked
-                    }
-                };
-                webtoonDownload.AddTask(tempTask);
-                string temp = string.Format("{0}({1})\n", webtoonName, i);
-                Console.WriteLine(i);
-                listText += temp;
+                webtoonDownload.AddTask(titleId, i, checkBox_HTML.Checked, checkBox_zip.Checked);
+
+                string webtoonInfoString = string.Format("{0}({1})", webtoonName, i);
+                lBox_queue.Items.Add(webtoonInfoString);
             }
         }
     }

@@ -45,6 +45,7 @@
             this.checkBox_zip = new System.Windows.Forms.CheckBox();
             this.btn_Search = new System.Windows.Forms.Button();
             this.btn_TogglePause = new System.Windows.Forms.Button();
+            this.lBox_queue = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.SuspendLayout();
@@ -234,11 +235,21 @@
             this.btn_TogglePause.Text = "button1";
             this.btn_TogglePause.UseVisualStyleBackColor = true;
             // 
+            // lBox_queue
+            // 
+            this.lBox_queue.FormattingEnabled = true;
+            this.lBox_queue.ItemHeight = 12;
+            this.lBox_queue.Location = new System.Drawing.Point(12, 170);
+            this.lBox_queue.Name = "lBox_queue";
+            this.lBox_queue.Size = new System.Drawing.Size(318, 304);
+            this.lBox_queue.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 531);
+            this.Controls.Add(this.lBox_queue);
             this.Controls.Add(this.btn_TogglePause);
             this.Controls.Add(this.btn_Search);
             this.Controls.Add(this.checkBox_zip);
@@ -284,6 +295,7 @@
         private System.Windows.Forms.CheckBox checkBox_zip;
         private System.Windows.Forms.Button btn_Search;
         private System.Windows.Forms.Button btn_TogglePause;
+        private System.Windows.Forms.ListBox lBox_queue;
     }
 }
 
