@@ -100,8 +100,6 @@ namespace WebtoonDownloader
 
             string webtoonName = Webtoon.GetNameById(titleId);
 
-            Console.WriteLine("시작전");
-
             for(int i = startNo ; i <= endNo ; i++)
             {
                 webtoonDownload.AddTask(titleId, i, checkBox_HTML.Checked, checkBox_zip.Checked);
