@@ -7,6 +7,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace WebtoonDownloader
 {
@@ -15,12 +17,15 @@ namespace WebtoonDownloader
         public Form1()
         {
             InitializeComponent();
-            webtoonDownload = new Webtoon();
-            isExcuting = false;
+            downloadTask = new Task(DoTask);
+            mreExecute = new ManualResetEvent(false);
+            downloadTask.Start();
         }
 
-        private Webtoon webtoonDownload;
-        bool isExcuting;
+        private Webtoon webtoonDownload = new Webtoon();
+        private bool isExcuting = false;
+        private Task downloadTask;
+        private ManualResetEvent mreExecute;
 
         private void btn_Search_Click(object sender, EventArgs e)
         {
@@ -64,7 +69,7 @@ namespace WebtoonDownloader
         //titleId textbox에 숫자만 입력되도록
         private void tBox_titleId_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if(!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && (e.KeyChar != '.'))
+            if(!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
             }
@@ -96,7 +101,7 @@ namespace WebtoonDownloader
 
             if(!Webtoon.IsAvailable(titleId))
             {
-                MessageBox.Show("입력한 id는 존재하지 않습니다.");
+                MessageBox.Show("입력한 id는 유효하지 않습니다.");
                 return;
             }
 
@@ -118,13 +123,54 @@ namespace WebtoonDownloader
             if(isExcuting)
             {
                 isExcuting = false;
+                mreExecute.Reset();
                 btn_TogglePause.Text = "Start";
             }
             else
             {
                 isExcuting = true;
+                mreExecute.Set();
                 btn_TogglePause.Text = "Pause";
             }
+        }
+
+        private void DoTask()
+        {
+            while(true)
+            {
+                mreExecute.WaitOne();
+
+                if(webtoonDownload.GetTasks.Count == 0)
+                {
+                    isExcuting = false;
+
+                    this.Invoke(new Action(() =>
+                    {
+                        btn_TogglePause.Text = "Start";
+                    }));
+
+                    mreExecute.Reset();
+
+                    continue;
+                }
+
+                webtoonDownload.DoTask();
+
+                this.Invoke(new Action(() =>
+                    {
+                        lBox_DownloadedWebtoons.Items.Add(lBox_queue.Items[0]);
+                    }));
+
+                this.Invoke(new Action(() =>
+                    {
+                        lBox_queue.Items.RemoveAt(0);
+                    }));
+            }
+        }
+
+        private void tBox_titleId_ImeModeChanged(object sender, EventArgs e)
+        {
+            tBox_titleId.ImeMode = ImeMode.Alpha;
         }
     }
 }

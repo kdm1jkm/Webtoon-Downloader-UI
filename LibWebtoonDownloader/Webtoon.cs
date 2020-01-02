@@ -13,27 +13,6 @@ using System.IO.Compression;
 namespace LibWebtoonDownloader
 {
     /// <summary>
-    /// 웹툰 Id와 웹툰 회차 정보를 담고 있는 구조체입니다.
-    /// </summary>
-    [Serializable]
-    public struct Task
-    {
-        public int TitleId { get; set; }
-        public int No { get; set; }
-
-        public WebtoonFormat Format { get; set; }
-
-        public string Url
-        {
-            get
-            {
-                return string.Format("https://comic.naver.com/webtoon/detail.nhn?titleId={0}&no={1}", TitleId, No);
-            }
-        }
-    }
-
-
-    /// <summary>
     /// html과 zip로 변환 여부를 담고 있는 구조체입니다.
     /// </summary>
     [Serializable]
@@ -74,18 +53,18 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 이미지 갯수
         /// </summary>
-        public int ImgNumber { get; set; }
+        public int ImgCnt { get; set; }
 
         /// <param name="webtoonName">웹툰명</param>
         /// <param name="id">웹툰 Id</param>
         /// <param name="no">웹툰 회차</param>
-        /// <param name="imgNumber">이미지 갯수</param>
-        public MetaData(string webtoonName, int id, int no, int imgNumber)
+        /// <param name="imgCnt">이미지 갯수</param>
+        public MetaData(string webtoonName, int id, int no, int imgCnt)
         {
             this.WebtoonName = webtoonName;
             this.Id = id;
             this.No = no;
-            this.ImgNumber = imgNumber;
+            this.ImgCnt = imgCnt;
         }
 
         /// <summary>
@@ -220,6 +199,28 @@ namespace LibWebtoonDownloader
 
 
         /// <summary>
+        /// 웹툰 Id와 웹툰 회차 정보를 담고 있는 구조체입니다.
+        /// </summary>
+        [Serializable]
+        public struct Task
+        {
+            public int TitleId { get; set; }
+            public int No { get; set; }
+
+            public WebtoonFormat Format { get; set; }
+
+            public string Url
+            {
+                get
+                {
+                    return string.Format("https://comic.naver.com/webtoon/detail.nhn?titleId={0}&no={1}", TitleId, No);
+                }
+            }
+        }
+
+
+
+        /// <summary>
         /// 이미지를 다운로드합니다.
         /// </summary>
         /// <param name="url">이미지 Url</param>
@@ -297,7 +298,7 @@ namespace LibWebtoonDownloader
                 Directory.CreateDirectory("html");
                 string htmlDir = string.Format(@"html\{0}_{1}.html", webtoonName, curTask.No);
                 List<string> imgs = new List<string>();
-                for(i = 1 ; i <= curMetaData.ImgNumber ; i++)
+                for(i = 1 ; i <= curMetaData.ImgCnt ; i++)
                 {
                     string temp = string.Format(@"..\src\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
                     imgs.Add(temp);
@@ -375,7 +376,7 @@ namespace LibWebtoonDownloader
 
             List<string> imgs = new List<string>();
 
-            for(int i = 1 ; i <= curMetaData.ImgNumber ; i++)
+            for(int i = 1 ; i <= curMetaData.ImgCnt ; i++)
             {
                 string temp = string.Format(@"..\src\{0}_{1}\{2}.jpg", curMetaData.WebtoonName, curMetaData.No, i);
                 imgs.Add(temp);

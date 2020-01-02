@@ -46,6 +46,8 @@
             this.btn_Search = new System.Windows.Forms.Button();
             this.btn_TogglePause = new System.Windows.Forms.Button();
             this.lBox_queue = new System.Windows.Forms.ListBox();
+            this.lBox_DownloadedWebtoons = new System.Windows.Forms.ListBox();
+            this.lBox_CurState = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.SuspendLayout();
@@ -77,12 +79,14 @@
             // 
             // tBox_titleId
             // 
+            this.tBox_titleId.ImeMode = System.Windows.Forms.ImeMode.Alpha;
             this.tBox_titleId.Location = new System.Drawing.Point(59, 38);
             this.tBox_titleId.Name = "tBox_titleId";
             this.tBox_titleId.Size = new System.Drawing.Size(151, 21);
             this.tBox_titleId.TabIndex = 3;
             this.tBox_titleId.TextChanged += new System.EventHandler(this.tBox_titleId_TextChanged);
             this.tBox_titleId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBox_titleId_KeyPress);
+            this.tBox_titleId.ImeModeChanged += new System.EventHandler(this.tBox_titleId_ImeModeChanged);
             // 
             // num_StartNo
             // 
@@ -242,14 +246,34 @@
             this.lBox_queue.ItemHeight = 12;
             this.lBox_queue.Location = new System.Drawing.Point(14, 168);
             this.lBox_queue.Name = "lBox_queue";
-            this.lBox_queue.Size = new System.Drawing.Size(157, 340);
+            this.lBox_queue.Size = new System.Drawing.Size(166, 352);
             this.lBox_queue.TabIndex = 12;
+            // 
+            // lBox_DownloadedWebtoons
+            // 
+            this.lBox_DownloadedWebtoons.FormattingEnabled = true;
+            this.lBox_DownloadedWebtoons.ItemHeight = 12;
+            this.lBox_DownloadedWebtoons.Location = new System.Drawing.Point(196, 168);
+            this.lBox_DownloadedWebtoons.Name = "lBox_DownloadedWebtoons";
+            this.lBox_DownloadedWebtoons.Size = new System.Drawing.Size(154, 172);
+            this.lBox_DownloadedWebtoons.TabIndex = 12;
+            // 
+            // lBox_CurState
+            // 
+            this.lBox_CurState.FormattingEnabled = true;
+            this.lBox_CurState.ItemHeight = 12;
+            this.lBox_CurState.Location = new System.Drawing.Point(196, 346);
+            this.lBox_CurState.Name = "lBox_CurState";
+            this.lBox_CurState.Size = new System.Drawing.Size(154, 172);
+            this.lBox_CurState.TabIndex = 12;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 531);
+            this.ClientSize = new System.Drawing.Size(362, 527);
+            this.Controls.Add(this.lBox_CurState);
+            this.Controls.Add(this.lBox_DownloadedWebtoons);
             this.Controls.Add(this.lBox_queue);
             this.Controls.Add(this.btn_TogglePause);
             this.Controls.Add(this.btn_Search);
@@ -297,6 +321,8 @@
         private System.Windows.Forms.Button btn_Search;
         private System.Windows.Forms.Button btn_TogglePause;
         private System.Windows.Forms.ListBox lBox_queue;
+        private System.Windows.Forms.ListBox lBox_DownloadedWebtoons;
+        private System.Windows.Forms.ListBox lBox_CurState;
     }
 }
 
