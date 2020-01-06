@@ -68,17 +68,21 @@
             this.btn_saveAndExit.TabIndex = 2;
             this.btn_saveAndExit.Text = "저장 및 종료";
             this.btn_saveAndExit.UseVisualStyleBackColor = true;
+            this.btn_saveAndExit.Click += new System.EventHandler(this.btn_saveAndExit_Click);
             // 
             // EditFavoriteWebtoonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(404, 332);
             this.Controls.Add(this.btn_saveAndExit);
             this.Controls.Add(this.btn_LoadFromNaverAcnt);
             this.Controls.Add(this.btn_saveToNaverAcnt);
             this.Controls.Add(this.checkedListBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "EditFavoriteWebtoonsForm";
+            this.ShowInTaskbar = false;
             this.Text = "EditFavoriteWebtoonsForm";
             this.ResumeLayout(false);
 

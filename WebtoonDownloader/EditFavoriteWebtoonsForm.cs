@@ -16,5 +16,10 @@ namespace WebtoonDownloader
         {
             InitializeComponent();
         }
+
+        private void btn_saveAndExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

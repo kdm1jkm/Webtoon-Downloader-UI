@@ -310,7 +310,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(362, 527);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(356, 527);
             this.Controls.Add(this.prgsBar_Webtoon);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_TogglePause);
