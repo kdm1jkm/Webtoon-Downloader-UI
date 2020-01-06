@@ -47,9 +47,13 @@
             this.btn_TogglePause = new System.Windows.Forms.Button();
             this.lBox_queue = new System.Windows.Forms.ListBox();
             this.lBox_DownloadedWebtoons = new System.Windows.Forms.ListBox();
-            this.lBox_CurState = new System.Windows.Forms.ListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.prgsBar_Webtoon = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -244,37 +248,70 @@
             // 
             this.lBox_queue.FormattingEnabled = true;
             this.lBox_queue.ItemHeight = 12;
-            this.lBox_queue.Location = new System.Drawing.Point(14, 168);
+            this.lBox_queue.Location = new System.Drawing.Point(3, 18);
             this.lBox_queue.Name = "lBox_queue";
-            this.lBox_queue.Size = new System.Drawing.Size(166, 352);
+            this.lBox_queue.Size = new System.Drawing.Size(161, 292);
             this.lBox_queue.TabIndex = 12;
             // 
             // lBox_DownloadedWebtoons
             // 
             this.lBox_DownloadedWebtoons.FormattingEnabled = true;
             this.lBox_DownloadedWebtoons.ItemHeight = 12;
-            this.lBox_DownloadedWebtoons.Location = new System.Drawing.Point(196, 168);
+            this.lBox_DownloadedWebtoons.Location = new System.Drawing.Point(170, 18);
             this.lBox_DownloadedWebtoons.Name = "lBox_DownloadedWebtoons";
-            this.lBox_DownloadedWebtoons.Size = new System.Drawing.Size(154, 172);
+            this.lBox_DownloadedWebtoons.Size = new System.Drawing.Size(162, 292);
             this.lBox_DownloadedWebtoons.TabIndex = 12;
             // 
-            // lBox_CurState
+            // label5
             // 
-            this.lBox_CurState.FormattingEnabled = true;
-            this.lBox_CurState.ItemHeight = 12;
-            this.lBox_CurState.Location = new System.Drawing.Point(196, 346);
-            this.lBox_CurState.Name = "lBox_CurState";
-            this.lBox_CurState.Size = new System.Drawing.Size(154, 172);
-            this.lBox_CurState.TabIndex = 12;
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(53, 12);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "대기목록";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(170, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 12);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "완료목록";
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 2;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.label6, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lBox_queue, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lBox_DownloadedWebtoons, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 168);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.899136F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.10087F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(335, 317);
+            this.tableLayoutPanel1.TabIndex = 14;
+            // 
+            // prgsBar_Webtoon
+            // 
+            this.prgsBar_Webtoon.Location = new System.Drawing.Point(12, 492);
+            this.prgsBar_Webtoon.Maximum = 100000;
+            this.prgsBar_Webtoon.Name = "prgsBar_Webtoon";
+            this.prgsBar_Webtoon.Size = new System.Drawing.Size(333, 23);
+            this.prgsBar_Webtoon.TabIndex = 15;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(362, 527);
-            this.Controls.Add(this.lBox_CurState);
-            this.Controls.Add(this.lBox_DownloadedWebtoons);
-            this.Controls.Add(this.lBox_queue);
+            this.Controls.Add(this.prgsBar_Webtoon);
+            this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_TogglePause);
             this.Controls.Add(this.btn_Search);
             this.Controls.Add(this.checkBox_zip);
@@ -296,6 +333,8 @@
             this.Text = "Naver Webtoon Downloader";
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).EndInit();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -322,7 +361,10 @@
         private System.Windows.Forms.Button btn_TogglePause;
         private System.Windows.Forms.ListBox lBox_queue;
         private System.Windows.Forms.ListBox lBox_DownloadedWebtoons;
-        private System.Windows.Forms.ListBox lBox_CurState;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.ProgressBar prgsBar_Webtoon;
     }
 }
 

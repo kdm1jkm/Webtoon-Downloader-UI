@@ -165,6 +165,14 @@ namespace WebtoonDownloader
                     {
                         lBox_queue.Items.RemoveAt(0);
                     }));
+
+                int EveryWebtoonCount = lBox_DownloadedWebtoons.Items.Count + lBox_queue.Items.Count;
+                double Ratio = (double)lBox_queue.Items.Count / EveryWebtoonCount * 100000;
+
+                this.Invoke(new Action(() =>
+                {
+                    prgsBar_Webtoon.Value = 100000 - (int)Ratio;
+                }));
             }
         }
 
