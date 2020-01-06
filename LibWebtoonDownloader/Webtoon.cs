@@ -9,6 +9,8 @@ using System.Text;
 using System.Web;
 using System.Net;
 using System.IO.Compression;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LibWebtoonDownloader
 {
@@ -190,11 +192,15 @@ namespace LibWebtoonDownloader
     {
         public Webtoon()
         {
-            Tasks = new Queue<Task>();
+            Tasks = new Queue<WebtoonTask>();
         }
 
-        public Queue<Task> Tasks;
-        public List<Task> GetTasks { get { return Tasks.ToList(); } }
+        public Semaphore downloadImagePool;
+
+        public Queue<WebtoonTask> Tasks;
+        public List<WebtoonTask> GetTasks { get { return Tasks.ToList(); } }
+
+        public int DownloadImageSemaphoreCount = 5;
 
 
 
@@ -202,7 +208,7 @@ namespace LibWebtoonDownloader
         /// 웹툰 Id와 웹툰 회차 정보를 담고 있는 구조체입니다.
         /// </summary>
         [Serializable]
-        public struct Task
+        public struct WebtoonTask
         {
             public int TitleId { get; set; }
             public int No { get; set; }
@@ -232,11 +238,15 @@ namespace LibWebtoonDownloader
                 "AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/50.0.2661.102 Safari/537.36");
 
+            downloadImagePool.WaitOne();
+
             downloader.DownloadFile(url, dir);
             Console.WriteLine("Download complete");
             Console.WriteLine("Url: " + url);
             Console.WriteLine("dir: " + dir);
             Console.WriteLine();
+
+            downloadImagePool.Release();
         }
 
 
@@ -253,7 +263,7 @@ namespace LibWebtoonDownloader
             }
 
             //task한개 가져오기
-            Task curTask = Tasks.First();
+            WebtoonTask curTask = Tasks.First();
 
             //url접속
             HtmlWeb web = new HtmlWeb();
@@ -268,6 +278,12 @@ namespace LibWebtoonDownloader
 
             //폴더 생성
             Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No}");
+
+            //이미지 다운로드 멀티쓰레드
+            List<Task> imageDownloadTasks = new List<Task>();
+            
+            //세마포어 생성
+            downloadImagePool = new Semaphore(0, DownloadImageSemaphoreCount);
 
             //이미지 태그 선택
             int i = 1;
@@ -284,13 +300,24 @@ namespace LibWebtoonDownloader
                 i++;
 
                 //다운로드
-                DownloadImage(src, imgSrc);
+                Task imageDownloadTask = new Task(new Action(() => { DownloadImage(src, imgSrc); }));
+                imageDownloadTasks.Add(imageDownloadTask);
+                imageDownloadTask.Start();
+
+                //다운로드
+                //DownloadImage(src, imgSrc);
             }
+
+            //세마포어 Release
+            downloadImagePool.Release(DownloadImageSemaphoreCount);
 
             //메타데이터 생성
             MetaData curMetaData = new MetaData(webtoonName, curTask.TitleId, curTask.No, nodeImgCollection.Count);
             string dir = string.Format(@"src\{0}_{1}\metaData.dat", webtoonName, curTask.No);
             curMetaData.Save(dir);
+
+            //이미지 다운로드 종료
+            Task.WaitAll(imageDownloadTasks.ToArray());
 
             //html, zip플래그 확인 후 각각 생성
             if(curTask.Format.Html)
@@ -433,7 +460,7 @@ namespace LibWebtoonDownloader
             Stream rs = new FileStream(fileName, FileMode.Open);
             BinaryFormatter deserializer = new BinaryFormatter();
 
-            Tasks = (Queue<Task>)deserializer.Deserialize(rs);
+            Tasks = (Queue<WebtoonTask>)deserializer.Deserialize(rs);
 
             rs.Close();
         }
@@ -522,7 +549,7 @@ namespace LibWebtoonDownloader
         /// </summary>
         /// <param name="task">검사할 task</param>
         /// <returns></returns>
-        public static bool IsAvailable(Task task)
+        public static bool IsAvailable(WebtoonTask task)
         {
             //검사할 url 접속
             HtmlDocument doc = new HtmlDocument();
@@ -554,7 +581,7 @@ namespace LibWebtoonDownloader
         /// <returns></returns>
         public static bool IsAvailable(int titleId, int no)
         {
-            Task task = new Task
+            WebtoonTask task = new WebtoonTask
             {
                 TitleId = titleId,
                 No = no
@@ -581,7 +608,7 @@ namespace LibWebtoonDownloader
         /// task를 tasks에 추가합니다.
         /// </summary>
         /// <param name="task"></param>
-        public void AddTask(Task task)
+        public void AddTask(WebtoonTask task)
         {
             Tasks.Enqueue(task);
         }
@@ -627,7 +654,7 @@ namespace LibWebtoonDownloader
         /// <param name="zip">zip파일 생성 여부</param>
         public void AddTask(int titleId, int no, bool html, bool zip)
         {
-            Task task = new Task
+            WebtoonTask task = new WebtoonTask
             {
                 TitleId = titleId,
                 No = no,
@@ -688,7 +715,7 @@ namespace LibWebtoonDownloader
             HtmlDocument doc = new HtmlDocument();
             HtmlWeb web = new HtmlWeb();
 
-            Task tempTask = new Task
+            WebtoonTask tempTask = new WebtoonTask
             {
                 TitleId = titleId,
                 No = 1
@@ -867,7 +894,7 @@ namespace LibWebtoonDownloader
                         }
 
                         //조건에 맞으므로 task에 추가
-                        Task newTask = new Task
+                        WebtoonTask newTask = new WebtoonTask
                         {
                             TitleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]),
                             No = no,
