@@ -184,6 +184,7 @@
             this.btn_ModifyFavorite.TabIndex = 7;
             this.btn_ModifyFavorite.Text = "관심웹툰 수정";
             this.btn_ModifyFavorite.UseVisualStyleBackColor = true;
+            this.btn_ModifyFavorite.Click += new System.EventHandler(this.btn_ModifyFavorite_Click);
             // 
             // btn_AddFavorite
             // 
@@ -305,7 +306,7 @@
             this.prgsBar_Webtoon.Size = new System.Drawing.Size(333, 23);
             this.prgsBar_Webtoon.TabIndex = 15;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -329,7 +330,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tBox_WebtoonName);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
+            this.Name = "MainForm";
             this.Text = "Naver Webtoon Downloader";
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).EndInit();

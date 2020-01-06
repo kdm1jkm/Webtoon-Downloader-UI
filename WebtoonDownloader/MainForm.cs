@@ -180,5 +180,11 @@ namespace WebtoonDownloader
         {
             tBox_titleId.ImeMode = ImeMode.Alpha;
         }
+
+        private void btn_ModifyFavorite_Click(object sender, EventArgs e)
+        {
+            EditFavoriteWebtoonsForm editFavoriteWebtoonsForm = new EditFavoriteWebtoonsForm();
+            editFavoriteWebtoonsForm.ShowDialog();
+        }
     }
 }
