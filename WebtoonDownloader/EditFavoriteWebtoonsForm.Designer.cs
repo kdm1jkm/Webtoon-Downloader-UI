@@ -41,7 +41,6 @@
             this.cLstBox_WebtoonList.Name = "cLstBox_WebtoonList";
             this.cLstBox_WebtoonList.Size = new System.Drawing.Size(348, 228);
             this.cLstBox_WebtoonList.TabIndex = 0;
-            this.cLstBox_WebtoonList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cLstBox_WebtoonList_MouseDown);
             // 
             // btn_saveToNaverAcnt
             // 

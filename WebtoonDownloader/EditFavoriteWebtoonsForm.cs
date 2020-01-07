@@ -78,19 +78,5 @@ namespace WebtoonDownloader
                 cLstBox_WebtoonList.Items.Add(webtoonNameStr + weekdayStr);
             }
         }
-
-        private void cLstBox_WebtoonList_MouseDown(object sender, MouseEventArgs e)
-        {
-            int webtoonListIndex = cLstBox_WebtoonList.SelectedIndex;
-
-            if(cLstBox_WebtoonList.GetItemChecked(webtoonListIndex))
-            {
-                cLstBox_WebtoonList.SetItemChecked(webtoonListIndex, false);
-            }
-            else
-            {
-                cLstBox_WebtoonList.SetItemChecked(webtoonListIndex, true);
-            }
-        }
     }
 }
