@@ -28,41 +28,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
+            this.cLstBox_WebtoonList = new System.Windows.Forms.CheckedListBox();
             this.btn_saveToNaverAcnt = new System.Windows.Forms.Button();
             this.btn_LoadFromNaverAcnt = new System.Windows.Forms.Button();
             this.btn_saveAndExit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // checkedListBox1
+            // cLstBox_WebtoonList
             // 
-            this.checkedListBox1.FormattingEnabled = true;
-            this.checkedListBox1.Location = new System.Drawing.Point(12, 12);
-            this.checkedListBox1.Name = "checkedListBox1";
-            this.checkedListBox1.Size = new System.Drawing.Size(164, 308);
-            this.checkedListBox1.TabIndex = 0;
+            this.cLstBox_WebtoonList.FormattingEnabled = true;
+            this.cLstBox_WebtoonList.Location = new System.Drawing.Point(12, 12);
+            this.cLstBox_WebtoonList.Name = "cLstBox_WebtoonList";
+            this.cLstBox_WebtoonList.Size = new System.Drawing.Size(348, 228);
+            this.cLstBox_WebtoonList.TabIndex = 0;
+            this.cLstBox_WebtoonList.MouseDown += new System.Windows.Forms.MouseEventHandler(this.cLstBox_WebtoonList_MouseDown);
             // 
             // btn_saveToNaverAcnt
             // 
-            this.btn_saveToNaverAcnt.Location = new System.Drawing.Point(182, 12);
+            this.btn_saveToNaverAcnt.Location = new System.Drawing.Point(12, 246);
             this.btn_saveToNaverAcnt.Name = "btn_saveToNaverAcnt";
-            this.btn_saveToNaverAcnt.Size = new System.Drawing.Size(215, 45);
+            this.btn_saveToNaverAcnt.Size = new System.Drawing.Size(169, 28);
             this.btn_saveToNaverAcnt.TabIndex = 1;
             this.btn_saveToNaverAcnt.Text = "네이버 계정에 저장하기";
             this.btn_saveToNaverAcnt.UseVisualStyleBackColor = true;
             // 
             // btn_LoadFromNaverAcnt
             // 
-            this.btn_LoadFromNaverAcnt.Location = new System.Drawing.Point(182, 63);
+            this.btn_LoadFromNaverAcnt.Location = new System.Drawing.Point(12, 280);
             this.btn_LoadFromNaverAcnt.Name = "btn_LoadFromNaverAcnt";
-            this.btn_LoadFromNaverAcnt.Size = new System.Drawing.Size(215, 45);
+            this.btn_LoadFromNaverAcnt.Size = new System.Drawing.Size(169, 28);
             this.btn_LoadFromNaverAcnt.TabIndex = 1;
             this.btn_LoadFromNaverAcnt.Text = "네이버 계정에서 불러오기";
             this.btn_LoadFromNaverAcnt.UseVisualStyleBackColor = true;
             // 
             // btn_saveAndExit
             // 
-            this.btn_saveAndExit.Location = new System.Drawing.Point(302, 297);
+            this.btn_saveAndExit.Location = new System.Drawing.Point(269, 283);
             this.btn_saveAndExit.Name = "btn_saveAndExit";
             this.btn_saveAndExit.Size = new System.Drawing.Size(90, 23);
             this.btn_saveAndExit.TabIndex = 2;
@@ -75,11 +76,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(404, 332);
+            this.ClientSize = new System.Drawing.Size(371, 318);
             this.Controls.Add(this.btn_saveAndExit);
             this.Controls.Add(this.btn_LoadFromNaverAcnt);
             this.Controls.Add(this.btn_saveToNaverAcnt);
-            this.Controls.Add(this.checkedListBox1);
+            this.Controls.Add(this.cLstBox_WebtoonList);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "EditFavoriteWebtoonsForm";
             this.ShowInTaskbar = false;
@@ -90,7 +91,7 @@
 
         #endregion
 
-        private System.Windows.Forms.CheckedListBox checkedListBox1;
+        private System.Windows.Forms.CheckedListBox cLstBox_WebtoonList;
         private System.Windows.Forms.Button btn_saveToNaverAcnt;
         private System.Windows.Forms.Button btn_LoadFromNaverAcnt;
         private System.Windows.Forms.Button btn_saveAndExit;
