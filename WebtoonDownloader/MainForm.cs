@@ -9,23 +9,56 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace WebtoonDownloader
 {
     public partial class MainForm : Form
     {
+        private Webtoon webtoonDownload = new Webtoon();
+        private bool isExcuting = false;
+        private Task downloadTask;
+        private ManualResetEvent mreExecute = new ManualResetEvent(false);
+
         public MainForm()
         {
             InitializeComponent();
             downloadTask = new Task(DoTask);
-            mreExecute = new ManualResetEvent(false);
             downloadTask.Start();
+
+            if(File.Exists("curTask.dat"))
+            {
+                webtoonDownload.LoadTask("curTask.dat");
+            }
+
+            Task loadQueue = new Task(displayQueue);
+            loadQueue.Start();
         }
 
-        private Webtoon webtoonDownload = new Webtoon();
-        private bool isExcuting = false;
-        private Task downloadTask;
-        private ManualResetEvent mreExecute;
+        private void displayQueue()
+        {
+            Webtoon.WebtoonTask[] taskArr = webtoonDownload.Tasks.ToArray();
+
+            Dictionary<int, string> webtoonNameIdPairs = new Dictionary<int, string>();
+
+            for(int i = 0 ; i < webtoonDownload.Tasks.Count ; i++)
+            {
+                string webtoonName;
+                if(webtoonNameIdPairs.Keys.Contains(taskArr[i].TitleId))
+                {
+                    webtoonName = webtoonNameIdPairs[taskArr[i].TitleId];
+                }
+                else
+                {
+                    webtoonName = Webtoon.GetNameById(taskArr[i].TitleId);
+                    webtoonNameIdPairs.Add(taskArr[i].TitleId, webtoonName);
+                }
+                this.Invoke(new Action(() =>
+                {
+                    lBox_queue.Items.Add(String.Format("{0}({1})", webtoonName, taskArr[i].No));
+                }));
+            }
+        }
 
         private void btn_Search_Click(object sender, EventArgs e)
         {
@@ -116,6 +149,8 @@ namespace WebtoonDownloader
                 string webtoonInfoString = string.Format("{0}({1})", webtoonName, i);
                 lBox_queue.Items.Add(webtoonInfoString);
             }
+
+            webtoonDownload.SaveTask("curTask.dat");
         }
 
         private void btn_TogglePause_Click(object sender, EventArgs e)
@@ -173,6 +208,8 @@ namespace WebtoonDownloader
                 {
                     prgsBar_Webtoon.Value = 100000 - (int)Ratio;
                 }));
+
+                webtoonDownload.SaveTask("curTask.dat");
             }
         }
 
@@ -198,6 +235,7 @@ namespace WebtoonDownloader
             {
                 lBox_queue.Items.Clear();
                 webtoonDownload.Tasks.Clear();
+                webtoonDownload.SaveTask("curTask.dat");
             }
         }
 

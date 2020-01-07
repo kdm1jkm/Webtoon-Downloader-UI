@@ -281,7 +281,7 @@ namespace LibWebtoonDownloader
 
             //이미지 다운로드 멀티쓰레드
             List<Task> imageDownloadTasks = new List<Task>();
-            
+
             //세마포어 생성
             downloadImagePool = new Semaphore(0, DownloadImageSemaphoreCount);
 

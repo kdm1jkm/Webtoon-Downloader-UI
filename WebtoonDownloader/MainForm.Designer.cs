@@ -50,9 +50,9 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.prgsBar_Webtoon = new System.Windows.Forms.ProgressBar();
             this.btn_clearDownloadedList = new System.Windows.Forms.Button();
             this.btn_clrQueue = new System.Windows.Forms.Button();
+            this.prgsBar_Webtoon = new System.Windows.Forms.ProgressBar();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -288,10 +288,10 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.Controls.Add(this.lBox_queue, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.label6, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.lBox_DownloadedWebtoons, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.label5, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lBox_queue, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.btn_clearDownloadedList, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.btn_clrQueue, 0, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(10, 168);
@@ -303,14 +303,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 27F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(335, 317);
             this.tableLayoutPanel1.TabIndex = 14;
-            // 
-            // prgsBar_Webtoon
-            // 
-            this.prgsBar_Webtoon.Location = new System.Drawing.Point(12, 492);
-            this.prgsBar_Webtoon.Maximum = 100000;
-            this.prgsBar_Webtoon.Name = "prgsBar_Webtoon";
-            this.prgsBar_Webtoon.Size = new System.Drawing.Size(333, 23);
-            this.prgsBar_Webtoon.TabIndex = 15;
             // 
             // btn_clearDownloadedList
             // 
@@ -334,6 +326,14 @@
             this.btn_clrQueue.Text = "button1";
             this.btn_clrQueue.UseVisualStyleBackColor = true;
             this.btn_clrQueue.Click += new System.EventHandler(this.btn_clrQueue_Click);
+            // 
+            // prgsBar_Webtoon
+            // 
+            this.prgsBar_Webtoon.Location = new System.Drawing.Point(12, 492);
+            this.prgsBar_Webtoon.Maximum = 100000;
+            this.prgsBar_Webtoon.Name = "prgsBar_Webtoon";
+            this.prgsBar_Webtoon.Size = new System.Drawing.Size(333, 23);
+            this.prgsBar_Webtoon.TabIndex = 15;
             // 
             // MainForm
             // 
