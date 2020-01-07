@@ -130,7 +130,7 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 요일이다. 월요일=0, 일요일=6이다.
         /// </summary>
-        public List<int> weekday;
+        public List<int> weekdays;
 
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace LibWebtoonDownloader
         {
             this.Name = name;
             this.Id = id;
-            this.weekday = new List<int>(weekday);
+            this.weekdays = new List<int>(weekday);
         }
     }
 
@@ -804,9 +804,9 @@ namespace LibWebtoonDownloader
                 {
                     Id = titleId,
                     Name = name,
-                    weekday = new List<int>()
+                    weekdays = new List<int>()
                 };
-                tempInfo.weekday.Add(weekday);
+                tempInfo.weekdays.Add(weekday);
 
                 //이미 리스트에 존재하는지 확인하는 플래그(여러 요일에 걸쳐서 연재하는 웹툰에 대비)
                 bool alreadyExistFlag = false;
@@ -817,7 +817,7 @@ namespace LibWebtoonDownloader
                     if(info.Id == titleId)
                     {
                         alreadyExistFlag = true;
-                        info.weekday.Add(weekday);
+                        info.weekdays.Add(weekday);
                         break;
                     }
                 }
