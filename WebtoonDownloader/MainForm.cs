@@ -186,5 +186,24 @@ namespace WebtoonDownloader
             EditFavoriteWebtoonsForm editFavoriteWebtoonsForm = new EditFavoriteWebtoonsForm();
             editFavoriteWebtoonsForm.ShowDialog();
         }
+
+        private void btn_clrQueue_Click(object sender, EventArgs e)
+        {
+            if(isExcuting)
+            {
+                MessageBox.Show("다운로드를 멈추고 실행하세요");
+                return;
+            }
+            else
+            {
+                lBox_queue.Items.Clear();
+                webtoonDownload.Tasks.Clear();
+            }
+        }
+
+        private void btn_clearDownloadedList_Click(object sender, EventArgs e)
+        {
+            lBox_DownloadedWebtoons.Items.Clear();
+        }
     }
 }
