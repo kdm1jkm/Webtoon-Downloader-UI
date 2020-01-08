@@ -266,6 +266,54 @@ namespace LibWebtoonDownloader
         {
             return Load("WebtoonInfos.dat");
         }
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null || (this.GetType() != obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                WebtoonInfoCollection temp = (WebtoonInfoCollection)obj;
+                if(this.Count == temp.Count)
+                {
+                    for(int i = 0 ; i < this.Count ; i++)
+                    {
+                        if(this[i] != temp[i])
+                        {
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hash = 19;
+                foreach(WebtoonInfo info in this)
+                {
+                    hash = hash * 31 + info.GetHashCode();
+                }
+
+                return hash;
+            }
+        }
+
+        public static bool operator==(WebtoonInfoCollection item1, object item2)
+        {
+            return item1.Equals(item2);
+        }
+
+        public static bool operator!=(WebtoonInfoCollection item1, object item2)
+        {
+            return !item1.Equals(item2);
+        }
     }
 
 
