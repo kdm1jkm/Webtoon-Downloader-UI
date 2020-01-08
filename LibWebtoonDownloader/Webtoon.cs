@@ -194,6 +194,34 @@ namespace LibWebtoonDownloader
 
             return this.Name + weekdayStr;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(obj == null || (this.GetType() != obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                WebtoonInfo temp = (WebtoonInfo)obj;
+                return this.Id == temp.Id;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Id;
+        }
+
+        public static bool operator ==(WebtoonInfo item1, object item2)
+        {
+            return item1.Equals(item2);
+        }
+
+        public static bool operator !=(WebtoonInfo item1, object item2)
+        {
+            return !(item1 == item2);
+        }
     }
 
 
