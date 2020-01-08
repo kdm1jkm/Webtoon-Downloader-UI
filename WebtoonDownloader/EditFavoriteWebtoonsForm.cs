@@ -21,7 +21,7 @@ namespace WebtoonDownloader
             load.Start();
         }
 
-        private void btn_saveAndExit_Click(object sender, EventArgs e)
+        private WebtoonInfoCollection getCheckedList()
         {
             WebtoonInfoCollection favoriteWebtoonInfos = new WebtoonInfoCollection();
 
@@ -33,7 +33,12 @@ namespace WebtoonDownloader
                 }
             }
 
-            favoriteWebtoonInfos.Save("favoriteWebtoonInfoCollection.dat");
+            return favoriteWebtoonInfos;
+        }
+
+        private void btn_saveAndExit_Click(object sender, EventArgs e)
+        {
+            getCheckedList().Save("favoriteWebtoonInfoCollection.dat");
 
             this.Close();
         }
@@ -77,7 +82,21 @@ namespace WebtoonDownloader
 
         private void EditFavoriteWebtoonsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            MessageBox.Show("변경 내용을 저장하시겠습니까?", "", MessageBoxButtons.YesNoCancel);
+            WebtoonInfoCollection loadedInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+            WebtoonInfoCollection checkecInfos = getCheckedList();
+            if(checkecInfos != loadedInfos)
+            {
+                DialogResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "", MessageBoxButtons.YesNoCancel);
+
+                if(result == DialogResult.Yes)
+                {
+                    getCheckedList().Save("favoriteWebtoonInfoCollection.dat");
+                }
+                else if(result == DialogResult.Cancel)
+                {
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }
