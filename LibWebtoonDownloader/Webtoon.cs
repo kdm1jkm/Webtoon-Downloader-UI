@@ -145,6 +145,55 @@ namespace LibWebtoonDownloader
             this.Id = id;
             this.weekdays = new List<int>(weekday);
         }
+
+
+        public override string ToString()
+        {
+            string weekdayStr = "[";
+
+            for(int i = 0 ; i < this.weekdays.Count ; i++)
+            {
+                switch(this.weekdays[i])
+                {
+                    case 0:
+                        weekdayStr += "월";
+                        break;
+
+                    case 1:
+                        weekdayStr += "화";
+                        break;
+
+                    case 2:
+                        weekdayStr += "수";
+                        break;
+
+                    case 3:
+                        weekdayStr += "목";
+                        break;
+
+                    case 4:
+                        weekdayStr += "금";
+                        break;
+
+                    case 5:
+                        weekdayStr += "토";
+                        break;
+
+                    case 6:
+                        weekdayStr += "일";
+                        break;
+                }
+
+                if(i != this.weekdays.Count - 1)
+                {
+                    weekdayStr += ",";
+                }
+            }
+
+            weekdayStr += "]";
+
+            return this.Name + weekdayStr;
+        }
     }
 
 
