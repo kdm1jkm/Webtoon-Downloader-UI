@@ -71,16 +71,17 @@ namespace WebtoonDownloader
 
         private void btn_download_Click(object sender, EventArgs e)
         {
-            //Todo Delegate로 테인 연결해서 좀더 갈끔하게 들어가기
-            motherForm.webtoonDownload.AddFavoriteTasks(
-                tmpk_from.Value,
-                tmpk_to.Value.AddDays(1),
-                WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat"),
-                checkBox_HTML.Checked,
-                checkBox_zip.Checked);
-
-            Task reloadQueue = new Task(motherForm.displayQueue);
-            reloadQueue.Start();
+            Task downloadTask = new Task(new Action(() =>
+            {
+                motherForm.webtoonDownload.AddFavoriteTasks(
+                       tmpk_from.Value,
+                       tmpk_to.Value.AddDays(1),
+                       WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat"),
+                       checkBox_HTML.Checked,
+                       checkBox_zip.Checked);
+                motherForm.displayQueue();
+            }));
+            downloadTask.Start();
 
             using(Stream ws = new FileStream("lastDownloaded.dat", FileMode.Create))
             {
