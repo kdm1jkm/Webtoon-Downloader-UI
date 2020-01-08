@@ -17,7 +17,8 @@ namespace WebtoonDownloader
         public EditFavoriteWebtoonsForm()
         {
             InitializeComponent();
-            loadWebtoons();
+            Task load = new Task(loadWebtoons);
+            load.Start();
         }
 
         private void btn_saveAndExit_Click(object sender, EventArgs e)
@@ -54,11 +55,17 @@ namespace WebtoonDownloader
 
             foreach(WebtoonInfo webtoonInfo in everyWebtoonInfos)
             {
-                cLstBox_WebtoonList.Items.Add(webtoonInfo);
+                this.Invoke(new Action(() =>
+                {
+                    cLstBox_WebtoonList.Items.Add(webtoonInfo);
+                }));
                 if(favoriteWebtoonInfos.Contains(webtoonInfo))
                 {
                     int curIndex = cLstBox_WebtoonList.Items.Count - 1;
-                    cLstBox_WebtoonList.SetItemChecked(curIndex, true);
+                    this.Invoke(new Action(() =>
+                    {
+                        cLstBox_WebtoonList.SetItemChecked(curIndex, true);
+                    }));
                 }
             }
         }
