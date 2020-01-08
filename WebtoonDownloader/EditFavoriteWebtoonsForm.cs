@@ -56,7 +56,7 @@ namespace WebtoonDownloader
                 favoriteWebtoonInfos = new WebtoonInfoCollection();
             }
 
-            WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetWebtoonInfos();
+            WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetEveryWebtoonInfos();
 
             foreach(WebtoonInfo webtoonInfo in everyWebtoonInfos)
             {

@@ -11,6 +11,10 @@ using System.Net;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium;
+using System.Windows;
+using OpenQA.Selenium.Interactions;
 
 namespace LibWebtoonDownloader
 {
@@ -305,12 +309,12 @@ namespace LibWebtoonDownloader
             }
         }
 
-        public static bool operator==(WebtoonInfoCollection item1, object item2)
+        public static bool operator ==(WebtoonInfoCollection item1, object item2)
         {
             return item1.Equals(item2);
         }
 
-        public static bool operator!=(WebtoonInfoCollection item1, object item2)
+        public static bool operator !=(WebtoonInfoCollection item1, object item2)
         {
             return !item1.Equals(item2);
         }
@@ -868,7 +872,7 @@ namespace LibWebtoonDownloader
         /// 네이버 웹툰 메인 페이지에서 모든 웹툰의 정보를 파싱합니다.
         /// </summary>
         /// <returns></returns>
-        public static WebtoonInfoCollection GetWebtoonInfos()
+        public static WebtoonInfoCollection GetEveryWebtoonInfos()
         {
             //웹툰 메인 페이지 접속
             HtmlDocument doc = new HtmlDocument();
@@ -959,6 +963,71 @@ namespace LibWebtoonDownloader
             }
 
             return webtoonInfos;
+        }
+
+        [STAThread]
+        public static WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
+        {
+            WebtoonInfoCollection result = new WebtoonInfoCollection();
+            WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
+
+            using(IWebDriver driver = new ChromeDriver())
+            {
+                driver.Navigate().GoToUrl("https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fcomic.naver.com%2Fwebtoon%2Fweekday.nhn");
+                Actions pasteId = new Actions(driver);
+                Actions pastePassword = new Actions(driver);
+
+                IWebElement idInput = driver.FindElement(By.XPath("//*[@id='id']"));
+                Clipboard.SetText(id);
+                pasteId.MoveToElement(idInput).KeyDown(Keys.Control).SendKeys("v").KeyUp(Keys.Control).Perform();
+                //idInput.Clear();                
+                //idInput.SendKeys(id);
+
+                IWebElement passwordInput = driver.FindElement(By.XPath("//*[@id='pw']"));
+                Clipboard.SetText(password);
+                pastePassword.MoveToElement(passwordInput).Click().KeyDown(Keys.Control).SendKeys("v").KeyUp(Keys.Control).Perform();
+                //passwordInput.Clear();
+                //passwordInput.SendKeys(password);
+
+                Clipboard.Clear();
+
+                IWebElement loginBtn = driver.FindElement(By.XPath("//*[@id='log.login']"));
+                loginBtn.Click();
+
+                driver.Navigate().GoToUrl("https://comic.naver.com/webtoon/weekday.nhn");
+
+                HtmlDocument mainHtml = new HtmlDocument();
+                mainHtml.LoadHtml(driver.PageSource);
+
+                HtmlNodeCollection mainNodes = mainHtml.DocumentNode.SelectNodes("//*[@id='content']/div/div/div/ul/li/div/a");
+                foreach(HtmlNode mainNode in mainNodes)
+                {
+                    HtmlAttribute webtoonHref = mainNode.Attributes["href"];
+                    string webtoonLink = "https://comic.naver.com" + webtoonHref.Value;
+                    webtoonLink = webtoonLink.Replace("amp;", "");
+                    driver.Navigate().GoToUrl(webtoonLink);
+
+                    HtmlDocument webtoonHtml = new HtmlDocument();
+                    webtoonHtml.LoadHtml(driver.PageSource);
+
+                    HtmlNode webtoonNode = webtoonHtml.DocumentNode.SelectSingleNode("//*[@id='content']/div/div/ul/li/a[@class='book_maker on']");
+                    if(webtoonNode == null)
+                        continue;
+
+                    string query = webtoonLink.Split('?')[1];
+                    int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
+
+                    foreach(WebtoonInfo eachInfo in everyInfos)
+                    {
+                        if(eachInfo.Id == titleId)
+                        {
+                            result.Add(eachInfo);
+                            break;
+                        }
+                    }
+                }
+            }
+            return result;
         }
 
 
