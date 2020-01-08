@@ -43,7 +43,7 @@ namespace WebtoonDownloader
             this.Close();
         }
 
-        private void loadWebtoons()
+        public void loadWebtoons()
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
 
@@ -97,6 +97,12 @@ namespace WebtoonDownloader
                     e.Cancel = true;
                 }
             }
+        }
+
+        private void btn_LoadFromNaverAcnt_Click(object sender, EventArgs e)
+        {
+            NaverLoginForm form = new NaverLoginForm(this);
+            form.ShowDialog();
         }
     }
 }

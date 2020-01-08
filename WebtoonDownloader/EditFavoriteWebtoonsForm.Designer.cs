@@ -60,7 +60,7 @@
             this.btn_LoadFromNaverAcnt.TabIndex = 1;
             this.btn_LoadFromNaverAcnt.Text = "네이버 계정에서 불러오기";
             this.btn_LoadFromNaverAcnt.UseVisualStyleBackColor = true;
-            this.btn_LoadFromNaverAcnt.Click += new System.EventHandler(this.NotDevelopedMessage);
+            this.btn_LoadFromNaverAcnt.Click += new System.EventHandler(this.btn_LoadFromNaverAcnt_Click);
             // 
             // btn_saveAndExit
             // 
