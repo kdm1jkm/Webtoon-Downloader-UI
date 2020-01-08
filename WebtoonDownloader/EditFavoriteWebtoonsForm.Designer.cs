@@ -50,6 +50,7 @@
             this.btn_saveToNaverAcnt.TabIndex = 1;
             this.btn_saveToNaverAcnt.Text = "네이버 계정에 저장하기";
             this.btn_saveToNaverAcnt.UseVisualStyleBackColor = true;
+            this.btn_saveToNaverAcnt.Click += new System.EventHandler(this.NotDevelopedMessage);
             // 
             // btn_LoadFromNaverAcnt
             // 
@@ -59,6 +60,7 @@
             this.btn_LoadFromNaverAcnt.TabIndex = 1;
             this.btn_LoadFromNaverAcnt.Text = "네이버 계정에서 불러오기";
             this.btn_LoadFromNaverAcnt.UseVisualStyleBackColor = true;
+            this.btn_LoadFromNaverAcnt.Click += new System.EventHandler(this.NotDevelopedMessage);
             // 
             // btn_saveAndExit
             // 
