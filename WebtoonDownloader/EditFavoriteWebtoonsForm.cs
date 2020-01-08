@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibWebtoonDownloader;
+using System.IO;
 
 namespace WebtoonDownloader
 {
@@ -21,61 +22,44 @@ namespace WebtoonDownloader
 
         private void btn_saveAndExit_Click(object sender, EventArgs e)
         {
+            WebtoonInfoCollection favoriteWebtoonInfos = new WebtoonInfoCollection();
+
+            for(int i = 0 ; i < cLstBox_WebtoonList.Items.Count ; i++)
+            {
+                if(cLstBox_WebtoonList.GetItemChecked(i))
+                {
+                    favoriteWebtoonInfos.Add((WebtoonInfo)cLstBox_WebtoonList.Items[i]);
+                }
+            }
+
+            favoriteWebtoonInfos.Save("favoriteWebtoonInfoCollection.dat");
+
             this.Close();
         }
 
         private void loadWebtoons()
         {
-            WebtoonInfoCollection webtoonInfos = Webtoon.GetWebtoonInfos();
+            WebtoonInfoCollection favoriteWebtoonInfos;
 
-            foreach(WebtoonInfo webtoonInfo in webtoonInfos)
+            if(File.Exists("favoriteWebtoonInfoCollection.dat"))
             {
-                string webtoonNameStr = webtoonInfo.Name;
+                favoriteWebtoonInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+            }
+            else
+            {
+                favoriteWebtoonInfos = new WebtoonInfoCollection();
+            }
 
-                string weekdayStr = "[";
+            WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetWebtoonInfos();
 
-                for(int i = 0 ; i < webtoonInfo.weekdays.Count ; i++)
+            foreach(WebtoonInfo webtoonInfo in everyWebtoonInfos)
+            {
+                cLstBox_WebtoonList.Items.Add(webtoonInfo);
+                if(favoriteWebtoonInfos.Contains(webtoonInfo))
                 {
-                    switch(webtoonInfo.weekdays[i])
-                    {
-                        case 0:
-                            weekdayStr += "월";
-                            break;
-
-                        case 1:
-                            weekdayStr += "화";
-                            break;
-
-                        case 2:
-                            weekdayStr += "수";
-                            break;
-
-                        case 3:
-                            weekdayStr += "목";
-                            break;
-
-                        case 4:
-                            weekdayStr += "금";
-                            break;
-
-                        case 5:
-                            weekdayStr += "토";
-                            break;
-
-                        case 6:
-                            weekdayStr += "일";
-                            break;
-                    }
-
-                    if(i != webtoonInfo.weekdays.Count - 1)
-                    {
-                        weekdayStr += ",";
-                    }
+                    int curIndex = cLstBox_WebtoonList.Items.Count - 1;
+                    cLstBox_WebtoonList.SetItemChecked(curIndex, true);
                 }
-
-                weekdayStr += "]";
-
-                cLstBox_WebtoonList.Items.Add(webtoonNameStr + weekdayStr);
             }
         }
     }
