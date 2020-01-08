@@ -196,6 +196,7 @@
             this.btn_AddFavorite.TabIndex = 7;
             this.btn_AddFavorite.Text = "관심웹툰 다운";
             this.btn_AddFavorite.UseVisualStyleBackColor = true;
+            this.btn_AddFavorite.Click += new System.EventHandler(this.btn_AddFavorite_Click);
             // 
             // btn_AddTask
             // 
@@ -390,7 +391,7 @@
         private System.Windows.Forms.CheckBox checkBox_zip;
         private System.Windows.Forms.Button btn_Search;
         private System.Windows.Forms.Button btn_TogglePause;
-        private System.Windows.Forms.ListBox lBox_queue;
+        public System.Windows.Forms.ListBox lBox_queue;
         private System.Windows.Forms.ListBox lBox_DownloadedWebtoons;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;

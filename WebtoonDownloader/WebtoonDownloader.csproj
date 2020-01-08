@@ -58,6 +58,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DownloadFavoriteWebtoonsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DownloadFavoriteWebtoonsForm.Designer.cs">
+      <DependentUpon>DownloadFavoriteWebtoonsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditFavoriteWebtoonsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -78,6 +84,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DownloadFavoriteWebtoonsForm.resx">
+      <DependentUpon>DownloadFavoriteWebtoonsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="EditFavoriteWebtoonsForm.resx">
       <DependentUpon>EditFavoriteWebtoonsForm.cs</DependentUpon>
     </EmbeddedResource>

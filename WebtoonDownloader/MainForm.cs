@@ -15,7 +15,7 @@ namespace WebtoonDownloader
 {
     public partial class MainForm : Form
     {
-        private Webtoon webtoonDownload = new Webtoon();
+        public Webtoon webtoonDownload = new Webtoon();
         private bool isExcuting = false;
         private Task downloadTask;
         private ManualResetEvent mreExecute = new ManualResetEvent(false);
@@ -35,7 +35,7 @@ namespace WebtoonDownloader
             loadQueue.Start();
         }
 
-        private void displayQueue()
+        public void displayQueue()
         {
             Webtoon.WebtoonTask[] taskArr = webtoonDownload.Tasks.ToArray();
 
@@ -242,6 +242,12 @@ namespace WebtoonDownloader
         private void btn_clearDownloadedList_Click(object sender, EventArgs e)
         {
             lBox_DownloadedWebtoons.Items.Clear();
+        }
+
+        private void btn_AddFavorite_Click(object sender, EventArgs e)
+        {
+            DownloadFavoriteWebtoonsForm form = new DownloadFavoriteWebtoonsForm(this);
+            form.ShowDialog();
         }
     }
 }

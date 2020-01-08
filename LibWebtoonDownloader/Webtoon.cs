@@ -1033,13 +1033,7 @@ namespace LibWebtoonDownloader
 
 
         #region AddFavoriteTasks
-        /// <summary>
-        /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
-        /// </summary>
-        /// <param name="startDate">시작 날짜</param>
-        /// <param name="endDate">끝 날짜</param>
-        /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos, bool html, bool zip)
         {
 
             foreach(WebtoonInfo info in webtoonInfos)
@@ -1064,6 +1058,10 @@ namespace LibWebtoonDownloader
                         HtmlNode parent = wbtnLinkNode.ParentNode.ParentNode;
                         HtmlNode dateNode = parent.SelectSingleNode("td[@class='num']");
                         DateTime curWebtoonDate = DateTime.Parse(dateNode.InnerText);
+
+                        //하루 더하기(웹툰은 하루 전날 올라온 것으로 취급됨)
+                        curWebtoonDate = curWebtoonDate.AddDays(1);
+                        curWebtoonDate = curWebtoonDate.AddHours(12);
 
                         //웹툰 주소로부터 회차 파싱
                         HtmlAttribute href = wbtnLinkNode.Attributes["href"];
@@ -1098,9 +1096,9 @@ namespace LibWebtoonDownloader
                             No = no,
                             Format = new WebtoonFormat
                             {
-                                Html = true
+                                Html = html,
+                                Zip = zip
                             }
-                            // ToDo: format처리하기. 매개변수로 받든 전역변수로 받든. 있는경우 없는경우 오버로딩 하는거.
                         };
                         AddTask(newTask);
 
@@ -1113,6 +1111,17 @@ namespace LibWebtoonDownloader
                     }
                 }
             }
+        }
+        /// <summary>
+        /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
+        /// </summary>
+        /// <param name="startDate">시작 날짜</param>
+        /// <param name="endDate">끝 날짜</param>
+        /// <param name="webtoonInfos">웹툰 정보 리스트</param>
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos)
+        {
+
+            AddFavoriteTasks(startDate, endDate, webtoonInfos, true, false);
         }
         /// <summary>
         /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
