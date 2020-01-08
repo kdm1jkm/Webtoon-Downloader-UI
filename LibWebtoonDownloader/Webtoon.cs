@@ -255,7 +255,11 @@ namespace LibWebtoonDownloader
             Stream rs = new FileStream(fileName, FileMode.Open);
             BinaryFormatter deserializer = new BinaryFormatter();
 
-            return (WebtoonInfoCollection)deserializer.Deserialize(rs);
+            WebtoonInfoCollection result = (WebtoonInfoCollection)deserializer.Deserialize(rs);
+
+            rs.Close();
+
+            return result;
         }
 
         public static WebtoonInfoCollection Load()
