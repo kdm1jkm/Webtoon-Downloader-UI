@@ -26,7 +26,7 @@ namespace WebtoonDownloader
 
         private void loadWebtoons()
         {
-            WebtoonInfos webtoonInfos = Webtoon.GetWebtoonInfos();
+            WebtoonInfoCollection webtoonInfos = Webtoon.GetWebtoonInfos();
 
             foreach(WebtoonInfo webtoonInfo in webtoonInfos)
             {

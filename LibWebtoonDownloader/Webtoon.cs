@@ -152,7 +152,7 @@ namespace LibWebtoonDownloader
     /// 웹툰 정보 리스트 클래스에 저장 및 불러오기 메소드를 추가한 클래스입니다.
     /// </summary>
     [Serializable]
-    public class WebtoonInfos : List<WebtoonInfo>
+    public class WebtoonInfoCollection : List<WebtoonInfo>
     {
         public void Save(string fileName)
         {
@@ -168,7 +168,7 @@ namespace LibWebtoonDownloader
             Save("WebtoonInfos.dat");
         }
 
-        public static WebtoonInfos Load(string fileName)
+        public static WebtoonInfoCollection Load(string fileName)
         {
             if(!File.Exists(fileName))
             {
@@ -178,10 +178,10 @@ namespace LibWebtoonDownloader
             Stream rs = new FileStream(fileName, FileMode.Open);
             BinaryFormatter deserializer = new BinaryFormatter();
 
-            return (WebtoonInfos)deserializer.Deserialize(rs);
+            return (WebtoonInfoCollection)deserializer.Deserialize(rs);
         }
 
-        public static WebtoonInfos Load()
+        public static WebtoonInfoCollection Load()
         {
             return Load("WebtoonInfos.dat");
         }
@@ -739,7 +739,7 @@ namespace LibWebtoonDownloader
         /// 네이버 웹툰 메인 페이지에서 모든 웹툰의 정보를 파싱합니다.
         /// </summary>
         /// <returns></returns>
-        public static WebtoonInfos GetWebtoonInfos()
+        public static WebtoonInfoCollection GetWebtoonInfos()
         {
             //웹툰 메인 페이지 접속
             HtmlDocument doc = new HtmlDocument();
@@ -749,7 +749,7 @@ namespace LibWebtoonDownloader
             doc = web.Load(url);
 
             //웹툰 정보 리스트
-            WebtoonInfos webtoonInfos = new WebtoonInfos();
+            WebtoonInfoCollection webtoonInfos = new WebtoonInfoCollection();
 
             //웹툰 링크 선택
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
@@ -841,7 +841,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfos webtoonInfos)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos)
         {
 
             foreach(WebtoonInfo info in webtoonInfos)
@@ -922,7 +922,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(string startDate, string endDate, WebtoonInfos webtoonInfos)
+        public void AddFavoriteTasks(string startDate, string endDate, WebtoonInfoCollection webtoonInfos)
         {
 
             if(!(DateTime.TryParse(startDate, out DateTime startD) && DateTime.TryParse(endDate, out DateTime endD)))
@@ -938,7 +938,7 @@ namespace LibWebtoonDownloader
         /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
         /// </summary>
         /// <param name="webtooninfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(WebtoonInfos webtooninfos)
+        public void AddFavoriteTasks(WebtoonInfoCollection webtooninfos)
         {
             AddFavoriteTasks(DateTime.MinValue, DateTime.Now, webtooninfos);
         }
