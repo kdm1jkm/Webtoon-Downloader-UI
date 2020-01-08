@@ -1033,6 +1033,14 @@ namespace LibWebtoonDownloader
 
 
         #region AddFavoriteTasks
+        /// <summary>
+        /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
+        /// </summary>
+        /// <param name="startDate">시작 날짜</param>
+        /// <param name="endDate">끝 날짜</param>
+        /// <param name="webtoonInfos">웹툰 정보 리스트</param>
+        /// <param name="html">html생성 여부</param>
+        /// <param name="zip">zip생성 여부</param>
         public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos, bool html, bool zip)
         {
 
@@ -1070,22 +1078,26 @@ namespace LibWebtoonDownloader
 
 
                         //날짜 범위 검사
+                        //현재 날짜가 시작 날짜보다 이전이라면 루프 탈출
                         if(curWebtoonDate < startDate)
                         {
                             keepSearchingFlag = false;
                             break;
                         }
 
+                        //현재 날짜가 마지막 날짜보다 이후라면
                         if(curWebtoonDate > endDate)
                         {
-                            if(no == 1)
+                            if(no != 1)
                             {
-                                keepSearchingFlag = false;
-                                break;
+                                //이전 화로 가면 범위 안으로 들어올 가능성이 있기 때문에 continue
+                                continue;
                             }
                             else
                             {
-                                continue;
+                                //1화라면 범위 안으로 들어올 수 없기 때문에 루프 탈출
+                                keepSearchingFlag = false;
+                                break;
                             }
                         }
 
