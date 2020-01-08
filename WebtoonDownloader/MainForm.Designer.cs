@@ -177,6 +177,7 @@
             this.btn_FileManagement.TabIndex = 7;
             this.btn_FileManagement.Text = "파일관리";
             this.btn_FileManagement.UseVisualStyleBackColor = true;
+            this.btn_FileManagement.Click += new System.EventHandler(this.btn_FileManagement_Click);
             // 
             // btn_ModifyFavorite
             // 
@@ -204,7 +205,7 @@
             this.btn_AddTask.Name = "btn_AddTask";
             this.btn_AddTask.Size = new System.Drawing.Size(198, 21);
             this.btn_AddTask.TabIndex = 7;
-            this.btn_AddTask.Text = "다운";
+            this.btn_AddTask.Text = "대기목록에 추가";
             this.btn_AddTask.UseVisualStyleBackColor = true;
             this.btn_AddTask.Click += new System.EventHandler(this.btn_AddTask_Click);
             // 

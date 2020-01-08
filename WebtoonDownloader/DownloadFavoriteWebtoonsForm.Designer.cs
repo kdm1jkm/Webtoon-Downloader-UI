@@ -31,8 +31,8 @@
             this.tmpk_from = new System.Windows.Forms.DateTimePicker();
             this.tmpk_to = new System.Windows.Forms.DateTimePicker();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.btn_download = new System.Windows.Forms.Button();
             this.checkBox_zip = new System.Windows.Forms.CheckBox();
             this.checkBox_HTML = new System.Windows.Forms.CheckBox();
@@ -66,15 +66,6 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "날자 범위 설정";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(213, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(29, 12);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "부터";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
@@ -84,13 +75,22 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "까지";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(213, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(29, 12);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "부터";
+            // 
             // btn_download
             // 
-            this.btn_download.Location = new System.Drawing.Point(227, 93);
+            this.btn_download.Location = new System.Drawing.Point(209, 91);
             this.btn_download.Name = "btn_download";
-            this.btn_download.Size = new System.Drawing.Size(75, 23);
+            this.btn_download.Size = new System.Drawing.Size(112, 23);
             this.btn_download.TabIndex = 6;
-            this.btn_download.Text = "다운로드";
+            this.btn_download.Text = "대기 목록에 추가";
             this.btn_download.UseVisualStyleBackColor = true;
             this.btn_download.Click += new System.EventHandler(this.btn_download_Click);
             // 
