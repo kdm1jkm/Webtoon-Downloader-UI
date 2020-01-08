@@ -67,5 +67,10 @@ namespace WebtoonDownloader
         {
             MessageBox.Show("이 기능은 개발중입니다. 개발자가 무능해서 아마 시간이 좀 걸릴 것 같습니다.");
         }
+
+        private void EditFavoriteWebtoonsForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            MessageBox.Show("변경 내용을 저장하시겠습니까?", "", MessageBoxButtons.YesNoCancel);
+        }
     }
 }

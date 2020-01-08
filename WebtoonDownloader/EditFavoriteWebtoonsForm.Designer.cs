@@ -86,6 +86,7 @@
             this.Name = "EditFavoriteWebtoonsForm";
             this.ShowInTaskbar = false;
             this.Text = "EditFavoriteWebtoonsForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditFavoriteWebtoonsForm_FormClosing);
             this.ResumeLayout(false);
 
         }
