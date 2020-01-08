@@ -313,7 +313,7 @@
             this.btn_clearDownloadedList.Name = "btn_clearDownloadedList";
             this.btn_clearDownloadedList.Size = new System.Drawing.Size(162, 22);
             this.btn_clearDownloadedList.TabIndex = 15;
-            this.btn_clearDownloadedList.Text = "button2";
+            this.btn_clearDownloadedList.Text = "완료목록 지우기";
             this.btn_clearDownloadedList.UseVisualStyleBackColor = true;
             this.btn_clearDownloadedList.Click += new System.EventHandler(this.btn_clearDownloadedList_Click);
             // 
@@ -323,7 +323,7 @@
             this.btn_clrQueue.Name = "btn_clrQueue";
             this.btn_clrQueue.Size = new System.Drawing.Size(161, 22);
             this.btn_clrQueue.TabIndex = 16;
-            this.btn_clrQueue.Text = "button1";
+            this.btn_clrQueue.Text = "대기목록 지우기";
             this.btn_clrQueue.UseVisualStyleBackColor = true;
             this.btn_clrQueue.Click += new System.EventHandler(this.btn_clrQueue_Click);
             // 
