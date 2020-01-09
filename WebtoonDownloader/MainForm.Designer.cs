@@ -212,7 +212,7 @@
             // checkBox_HTML
             // 
             this.checkBox_HTML.AutoSize = true;
-            this.checkBox_HTML.Location = new System.Drawing.Point(84, 117);
+            this.checkBox_HTML.Location = new System.Drawing.Point(15, 117);
             this.checkBox_HTML.Name = "checkBox_HTML";
             this.checkBox_HTML.Size = new System.Drawing.Size(75, 16);
             this.checkBox_HTML.TabIndex = 8;
@@ -222,7 +222,7 @@
             // checkBox_zip
             // 
             this.checkBox_zip.AutoSize = true;
-            this.checkBox_zip.Location = new System.Drawing.Point(199, 117);
+            this.checkBox_zip.Location = new System.Drawing.Point(121, 117);
             this.checkBox_zip.Name = "checkBox_zip";
             this.checkBox_zip.Size = new System.Drawing.Size(89, 16);
             this.checkBox_zip.TabIndex = 8;
@@ -241,7 +241,7 @@
             // 
             // btn_TogglePause
             // 
-            this.btn_TogglePause.Location = new System.Drawing.Point(132, 139);
+            this.btn_TogglePause.Location = new System.Drawing.Point(121, 139);
             this.btn_TogglePause.Name = "btn_TogglePause";
             this.btn_TogglePause.Size = new System.Drawing.Size(113, 23);
             this.btn_TogglePause.TabIndex = 11;

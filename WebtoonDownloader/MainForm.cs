@@ -252,7 +252,8 @@ namespace WebtoonDownloader
 
         private void btn_FileManagement_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("개발 중");
+            FileManagementForm form = new FileManagementForm();
+            form.ShowDialog();
         }
     }
 }

@@ -120,6 +120,11 @@ namespace LibWebtoonDownloader
         {
             return Load("metaData.dat");
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0}({1})", WebtoonName, No);
+        }
     }
 
 
@@ -456,12 +461,15 @@ namespace LibWebtoonDownloader
             if(curTask.Format.Html)
             {
                 Directory.CreateDirectory("html");
-                string htmlDir = string.Format(@"html\{0}_{1}.html", webtoonName, curTask.No);
+                string htmlDir = string.Format(@"html\{0}_{1}\html.html", webtoonName, curTask.No);
                 List<string> imgs = new List<string>();
                 for(i = 1 ; i <= curMetaData.ImgCnt ; i++)
                 {
-                    string temp = string.Format(@"..\src\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
-                    imgs.Add(temp);
+                    string sourceFileName = string.Format(@"src\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
+                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
+                    File.Copy(sourceFileName, destFileName);
+                    string imgSrc = string.Format(@"{0}.jpg", i);
+                    imgs.Add(imgSrc);
                 }
 
                 MakeHtml(htmlDir, imgs);
@@ -1048,6 +1056,12 @@ namespace LibWebtoonDownloader
             {
                 //2중 루프 브레이크용 플래그
                 bool keepSearchingFlag = true;
+
+                //if((endDate - startDate).TotalDays < 7)
+                //{
+                //    int startDay = (int)startDate.DayOfWeek + 6 % 7;
+                //    int endDay = ((int)endDate.DayOfWeek + 6 % 7 < startDay) ? (int)endDate.DayOfWeek + 6 % 7 + 7 : (int)endDate.DayOfWeek + 6 % 7;
+                //}
 
                 for(int page = 1 ; keepSearchingFlag ; page++)
                 {
