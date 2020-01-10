@@ -248,6 +248,7 @@ namespace WebtoonDownloader
         {
             DownloadFavoriteWebtoonsForm form = new DownloadFavoriteWebtoonsForm(this);
             form.ShowDialog();
+            webtoonDownload.SaveTask("curTask.dat");
         }
 
         private void btn_FileManagement_Click(object sender, EventArgs e)
