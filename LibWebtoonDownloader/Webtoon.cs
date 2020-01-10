@@ -139,7 +139,7 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 요일이다. 월요일=0, 일요일=6이다.
         /// </summary>
-        public List<int> weekdays;
+        public List<DayOfWeek> Weekdays { get; set; }
 
 
         /// <summary>
@@ -148,11 +148,11 @@ namespace LibWebtoonDownloader
         /// <param name="name">웹툰명</param>
         /// <param name="id">웹툰 Id</param>
         /// <param name="weekday">연재 요일</param>
-        public WebtoonInfo(string name, int id, List<int> weekday)
+        public WebtoonInfo(string name, int id, List<DayOfWeek> weekday)
         {
             this.Name = name;
             this.Id = id;
-            this.weekdays = new List<int>(weekday);
+            this.Weekdays = new List<DayOfWeek>(weekday);
         }
 
 
@@ -160,40 +160,40 @@ namespace LibWebtoonDownloader
         {
             string weekdayStr = "[";
 
-            for(int i = 0 ; i < this.weekdays.Count ; i++)
+            for(int i = 0 ; i < this.Weekdays.Count ; i++)
             {
-                switch(this.weekdays[i])
+                switch(this.Weekdays[i])
                 {
-                    case 0:
+                    case DayOfWeek.Monday:
                         weekdayStr += "월";
                         break;
 
-                    case 1:
+                    case DayOfWeek.Tuesday:
                         weekdayStr += "화";
                         break;
 
-                    case 2:
+                    case DayOfWeek.Wednesday:
                         weekdayStr += "수";
                         break;
 
-                    case 3:
+                    case DayOfWeek.Thursday:
                         weekdayStr += "목";
                         break;
 
-                    case 4:
+                    case DayOfWeek.Friday:
                         weekdayStr += "금";
                         break;
 
-                    case 5:
+                    case DayOfWeek.Saturday:
                         weekdayStr += "토";
                         break;
 
-                    case 6:
+                    case DayOfWeek.Sunday:
                         weekdayStr += "일";
                         break;
                 }
 
-                if(i != this.weekdays.Count - 1)
+                if(i != this.Weekdays.Count - 1)
                 {
                     weekdayStr += ",";
                 }
@@ -911,32 +911,29 @@ namespace LibWebtoonDownloader
                 string s_weekDay = HttpUtility.ParseQueryString(query)["weekday"];
 
                 //영어로 된 요일을 숫자로 변환(월요일=0 ~ 일요일=6)
-                int weekday;
+                DayOfWeek weekday = new DayOfWeek();
                 switch(s_weekDay)
                 {
                     case "mon":
-                        weekday = 0;
+                        weekday = DayOfWeek.Monday;
                         break;
                     case "tue":
-                        weekday = 1;
+                        weekday = DayOfWeek.Tuesday;
                         break;
                     case "wed":
-                        weekday = 2;
+                        weekday = DayOfWeek.Wednesday;
                         break;
                     case "thu":
-                        weekday = 3;
+                        weekday = DayOfWeek.Thursday;
                         break;
                     case "fri":
-                        weekday = 4;
+                        weekday = DayOfWeek.Friday;
                         break;
                     case "sat":
-                        weekday = 5;
+                        weekday = DayOfWeek.Saturday;
                         break;
                     case "sun":
-                        weekday = 6;
-                        break;
-                    default:
-                        weekday = -1;
+                        weekday = DayOfWeek.Sunday;
                         break;
                 }
 
@@ -945,9 +942,9 @@ namespace LibWebtoonDownloader
                 {
                     Id = titleId,
                     Name = name,
-                    weekdays = new List<int>()
+                    Weekdays = new List<DayOfWeek>()
                 };
-                tempInfo.weekdays.Add(weekday);
+                tempInfo.Weekdays.Add(weekday);
 
                 //이미 리스트에 존재하는지 확인하는 플래그(여러 요일에 걸쳐서 연재하는 웹툰에 대비)
                 bool alreadyExistFlag = false;
@@ -958,7 +955,7 @@ namespace LibWebtoonDownloader
                     if(info.Id == titleId)
                     {
                         alreadyExistFlag = true;
-                        info.weekdays.Add(weekday);
+                        info.Weekdays.Add(weekday);
                         break;
                     }
                 }

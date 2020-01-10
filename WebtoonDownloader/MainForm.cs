@@ -31,11 +31,11 @@ namespace WebtoonDownloader
                 webtoonDownload.LoadTask("curTask.dat");
             }
 
-            Task loadQueue = new Task(displayQueue);
+            Task loadQueue = new Task(DisplayQueue);
             loadQueue.Start();
         }
 
-        public void displayQueue()
+        public void DisplayQueue()
         {
             Webtoon.WebtoonTask[] taskArr = webtoonDownload.Tasks.ToArray();
 

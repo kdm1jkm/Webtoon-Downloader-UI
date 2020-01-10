@@ -71,23 +71,34 @@ namespace WebtoonDownloader
 
         private void btn_download_Click(object sender, EventArgs e)
         {
-            Task downloadTask = new Task(new Action(() =>
+            WebtoonInfoCollection infos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+            LoadingForm loading = new LoadingForm();
+
+            loading.Show();
+
+            for(int i = 0 ; i < infos.Count ; i++)
             {
+                loading.pBar.Value = (i) * 10000 / (infos.Count + 1);
+
+                //요일검사는 여기서 요일인지 아닌지 검사해서 걸러내기 continue
+
+                WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
                 motherForm.webtoonDownload.AddFavoriteTasks(
                        tmpk_from.Value,
                        tmpk_to.Value.AddDays(1),
-                       WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat"),
+                       temp,
                        checkBox_HTML.Checked,
                        checkBox_zip.Checked);
-                motherForm.displayQueue();
-            }));
-            downloadTask.Start();
+            }
+            motherForm.DisplayQueue();
 
             using(Stream ws = new FileStream("lastDownloaded.dat", FileMode.Create))
             {
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(ws, tmpk_from.Value.AddDays(1));
             }
+
+            loading.Close();
 
             this.Close();
         }
