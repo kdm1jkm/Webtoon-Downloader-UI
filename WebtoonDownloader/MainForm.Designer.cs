@@ -53,9 +53,12 @@
             this.btn_clearDownloadedList = new System.Windows.Forms.Button();
             this.btn_clrQueue = new System.Windows.Forms.Button();
             this.prgsBar_Webtoon = new System.Windows.Forms.ProgressBar();
+            this.label7 = new System.Windows.Forms.Label();
+            this.num_Thread = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_Thread)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -337,12 +340,36 @@
             this.prgsBar_Webtoon.Size = new System.Drawing.Size(333, 23);
             this.prgsBar_Webtoon.TabIndex = 15;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(237, 117);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(41, 12);
+            this.label7.TabIndex = 16;
+            this.label7.Text = "쓰레드";
+            // 
+            // num_Thread
+            // 
+            this.num_Thread.Location = new System.Drawing.Point(285, 118);
+            this.num_Thread.Name = "num_Thread";
+            this.num_Thread.Size = new System.Drawing.Size(57, 21);
+            this.num_Thread.TabIndex = 17;
+            this.num_Thread.Value = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.num_Thread.ValueChanged += new System.EventHandler(this.num_Thread_ValueChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(356, 527);
+            this.Controls.Add(this.num_Thread);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.prgsBar_Webtoon);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.btn_TogglePause);
@@ -368,6 +395,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.num_Thread)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -400,6 +428,8 @@
         private System.Windows.Forms.ProgressBar prgsBar_Webtoon;
         private System.Windows.Forms.Button btn_clearDownloadedList;
         private System.Windows.Forms.Button btn_clrQueue;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown num_Thread;
     }
 }
 

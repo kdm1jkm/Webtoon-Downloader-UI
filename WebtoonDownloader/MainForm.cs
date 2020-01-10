@@ -255,5 +255,10 @@ namespace WebtoonDownloader
                 e.Handled = true;
             }
         }
+
+        private void num_Thread_ValueChanged(object sender, EventArgs e)
+        {
+            webtoonDownload.DownloadImageSemaphoreCount = (int)num_Thread.Value;
+        }
     }
 }
