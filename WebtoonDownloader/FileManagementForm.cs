@@ -39,30 +39,53 @@ namespace WebtoonDownloader
             {
                 return;
             }
-            foreach(MetaData curData in cLstBx_webtoonList.CheckedItems)
+
+            LoadingForm loading = new LoadingForm();
+
+            loading.Show();
+            loading.Invoke(new Action(() =>
             {
-                string htmlDir = string.Format(@"html\{0}_{1}\html.html", curData.WebtoonName, curData.No);
+                loading.pBar.Value = 10000;
+            }));
+
+            for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
+            {
+                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+
+                string htmlDir = string.Format(@"html\{0}_{1}\!html.html", curData.WebtoonName, curData.No);
                 List<string> imgs = new List<string>();
 
-                for(int i = 1 ; i <= curData.ImgCnt ; i++)
+                for(int j = 1 ; j <= curData.ImgCnt ; j++)
                 {
-                    string sourceFileName = string.Format(@"src\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, i);
-                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, i);
-                    string imgSrc = string.Format(@"{0}.jpg", i);
+                    string sourceFileName = string.Format(@"src\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, j);
+                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, j);
+                    string imgSrc = string.Format(@"{0}.jpg", j);
+                    if(File.Exists(destFileName))
+                    {
+                        continue;
+                    }
                     if(!File.Exists(sourceFileName))
                     {
-                        sourceFileName = string.Format(@"src\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, i);
-                        destFileName = string.Format(@"html\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, i);
-                        imgSrc = string.Format(@"{0}.png", i);
+                        sourceFileName = string.Format(@"src\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, j);
+                        destFileName = string.Format(@"html\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, j);
+                        imgSrc = string.Format(@"{0}.png", j);
                     }
-                    string dirPath = string.Format(@"!html\{0}_{1}", curData.WebtoonName, curData.No);
+                    string dirPath = string.Format(@"html\{0}_{1}", curData.WebtoonName, curData.No);
                     Directory.CreateDirectory(dirPath);
                     File.Copy(sourceFileName, destFileName);
                     imgs.Add(imgSrc);
+                    
                 }
 
                 Webtoon.MakeHtml(htmlDir, imgs);
+
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                }));
             }
+
+            loading.Close();
         }
     }
 }
