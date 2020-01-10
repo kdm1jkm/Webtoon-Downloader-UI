@@ -47,6 +47,11 @@ namespace WebtoonDownloader
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
 
+            this.Invoke(new Action(() =>
+            {
+                cLstBox_WebtoonList.Items.Clear();
+            }));
+
             if(File.Exists("favoriteWebtoonInfoCollection.dat"))
             {
                 favoriteWebtoonInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
