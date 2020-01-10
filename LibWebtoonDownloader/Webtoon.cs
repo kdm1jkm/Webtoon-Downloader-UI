@@ -137,7 +137,7 @@ namespace LibWebtoonDownloader
         public string Name { get; set; }
         public int Id { get; set; }
         /// <summary>
-        /// 요일이다. 월요일=0, 일요일=6이다.
+        /// 요일
         /// </summary>
         public List<DayOfWeek> Weekdays { get; set; }
 

@@ -74,13 +74,50 @@ namespace WebtoonDownloader
             WebtoonInfoCollection infos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
             LoadingForm loading = new LoadingForm();
 
+            Func<DayOfWeek, DayOfWeek, DayOfWeek, bool> isBetween = new Func<DayOfWeek, DayOfWeek, DayOfWeek, bool>((
+                DayOfWeek start,
+                DayOfWeek end,
+                DayOfWeek item) =>
+            {
+                int startN = (int)start;
+                int endN = (int)end;
+                int itemN = (int)item;
+                if(startN > endN)
+                {
+                    endN += 7;
+                }
+                if(itemN < startN)
+                {
+                    itemN += 7;
+                }
+                return itemN <= endN;
+            });
+
             loading.Show();
+            loading.Invoke(new Action(() =>
+            {
+                loading.pBar.Value = 0;
+            }));
 
             for(int i = 0 ; i < infos.Count ; i++)
             {
-                loading.pBar.Value = (i) * 10000 / (infos.Count + 1);
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / (infos.Count);
+                }));
 
-                //요일검사는 여기서 요일인지 아닌지 검사해서 걸러내기 continue
+                bool isinPeriod = false;
+
+                foreach(DayOfWeek day in infos[i].Weekdays)
+                {
+                    isinPeriod |= isBetween(tmpk_from.Value.DayOfWeek, tmpk_to.Value.DayOfWeek, day);
+                }
+
+                if(!isinPeriod)
+                {
+                    continue;
+                }
+                Console.WriteLine(infos[i].Name);
 
                 WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
                 motherForm.webtoonDownload.AddFavoriteTasks(
@@ -97,6 +134,11 @@ namespace WebtoonDownloader
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(ws, tmpk_from.Value.AddDays(1));
             }
+
+            loading.Invoke(new Action(() =>
+            {
+                loading.pBar.Value = loading.pBar.Maximum;
+            }));
 
             loading.Close();
 
