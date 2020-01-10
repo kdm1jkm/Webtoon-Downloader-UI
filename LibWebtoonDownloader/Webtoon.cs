@@ -1004,6 +1004,8 @@ namespace LibWebtoonDownloader
                 HtmlDocument mainHtml = new HtmlDocument();
                 mainHtml.LoadHtml(driver.PageSource);
 
+                int i = 0;
+
                 HtmlNodeCollection mainNodes = mainHtml.DocumentNode.SelectNodes("//*[@id='content']/div/div/div/ul/li/div/a");
                 foreach(HtmlNode mainNode in mainNodes)
                 {
@@ -1022,14 +1024,11 @@ namespace LibWebtoonDownloader
                     string query = webtoonLink.Split('?')[1];
                     int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
 
-                    foreach(WebtoonInfo eachInfo in everyInfos)
+                    while(!(everyInfos[i].Id == titleId))
                     {
-                        if(eachInfo.Id == titleId)
-                        {
-                            result.Add(eachInfo);
-                            break;
-                        }
+                        i++;
                     }
+                    result.Add(everyInfos[i]);
                 }
             }
             return result;
