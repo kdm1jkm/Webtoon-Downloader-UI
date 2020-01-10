@@ -99,15 +99,6 @@ namespace WebtoonDownloader
             num_endNo.Value = num_endNo.Maximum;
         }
 
-        //titleId textbox에 숫자만 입력되도록
-        private void tBox_titleId_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if(!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true;
-            }
-        }
-
         private void checkBox_SelectAll_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBox_SelectAll.Checked)
@@ -255,6 +246,14 @@ namespace WebtoonDownloader
         {
             FileManagementForm form = new FileManagementForm();
             form.ShowDialog();
+        }
+
+        private void InputOnlyNum(object sender, KeyPressEventArgs e)
+        {
+            if(!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
     }
 }

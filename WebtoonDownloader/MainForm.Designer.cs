@@ -91,7 +91,7 @@
             this.tBox_titleId.Size = new System.Drawing.Size(151, 21);
             this.tBox_titleId.TabIndex = 3;
             this.tBox_titleId.TextChanged += new System.EventHandler(this.tBox_titleId_TextChanged);
-            this.tBox_titleId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tBox_titleId_KeyPress);
+            this.tBox_titleId.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.InputOnlyNum);
             this.tBox_titleId.ImeModeChanged += new System.EventHandler(this.tBox_titleId_ImeModeChanged);
             // 
             // num_StartNo
