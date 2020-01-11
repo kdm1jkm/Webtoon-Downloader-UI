@@ -415,7 +415,7 @@ namespace LibWebtoonDownloader
             string webtoonName = GetNameById(curTask.TitleId);
 
             //폴더 생성
-            Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No}");
+            Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No.ToString("D3")}");
 
             //이미지 다운로드 멀티쓰레드
             List<Task> imageDownloadTasks = new List<Task>();
@@ -434,7 +434,7 @@ namespace LibWebtoonDownloader
                 //string src = @"D:\dropbox\Downloads\test for crawling" + attSrc.Value.Substring(1, attSrc.Value.Length - 1).Replace("/", "\\");
 
                 //저장경로
-                string imgSrc = string.Format(@"src\{0}_{1}\{2}.{3}", webtoonName, curTask.No, i, src.Split('.').Last());
+                string imgSrc = string.Format(@"src\{0}_{1:000}\{2}.{3}", webtoonName, curTask.No, i, src.Split('.').Last());
                 i++;
 
                 //다운로드
@@ -451,7 +451,7 @@ namespace LibWebtoonDownloader
 
             //메타데이터 생성
             MetaData curMetaData = new MetaData(webtoonName, curTask.TitleId, curTask.No, nodeImgCollection.Count);
-            string dir = string.Format(@"src\{0}_{1}\metaData.dat", webtoonName, curTask.No);
+            string dir = string.Format(@"src\{0}_{1:000}\metaData.dat", webtoonName, curTask.No);
             curMetaData.Save(dir);
 
             //이미지 다운로드 종료
@@ -461,12 +461,12 @@ namespace LibWebtoonDownloader
             if(curTask.Format.Html)
             {
                 Directory.CreateDirectory("html");
-                string htmlDir = string.Format(@"html\{0}_{1}\html.html", webtoonName, curTask.No);
+                string htmlDir = string.Format(@"html\{0}_{1:000}\html.html", webtoonName, curTask.No);
                 List<string> imgs = new List<string>();
                 for(i = 1 ; i <= curMetaData.ImgCnt ; i++)
                 {
-                    string sourceFileName = string.Format(@"src\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
-                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", webtoonName, curTask.No, i);
+                    string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
+                    string destFileName = string.Format(@"html\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
                     File.Copy(sourceFileName, destFileName);
                     string imgSrc = string.Format(@"{0}.jpg", i);
                     imgs.Add(imgSrc);
@@ -477,8 +477,8 @@ namespace LibWebtoonDownloader
             if(curTask.Format.Zip)
             {
                 Directory.CreateDirectory("zip");
-                string srcDir = string.Format(@"src\{0}_{1}", webtoonName, curTask.No);
-                string zipDir = string.Format(@"zip\{0}_{1}.zip", webtoonName, curTask.No);
+                string srcDir = string.Format(@"src\{0}_{1:000}", webtoonName, curTask.No);
+                string zipDir = string.Format(@"zip\{0}_{1:000}.zip", webtoonName, curTask.No);
 
                 if(File.Exists(zipDir))
                 {
@@ -540,13 +540,13 @@ namespace LibWebtoonDownloader
         /// <param name="curMetaData"></param>
         public static void MakeHtml(MetaData curMetaData)
         {
-            string fileName = string.Format(@"html\{0}_{1}.html", curMetaData.WebtoonName, curMetaData.No);
+            string fileName = string.Format(@"html\{0}_{1:000}.html", curMetaData.WebtoonName, curMetaData.No);
 
             List<string> imgs = new List<string>();
 
             for(int i = 1 ; i <= curMetaData.ImgCnt ; i++)
             {
-                string temp = string.Format(@"..\src\{0}_{1}\{2}.jpg", curMetaData.WebtoonName, curMetaData.No, i);
+                string temp = string.Format(@"..\src\{0}_{1:000}\{2}.jpg", curMetaData.WebtoonName, curMetaData.No, i);
                 imgs.Add(temp);
             }
 
