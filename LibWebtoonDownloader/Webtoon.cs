@@ -871,7 +871,16 @@ namespace LibWebtoonDownloader
 
             title = title.Substring(0, title.Length - 10);
 
-            return title;
+            return title.
+                Replace("\\", "").
+                Replace("/", "").
+                Replace(":", "").
+                Replace("*", "").
+                Replace("?", "").
+                Replace("\"", "").
+                Replace("<", "").
+                Replace(">", "").
+                Replace("|", "");
         }
 
 
