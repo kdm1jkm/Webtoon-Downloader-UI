@@ -23,7 +23,20 @@ namespace WebtoonDownloader
 
         private void loadWebtoonSrcList()
         {
+            cLstBx_webtoonList.Items.Clear();
+
+            if(!Directory.Exists("src"))
+            {
+                return;
+            }
+
             string[] webtoonSrcDirs = Directory.GetDirectories("src");
+
+            if(webtoonSrcDirs == null)
+            {
+                return;
+            }
+
             foreach(string webtoonSrcDir in webtoonSrcDirs)
             {
                 string metaDataPath = webtoonSrcDir + "\\metaData.dat";
