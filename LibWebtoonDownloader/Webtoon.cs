@@ -32,6 +32,44 @@ namespace LibWebtoonDownloader
             this.Html = html;
             this.Zip = zip;
         }
+
+        public override bool Equals(object obj)
+        {
+            if(this.GetType() == obj.GetType())
+            {
+                return this.GetHashCode() == obj.GetHashCode();
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            if(Html)
+            { hashCode += 1; }
+            if(Zip)
+            { hashCode += 2; }
+
+            return hashCode;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("Html: {0}, Zip: {1}", Html ? "True" : "False", Zip ? "True" : "False");
+        }
+
+        public static bool operator==(WebtoonFormat format, object obj)
+        {
+            return format.Equals(obj);
+        }
+
+        public static bool operator!=(WebtoonFormat format, object obj)
+        {
+            return !format.Equals(obj);
+        }
     }
 
 
@@ -124,6 +162,43 @@ namespace LibWebtoonDownloader
         public override string ToString()
         {
             return string.Format("{0}({1})", WebtoonName, No);
+        }
+
+        public override int GetHashCode()
+        {
+            Func<int, int, int> addHash = new Func<int, int, int>((int h, int value) =>
+            {
+                return h * 31 + value;
+            });
+            int hash = 19;
+            hash = addHash(hash, WebtoonName.GetHashCode());
+            hash = addHash(hash, Id.GetHashCode());
+            hash = addHash(hash, No.GetHashCode());
+            hash = addHash(hash, ImgCnt.GetHashCode());
+
+            return hash;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(this.GetType() == obj.GetType())
+            {
+                return this.GetHashCode() == obj.GetHashCode();
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator==(MetaData left, object right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator!=(MetaData left, object right)
+        {
+            return !left.Equals(right);
         }
     }
 
@@ -323,6 +398,18 @@ namespace LibWebtoonDownloader
         {
             return !item1.Equals(item2);
         }
+
+        public override string ToString()
+        {
+            string result = string.Empty;
+            for(int i=0 ;i<this.Count ; i++)
+            {
+                result += this[i].ToString();
+                result += "\n";
+            }
+
+            return result;
+        }
     }
 
 
@@ -359,6 +446,33 @@ namespace LibWebtoonDownloader
                 {
                     return string.Format("https://comic.naver.com/webtoon/detail.nhn?titleId={0}&no={1}", TitleId, No);
                 }
+            }
+
+            public override bool Equals(object obj)
+            {
+                if(this.GetType() == obj.GetType())
+                {
+                    return this.GetHashCode() == obj.GetHashCode();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            public override int GetHashCode()
+            {
+                return Url.GetHashCode() * 19 + Format.GetHashCode();
+            }
+
+            public static bool operator==(WebtoonTask left, object right)
+            {
+                return left.Equals(right);
+            }
+
+            public static bool operator!=(WebtoonTask left, object right)
+            {
+                return !left.Equals(right);
             }
         }
 
