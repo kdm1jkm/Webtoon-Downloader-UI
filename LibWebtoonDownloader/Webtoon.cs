@@ -424,18 +424,26 @@ namespace LibWebtoonDownloader
             downloadImagePool = new Semaphore(0, DownloadImageSemaphoreCount);
 
             //이미지 태그 선택
-            int i = 1;
+            int imgNum = 1;
             HtmlNodeCollection nodeImgCollection = doc.DocumentNode.SelectNodes("//img[@alt='comic content']");
-            foreach(HtmlNode nodeImg in nodeImgCollection)
+            if(nodeImgCollection == null)
             {
+                Tasks.Dequeue();
+                return;
+            }
+
+            for(int i = 0 ; i < nodeImgCollection.Count ; i++)
+            {
+                HtmlNode nodeImg = nodeImgCollection[i];
+
                 //이미지 주소 파싱
                 HtmlAttribute attSrc = nodeImg.Attributes["src"];
                 string src = attSrc.Value;
                 //string src = @"D:\dropbox\Downloads\test for crawling" + attSrc.Value.Substring(1, attSrc.Value.Length - 1).Replace("/", "\\");
 
                 //저장경로
-                string imgSrc = string.Format(@"src\{0}_{1:000}\{2}.{3}", webtoonName, curTask.No, i, src.Split('.').Last());
-                i++;
+                string imgSrc = string.Format(@"src\{0}_{1:000}\{2}.{3}", webtoonName, curTask.No, imgNum, src.Split('.').Last());
+                imgNum++;
 
                 //다운로드
                 Task imageDownloadTask = new Task(new Action(() => { DownloadImage(src, imgSrc); }));
@@ -445,7 +453,6 @@ namespace LibWebtoonDownloader
                 //다운로드
                 //DownloadImage(src, imgSrc);
             }
-
             //세마포어 Release
             downloadImagePool.Release(DownloadImageSemaphoreCount);
 
@@ -463,7 +470,7 @@ namespace LibWebtoonDownloader
                 Directory.CreateDirectory("html");
                 string htmlDir = string.Format(@"html\{0}_{1:000}\html.html", webtoonName, curTask.No);
                 List<string> imgs = new List<string>();
-                for(i = 1 ; i <= curMetaData.ImgCnt ; i++)
+                for(int i = 1 ; i <= curMetaData.ImgCnt ; i++)
                 {
                     string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
                     string destFileName = string.Format(@"html\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
