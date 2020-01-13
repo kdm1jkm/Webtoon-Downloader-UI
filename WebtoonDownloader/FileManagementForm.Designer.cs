@@ -32,6 +32,7 @@
             this.btn_convertHtml = new System.Windows.Forms.Button();
             this.btn_convertZip = new System.Windows.Forms.Button();
             this.btn_delete = new System.Windows.Forms.Button();
+            this.checkBox_SelectAll = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // cLstBx_webtoonList
@@ -41,6 +42,8 @@
             this.cLstBx_webtoonList.Name = "cLstBx_webtoonList";
             this.cLstBx_webtoonList.Size = new System.Drawing.Size(345, 324);
             this.cLstBx_webtoonList.TabIndex = 0;
+            this.cLstBx_webtoonList.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cLstBx_webtoonList_KeyPress);
+            this.cLstBx_webtoonList.MouseUp += new System.Windows.Forms.MouseEventHandler(this.cLstBx_webtoonList_MouseUp);
             // 
             // btn_convertHtml
             // 
@@ -72,11 +75,23 @@
             this.btn_delete.UseVisualStyleBackColor = true;
             this.btn_delete.Click += new System.EventHandler(this.btn_delete_Click);
             // 
+            // checkBox_SelectAll
+            // 
+            this.checkBox_SelectAll.AutoSize = true;
+            this.checkBox_SelectAll.Location = new System.Drawing.Point(363, 319);
+            this.checkBox_SelectAll.Name = "checkBox_SelectAll";
+            this.checkBox_SelectAll.Size = new System.Drawing.Size(72, 16);
+            this.checkBox_SelectAll.TabIndex = 4;
+            this.checkBox_SelectAll.Text = "전체선택";
+            this.checkBox_SelectAll.UseVisualStyleBackColor = true;
+            this.checkBox_SelectAll.Click += new System.EventHandler(this.checkBox_SelectAll_Click);
+            // 
             // FileManagementForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(555, 350);
+            this.Controls.Add(this.checkBox_SelectAll);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_convertZip);
             this.Controls.Add(this.btn_convertHtml);
@@ -85,6 +100,7 @@
             this.Name = "FileManagementForm";
             this.Text = "FileManagementForm";
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -94,5 +110,6 @@
         private System.Windows.Forms.Button btn_convertHtml;
         private System.Windows.Forms.Button btn_convertZip;
         private System.Windows.Forms.Button btn_delete;
+        private System.Windows.Forms.CheckBox checkBox_SelectAll;
     }
 }

@@ -152,7 +152,7 @@ namespace WebtoonDownloader
                 MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
 
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
-                
+
                 foreach(string file in Directory.GetFiles(sourceDir))
                 {
                     File.Delete(file);
@@ -169,6 +169,31 @@ namespace WebtoonDownloader
             LoadWebtoonSrcList();
 
             loading.Close();
+        }
+
+        private void checkBox_SelectAll_Click(object sender, EventArgs e)
+        {
+            bool change = checkBox_SelectAll.Checked;
+            for(int i = 0 ; i < cLstBx_webtoonList.Items.Count ; i++)
+            {
+                cLstBx_webtoonList.SetItemChecked(i, change);
+            }
+            checkBox_SelectAll.Checked = change;
+        }
+
+        private void cLstBx_webtoonList_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            checkSeletedAll();
+        }
+
+        private void cLstBx_webtoonList_MouseUp(object sender, MouseEventArgs e)
+        {
+            checkSeletedAll();
+        }
+
+        private void checkSeletedAll()
+        {
+            checkBox_SelectAll.Checked = (cLstBx_webtoonList.Items.Count == cLstBx_webtoonList.CheckedItems.Count);
         }
     }
 }
