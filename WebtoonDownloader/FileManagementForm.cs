@@ -44,6 +44,14 @@ namespace WebtoonDownloader
                 {
                     cLstBx_webtoonList.Items.Add(MetaData.Load(metaDataPath));
                 }
+                else
+                {
+                    foreach(string delDir in Directory.GetFiles(webtoonSrcDir))
+                    {
+                        File.Delete(delDir);
+                    }
+                    Directory.Delete(webtoonSrcDir);
+                }
             }
         }
 
