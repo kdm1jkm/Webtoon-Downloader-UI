@@ -18,10 +18,10 @@ namespace WebtoonDownloader
         public FileManagementForm()
         {
             InitializeComponent();
-            loadWebtoonSrcList();
+            LoadWebtoonSrcList();
         }
 
-        private void loadWebtoonSrcList()
+        private void LoadWebtoonSrcList()
         {
             cLstBx_webtoonList.Items.Clear();
 
@@ -166,7 +166,7 @@ namespace WebtoonDownloader
                 }));
             }
 
-            loadWebtoonSrcList();
+            LoadWebtoonSrcList();
 
             loading.Close();
         }

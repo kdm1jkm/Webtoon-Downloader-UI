@@ -17,8 +17,8 @@ namespace WebtoonDownloader
     {
         public Webtoon webtoonDownload = new Webtoon();
         private bool isExcuting = false;
-        private Task downloadTask;
-        private ManualResetEvent mreExecute = new ManualResetEvent(false);
+        private readonly Task downloadTask;
+        private readonly ManualResetEvent mreExecute = new ManualResetEvent(false);
 
         public MainForm()
         {
@@ -85,7 +85,7 @@ namespace WebtoonDownloader
 
         private void tBox_titleId_TextChanged(object sender, EventArgs e)
         {
-            if(tBox_titleId.Text == "")
+            if(string.IsNullOrEmpty(tBox_titleId.Text))
             {
                 num_endNo.Maximum = 1;
                 return;

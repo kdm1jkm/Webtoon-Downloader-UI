@@ -630,8 +630,9 @@ namespace LibWebtoonDownloader
             //url접속
             string url = string.Format("https://comic.naver.com/webtoon/list.nhn?titleId={0}", titleId);
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc;
             doc = web.Load(url);
+            //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 __ 네이버 만화.htm");
 
             //가장 최신 에피소드의 링크
@@ -663,8 +664,9 @@ namespace LibWebtoonDownloader
             string url = string.Format(@"https://comic.naver.com/search.nhn?m=webtoon&keyword={0}", name);
             int titleId;
             HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc;
             doc = web.Load(url);
+            //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\윰세포_검색_존재.html");
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\검색_결과없음.html");
 
@@ -700,9 +702,10 @@ namespace LibWebtoonDownloader
         public static bool IsAvailable(WebtoonTask task)
         {
             //검사할 url 접속
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc;
             HtmlWeb web = new HtmlWeb();
             doc = web.Load(task.Url);
+            //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 페이지안 __ 네이버 만화.htm");
             //doc.Load(@); //없는 웹툰용
 
@@ -860,7 +863,7 @@ namespace LibWebtoonDownloader
             if(!IsAvailable(titleId))
                 return "";
 
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc;
             HtmlWeb web = new HtmlWeb();
 
             WebtoonTask tempTask = new WebtoonTask
@@ -870,6 +873,7 @@ namespace LibWebtoonDownloader
             };
 
             doc = web.Load(tempTask.Url);
+            //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 페이지안 __ 네이버 만화.htm", Encoding.UTF8);
 
             HtmlNode nodeTitle = doc.DocumentNode.SelectSingleNode("/html/head/title");
@@ -899,9 +903,10 @@ namespace LibWebtoonDownloader
         public static WebtoonInfoCollection GetEveryWebtoonInfos()
         {
             //웹툰 메인 페이지 접속
-            HtmlDocument doc = new HtmlDocument();
+            HtmlDocument doc;
             HtmlWeb web = new HtmlWeb();
             const string url = "https://comic.naver.com/webtoon/weekday.nhn";
+            //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\webtoonforcrawling\frontPage.htm", Encoding.UTF8);
             doc = web.Load(url);
 
