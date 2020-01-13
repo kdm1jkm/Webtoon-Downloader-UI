@@ -356,7 +356,7 @@
             this.num_Thread.Size = new System.Drawing.Size(57, 21);
             this.num_Thread.TabIndex = 17;
             this.num_Thread.Value = new decimal(new int[] {
-            3,
+            5,
             0,
             0,
             0});
