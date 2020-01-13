@@ -122,5 +122,40 @@ namespace WebtoonDownloader
 
             loading.Close();
         }
+
+        private void btn_delete_Click(object sender, EventArgs e)
+        {
+            if(cLstBx_webtoonList.CheckedItems == null)
+            {
+                return;
+            }
+
+            LoadingForm loading = new LoadingForm();
+            loading.Show();
+            loading.Invoke(new Action(() => { loading.pBar.Value = 0; }));
+
+            for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
+            {
+                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+
+                string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
+                
+                foreach(string file in Directory.GetFiles(sourceDir))
+                {
+                    File.Delete(file);
+                }
+
+                Directory.Delete(sourceDir);
+
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                }));
+            }
+
+            loadWebtoonSrcList();
+
+            loading.Close();
+        }
     }
 }
