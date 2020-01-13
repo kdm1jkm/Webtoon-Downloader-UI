@@ -128,17 +128,20 @@ namespace WebtoonDownloader
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                }));
+
                 MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
 
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
                 string destinationDir = $@"zip\{curData.WebtoonName}_{curData.No}.zip";
 
-                ZipFile.CreateFromDirectory(sourceDir, destinationDir);
+                if(File.Exists(destinationDir))
+                { continue; }
 
-                loading.Invoke(new Action(() =>
-                {
-                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
-                }));
+                ZipFile.CreateFromDirectory(sourceDir, destinationDir);
             }
 
             loading.Close();
