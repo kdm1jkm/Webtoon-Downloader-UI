@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using LibWebtoonDownloader;
+using System.IO.Compression;
 
 namespace WebtoonDownloader
 {
@@ -78,6 +79,40 @@ namespace WebtoonDownloader
                 }
 
                 Webtoon.MakeHtml(htmlDir, imgs);
+
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                }));
+            }
+
+            loading.Close();
+        }
+
+        private void btn_convertZip_Click(object sender, EventArgs e)
+        {
+            if(cLstBx_webtoonList.CheckedItems == null)
+            {
+                return;
+            }
+
+            LoadingForm loading = new LoadingForm();
+            loading.Show();
+            loading.Invoke(new Action(() => { loading.pBar.Value = 0; }));
+
+            if(!Directory.Exists("zip"))
+            {
+                Directory.CreateDirectory("zip");
+            }
+
+            for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
+            {
+                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+
+                string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
+                string destinationDir = $@"zip\{curData.WebtoonName}_{curData.No}.zip";
+
+                ZipFile.CreateFromDirectory(sourceDir, destinationDir);
 
                 loading.Invoke(new Action(() =>
                 {

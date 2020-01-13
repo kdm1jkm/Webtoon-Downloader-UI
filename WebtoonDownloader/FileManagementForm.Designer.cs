@@ -60,6 +60,7 @@
             this.btn_convertZip.TabIndex = 2;
             this.btn_convertZip.Text = "zip(mobile)로 내보내기";
             this.btn_convertZip.UseVisualStyleBackColor = true;
+            this.btn_convertZip.Click += new System.EventHandler(this.btn_convertZip_Click);
             // 
             // btn_delete
             // 
