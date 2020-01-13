@@ -66,13 +66,13 @@ namespace WebtoonDownloader
             {
                 MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
 
-                string htmlDir = string.Format(@"html\{0}_{1:000}\!html.html", curData.WebtoonName, curData.No);
+                string htmlDir = string.Format(@"html\{0}_{1}\!html.html", curData.WebtoonName, curData.No);
                 List<string> imgs = new List<string>();
 
                 for(int j = 1 ; j <= curData.ImgCnt ; j++)
                 {
                     string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", curData.WebtoonName, curData.No, j);
-                    string destFileName = string.Format(@"html\{0}_{1:000}\{2}.jpg", curData.WebtoonName, curData.No, j);
+                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, j);
                     string imgSrc = string.Format(@"{0}.jpg", j);
                     if(File.Exists(destFileName))
                     {
@@ -81,14 +81,14 @@ namespace WebtoonDownloader
                     if(!File.Exists(sourceFileName))
                     {
                         sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.png", curData.WebtoonName, curData.No, j);
-                        destFileName = string.Format(@"html\{0}_{1:000}\{2}.png", curData.WebtoonName, curData.No, j);
+                        destFileName = string.Format(@"html\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, j);
                         imgSrc = string.Format(@"{0}.png", j);
                     }
-                    string dirPath = string.Format(@"html\{0}_{1:000}", curData.WebtoonName, curData.No);
+                    string dirPath = string.Format(@"html\{0}_{1}", curData.WebtoonName, curData.No);
                     Directory.CreateDirectory(dirPath);
                     File.Copy(sourceFileName, destFileName);
                     imgs.Add(imgSrc);
-                    
+
                 }
 
                 Webtoon.MakeHtml(htmlDir, imgs);
