@@ -71,6 +71,12 @@
     <Compile Include="EditFavoriteWebtoonsForm.Designer.cs">
       <DependentUpon>EditFavoriteWebtoonsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ErrorShowForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ErrorShowForm.Designer.cs">
+      <DependentUpon>ErrorShowForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FileManagementForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EditFavoriteWebtoonsForm.resx">
       <DependentUpon>EditFavoriteWebtoonsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ErrorShowForm.resx">
+      <DependentUpon>ErrorShowForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FileManagementForm.resx">
       <DependentUpon>FileManagementForm.cs</DependentUpon>

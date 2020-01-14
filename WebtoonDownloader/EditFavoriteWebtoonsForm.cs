@@ -17,8 +17,7 @@ namespace WebtoonDownloader
         public EditFavoriteWebtoonsForm()
         {
             InitializeComponent();
-            Task load = new Task(loadWebtoons);
-            load.Start();
+            loadWebtoons();
         }
 
         private WebtoonInfoCollection getCheckedList()
@@ -46,11 +45,10 @@ namespace WebtoonDownloader
         public void loadWebtoons()
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
+            cLstBox_WebtoonList.Items.Clear();
 
-            this.Invoke(new Action(() =>
-            {
-                cLstBox_WebtoonList.Items.Clear();
-            }));
+            LoadingForm loading = new LoadingForm();
+            loading.pBar.Maximum = 3;
 
             if(File.Exists("favoriteWebtoonInfoCollection.dat"))
             {
@@ -61,28 +59,30 @@ namespace WebtoonDownloader
                 favoriteWebtoonInfos = new WebtoonInfoCollection();
             }
 
+            loading.pBar.PerformStep();
+
             WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetEveryWebtoonInfos();
+
+            loading.pBar.PerformStep();
 
             foreach(WebtoonInfo webtoonInfo in everyWebtoonInfos)
             {
-                this.Invoke(new Action(() =>
-                {
-                    cLstBox_WebtoonList.Items.Add(webtoonInfo);
-                }));
+                cLstBox_WebtoonList.Items.Add(webtoonInfo);
+
                 if(favoriteWebtoonInfos.Contains(webtoonInfo))
                 {
                     int curIndex = cLstBox_WebtoonList.Items.Count - 1;
-                    this.Invoke(new Action(() =>
-                    {
-                        cLstBox_WebtoonList.SetItemChecked(curIndex, true);
-                    }));
+                    cLstBox_WebtoonList.SetItemChecked(curIndex, true);
+
                 }
             }
+
+            loading.Close();
         }
 
         private void NotDevelopedMessage(object sender, EventArgs e)
         {
-            MessageBox.Show("이 기능은 개발중입니다. 개발자가 무능해서 아마 시간이 좀 걸릴 것 같습니다.");
+            MessageBox.Show("이 기능은 개발중입니다.");
         }
 
         private void EditFavoriteWebtoonsForm_FormClosing(object sender, FormClosingEventArgs e)

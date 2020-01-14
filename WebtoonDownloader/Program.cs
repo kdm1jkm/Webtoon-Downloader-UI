@@ -15,7 +15,18 @@ namespace WebtoonDownloader
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            try
+            {
+                Application.Run(new MainForm());
+            }
+            catch(System.Net.WebException)
+            {
+                Application.Run(new ErrorShowForm("Internet Connection Error.\nPlease retry after connect to internet."));
+            }
+            //catch(Exception ex)
+            //{
+            //    Application.Run(new ErrorShowForm(ex.ToString()));
+            //}
         }
     }
 }
