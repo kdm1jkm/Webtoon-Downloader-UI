@@ -219,8 +219,10 @@ namespace WebtoonDownloader
 
         private void btn_selectDir_Click(object sender, EventArgs e)
         {
-            FolderBrowserDialog dialog = new FolderBrowserDialog();
-            dialog.Description = "파일을 저장할 위치를 선택하세요";
+            FolderBrowserDialog dialog = new FolderBrowserDialog
+            {
+                Description = "파일을 저장할 위치를 선택하세요"
+            };
             DialogResult result = dialog.ShowDialog();
 
             if(result == DialogResult.OK)
