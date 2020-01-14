@@ -111,7 +111,7 @@ namespace WebtoonDownloader
 
                 loading.Invoke(new Action(() =>
                 {
-                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
                 }));
             }
 
@@ -183,7 +183,7 @@ namespace WebtoonDownloader
 
                 loading.Invoke(new Action(() =>
                 {
-                    loading.pBar.Value = (i + 1) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
+                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
                 }));
             }
 

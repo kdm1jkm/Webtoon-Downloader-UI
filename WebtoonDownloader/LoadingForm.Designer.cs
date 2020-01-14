@@ -37,6 +37,7 @@
             this.pBar.Maximum = 10000;
             this.pBar.Name = "pBar";
             this.pBar.Size = new System.Drawing.Size(265, 64);
+            this.pBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pBar.TabIndex = 0;
             // 
             // LoadingForm

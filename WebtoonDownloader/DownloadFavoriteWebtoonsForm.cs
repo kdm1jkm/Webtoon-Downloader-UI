@@ -103,7 +103,7 @@ namespace WebtoonDownloader
             {
                 loading.Invoke(new Action(() =>
                 {
-                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / (infos.Count);
+                    loading.pBar.Value = (i) * loading.pBar.Maximum / (infos.Count);
                 }));
 
                 bool isinPeriod = false;
