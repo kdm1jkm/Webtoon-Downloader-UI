@@ -19,6 +19,7 @@ namespace WebtoonDownloader
         {
             InitializeComponent();
             LoadWebtoonSrcList();
+            tBox_SaveDir.Text = Directory.GetCurrentDirectory() + @"\downloaded";
         }
 
         private void LoadWebtoonSrcList()
@@ -62,25 +63,32 @@ namespace WebtoonDownloader
                 return;
             }
 
+            string path = tBox_SaveDir.Text;
+
+            if(!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             LoadingForm loading = new LoadingForm();
 
             loading.Show();
             loading.Invoke(new Action(() =>
             {
-                loading.pBar.Value = 10000;
+                loading.pBar.Value = 0;
             }));
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
                 MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
 
-                string htmlDir = string.Format(@"html\{0}_{1}\!html.html", curData.WebtoonName, curData.No);
+                string htmlDir = $@"{path}\{curData.WebtoonName}_{curData.No}\!html.html";
                 List<string> imgs = new List<string>();
 
                 for(int j = 1 ; j <= curData.ImgCnt ; j++)
                 {
                     string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", curData.WebtoonName, curData.No, j);
-                    string destFileName = string.Format(@"html\{0}_{1}\{2}.jpg", curData.WebtoonName, curData.No, j);
+                    string destFileName = $@"{path}\{curData.WebtoonName}_{curData.No}\{j}.jpg";
                     string imgSrc = string.Format(@"{0}.jpg", j);
                     if(File.Exists(destFileName))
                     {
@@ -89,10 +97,10 @@ namespace WebtoonDownloader
                     if(!File.Exists(sourceFileName))
                     {
                         sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.png", curData.WebtoonName, curData.No, j);
-                        destFileName = string.Format(@"html\{0}_{1}\{2}.png", curData.WebtoonName, curData.No, j);
+                        destFileName = $@"{path}\{curData.WebtoonName}_{curData.No}\{j}.png";
                         imgSrc = string.Format(@"{0}.png", j);
                     }
-                    string dirPath = string.Format(@"html\{0}_{1}", curData.WebtoonName, curData.No);
+                    string dirPath = $@"{path}\{curData.WebtoonName}_{curData.No}";
                     Directory.CreateDirectory(dirPath);
                     File.Copy(sourceFileName, destFileName);
                     imgs.Add(imgSrc);
@@ -117,26 +125,28 @@ namespace WebtoonDownloader
                 return;
             }
 
+            string path = tBox_SaveDir.Text;
+
             LoadingForm loading = new LoadingForm();
             loading.Show();
             loading.Invoke(new Action(() => { loading.pBar.Value = 0; }));
 
-            if(!Directory.Exists("zip"))
+            if(!Directory.Exists(path))
             {
-                Directory.CreateDirectory("zip");
+                Directory.CreateDirectory(path);
             }
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
-                loading.Invoke(new Action(() =>
-                {
-                    loading.pBar.Value = (i) * 10000 / cLstBx_webtoonList.CheckedItems.Count;
-                }));
-
                 MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
 
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
-                string destinationDir = $@"zip\{curData.WebtoonName}_{curData.No}.zip";
+                string destinationDir = $@"{path}\{curData.WebtoonName}_{curData.No}.zip";
+
+                loading.Invoke(new Action(() =>
+                {
+                    loading.pBar.Value = (i) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
+                }));
 
                 if(File.Exists(destinationDir))
                 { continue; }
@@ -205,6 +215,18 @@ namespace WebtoonDownloader
         private void checkSeletedAll()
         {
             checkBox_SelectAll.Checked = (cLstBx_webtoonList.Items.Count == cLstBx_webtoonList.CheckedItems.Count);
+        }
+
+        private void btn_selectDir_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.Description = "파일을 저장할 위치를 선택하세요";
+            DialogResult result = dialog.ShowDialog();
+
+            if(result == DialogResult.OK)
+            {
+                tBox_SaveDir.Text = dialog.SelectedPath;
+            }
         }
     }
 }
