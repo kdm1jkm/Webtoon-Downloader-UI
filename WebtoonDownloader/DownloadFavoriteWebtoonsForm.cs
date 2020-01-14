@@ -117,7 +117,6 @@ namespace WebtoonDownloader
                 {
                     continue;
                 }
-                Console.WriteLine(infos[i].Name);
 
                 WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
                 motherForm.webtoonDownload.AddFavoriteTasks(
