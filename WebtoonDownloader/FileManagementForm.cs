@@ -19,7 +19,7 @@ namespace WebtoonDownloader
         {
             InitializeComponent();
             LoadWebtoonSrcList();
-            tBox_SaveDir.Text = Directory.GetCurrentDirectory() + @"\downloaded";
+            tBox_SaveDir.Text = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + @"\Webtoon";
         }
 
         private void LoadWebtoonSrcList()
@@ -223,6 +223,7 @@ namespace WebtoonDownloader
             {
                 Description = "파일을 저장할 위치를 선택하세요"
             };
+            dialog.SelectedPath = tBox_SaveDir.Text;
             DialogResult result = dialog.ShowDialog();
 
             if(result == DialogResult.OK)
