@@ -71,12 +71,8 @@ namespace WebtoonDownloader
             }
 
             LoadingForm loading = new LoadingForm();
-
+            loading.pBar.Maximum = cLstBx_webtoonList.CheckedItems.Count;
             loading.Show();
-            loading.Invoke(new Action(() =>
-            {
-                loading.pBar.Value = 0;
-            }));
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
@@ -108,11 +104,7 @@ namespace WebtoonDownloader
                 }
 
                 Webtoon.MakeHtml(htmlDir, imgs);
-
-                loading.Invoke(new Action(() =>
-                {
-                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
-                }));
+                loading.pBar.PerformStep();
             }
 
             loading.Close();
@@ -128,8 +120,8 @@ namespace WebtoonDownloader
             string path = tBox_SaveDir.Text;
 
             LoadingForm loading = new LoadingForm();
+            loading.pBar.Maximum = cLstBx_webtoonList.CheckedItems.Count;
             loading.Show();
-            loading.Invoke(new Action(() => { loading.pBar.Value = 0; }));
 
             if(!Directory.Exists(path))
             {
@@ -143,15 +135,12 @@ namespace WebtoonDownloader
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
                 string destinationDir = $@"{path}\{curData.WebtoonName}_{curData.No}.zip";
 
-                loading.Invoke(new Action(() =>
+                if(!File.Exists(destinationDir))
                 {
-                    loading.pBar.Value = (i) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
-                }));
+                    ZipFile.CreateFromDirectory(sourceDir, destinationDir);
+                }
 
-                if(File.Exists(destinationDir))
-                { continue; }
-
-                ZipFile.CreateFromDirectory(sourceDir, destinationDir);
+                loading.pBar.PerformStep();
             }
 
             loading.Close();
@@ -165,8 +154,8 @@ namespace WebtoonDownloader
             }
 
             LoadingForm loading = new LoadingForm();
+            loading.pBar.Maximum = cLstBx_webtoonList.CheckedItems.Count;
             loading.Show();
-            loading.Invoke(new Action(() => { loading.pBar.Value = 0; }));
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
@@ -181,10 +170,7 @@ namespace WebtoonDownloader
 
                 Directory.Delete(sourceDir);
 
-                loading.Invoke(new Action(() =>
-                {
-                    loading.pBar.Value = (i + 1) * loading.pBar.Maximum / cLstBx_webtoonList.CheckedItems.Count;
-                }));
+                loading.pBar.PerformStep();
             }
 
             LoadWebtoonSrcList();

@@ -72,7 +72,6 @@ namespace WebtoonDownloader
         private void btn_download_Click(object sender, EventArgs e)
         {
             WebtoonInfoCollection infos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
-            LoadingForm loading = new LoadingForm();
 
             Func<DayOfWeek, DayOfWeek, DayOfWeek, bool> isBetween = new Func<DayOfWeek, DayOfWeek, DayOfWeek, bool>((
                 DayOfWeek start,
@@ -93,19 +92,12 @@ namespace WebtoonDownloader
                 return itemN <= endN;
             });
 
+            LoadingForm loading = new LoadingForm();
+            loading.pBar.Maximum = infos.Count;
             loading.Show();
-            loading.Invoke(new Action(() =>
-            {
-                loading.pBar.Value = 0;
-            }));
 
             for(int i = 0 ; i < infos.Count ; i++)
             {
-                loading.Invoke(new Action(() =>
-                {
-                    loading.pBar.Value = (i) * loading.pBar.Maximum / (infos.Count);
-                }));
-
                 bool isinPeriod = false;
 
                 foreach(DayOfWeek day in infos[i].Weekdays)
@@ -113,18 +105,18 @@ namespace WebtoonDownloader
                     isinPeriod |= isBetween(tmpk_from.Value.DayOfWeek, tmpk_to.Value.DayOfWeek, day);
                 }
 
-                if(!isinPeriod)
+                if(isinPeriod)
                 {
-                    continue;
+                    WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
+                    motherForm.webtoonDownload.AddFavoriteTasks(
+                           tmpk_from.Value,
+                           tmpk_to.Value.AddDays(1),
+                           temp,
+                           checkBox_HTML.Checked,
+                           checkBox_zip.Checked);
                 }
 
-                WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
-                motherForm.webtoonDownload.AddFavoriteTasks(
-                       tmpk_from.Value,
-                       tmpk_to.Value.AddDays(1),
-                       temp,
-                       checkBox_HTML.Checked,
-                       checkBox_zip.Checked);
+                loading.pBar.PerformStep();
             }
             motherForm.DisplayQueue();
 
@@ -133,11 +125,6 @@ namespace WebtoonDownloader
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(ws, tmpk_from.Value.AddDays(1));
             }
-
-            loading.Invoke(new Action(() =>
-            {
-                loading.pBar.Value = loading.pBar.Maximum;
-            }));
 
             loading.Close();
 
