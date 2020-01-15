@@ -121,10 +121,20 @@ namespace LibWebtoonDownloader
             //url접속
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = new HtmlDocument();
-            if(!IsAvailable(curTask))
-            { return; }
             doc = web.Load(curTask.Url);
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\WebtoonBody.html", Encoding.UTF8);
+
+            if(!IsAvailable(doc))
+            {
+                return;
+            }
+
+            HtmlNodeCollection nodeImgCollection = doc.DocumentNode.SelectNodes("//img[@alt='comic content']");
+            if(nodeImgCollection == null)
+            {
+                Tasks.Dequeue();
+                return;
+            }
 
             //웹툰명 가져오기
             string webtoonName = GetNameById(curTask.TitleId);
@@ -139,14 +149,6 @@ namespace LibWebtoonDownloader
             downloadImagePool = new Semaphore(DownloadImageSemaphoreCount, DownloadImageSemaphoreCount);
 
             //이미지 태그 선택
-            int imgNum = 1;
-            HtmlNodeCollection nodeImgCollection = doc.DocumentNode.SelectNodes("//img[@alt='comic content']");
-            if(nodeImgCollection == null)
-            {
-                Tasks.Dequeue();
-                return;
-            }
-
             for(int i = 0 ; i < nodeImgCollection.Count ; i++)
             {
                 HtmlNode nodeImg = nodeImgCollection[i];
@@ -157,8 +159,7 @@ namespace LibWebtoonDownloader
                 //string src = @"D:\dropbox\Downloads\test for crawling" + attSrc.Value.Substring(1, attSrc.Value.Length - 1).Replace("/", "\\");
 
                 //저장경로
-                string imgSrc = string.Format(@"src\{0}_{1:000}\{2}.{3}", webtoonName, curTask.No, imgNum, src.Split('.').Last());
-                imgNum++;
+                string imgSrc = string.Format(@"src\{0}_{1:000}\{2}.{3}", webtoonName, curTask.No, i + 1, src.Split('.').Last());
 
                 //다운로드
                 Thread imageDownloadThread = new Thread(new ThreadStart(() => { DownloadImage(src, imgSrc); }));
@@ -410,21 +411,8 @@ namespace LibWebtoonDownloader
 
 
         #region isAvailable
-        /// <summary>
-        /// task가 실행 가능한지 검사합니다.
-        /// </summary>
-        /// <param name="task">검사할 task</param>
-        /// <returns></returns>
-        public static bool IsAvailable(WebtoonTask task)
+        public static bool IsAvailable(HtmlDocument doc)
         {
-            //검사할 url 접속
-            HtmlDocument doc;
-            HtmlWeb web = new HtmlWeb();
-            doc = web.Load(task.Url);
-            //doc = new HtmlDocument();
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 페이지안 __ 네이버 만화.htm");
-            //doc.Load(@); //없는 웹툰용
-
             //html title 파싱
             HtmlNode nodeTitle = doc.DocumentNode.SelectSingleNode("html/head/title");
             string title = nodeTitle.InnerText;
@@ -438,6 +426,24 @@ namespace LibWebtoonDownloader
             {
                 return true;
             }
+        }
+
+        public static bool IsAvailable(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            return IsAvailable(doc);
+        }
+
+        /// <summary>
+        /// task가 실행 가능한지 검사합니다.
+        /// </summary>
+        /// <param name="task">검사할 task</param>
+        /// <returns></returns>
+        public static bool IsAvailable(WebtoonTask task)
+        {
+            HtmlWeb web = new HtmlWeb();
+            return IsAvailable(web.Load(task.Url));
         }
 
         /// <summary>
@@ -466,6 +472,8 @@ namespace LibWebtoonDownloader
         {
             return IsAvailable(titleId, 1);
         }
+
+        
         #endregion
 
 
