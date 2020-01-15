@@ -86,19 +86,23 @@ namespace LibWebtoonDownloader
         /// <param name="dir">저장할 위치</param>
         private void DownloadImage(string url, string dir)
         {
+            //다운로드 클라이언트 클래스를 생성 후 헤더를 입력
             WebClient downloader = new WebClient();
             downloader.Headers.Add("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) " +
                 "AppleWebKit/537.36 (KHTML, like Gecko) " +
                 "Chrome/50.0.2661.102 Safari/537.36");
 
+            //멀티스레딩
             downloadImagePool.WaitOne();
 
+            //다운로드와 로그 남기기
             downloader.DownloadFile(url, dir);
             Console.WriteLine("Download complete");
             Console.WriteLine("Url: " + url);
             Console.WriteLine("dir: " + dir);
             Console.WriteLine();
 
+            //멀티스레딩
             downloadImagePool.Release();
         }
 
