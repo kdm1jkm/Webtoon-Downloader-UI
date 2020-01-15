@@ -143,9 +143,8 @@ namespace LibWebtoonDownloader
             //폴더 생성
             Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No.ToString("D3")}");
 
-            //이미지 다운로드 멀티쓰레드
-            List<Thread> imageDownloadThreads = new List<Thread>();
-
+            //이미지 다운로드 멀티쓰레드 모음 리스트(마지막에 기다리기 위해서)
+            Thread[] imageDownloadThreads = new Thread[nodeImgCollection.Count];
             //세마포어 생성
             downloadImagePool = new Semaphore(DownloadImageSemaphoreCount, DownloadImageSemaphoreCount);
 
@@ -164,7 +163,7 @@ namespace LibWebtoonDownloader
 
                 //다운로드
                 Thread imageDownloadThread = new Thread(new ThreadStart(() => { DownloadImage(src, imgSrc); }));
-                imageDownloadThreads.Add(imageDownloadThread);
+                imageDownloadThreads[i] = imageDownloadThread;
                 imageDownloadThread.Start();
 
                 //다운로드
