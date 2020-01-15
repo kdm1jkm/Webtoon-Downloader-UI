@@ -177,10 +177,7 @@ namespace WebtoonDownloader
                 {
                     isExcuting = false;
 
-                    this.Invoke(new Action(() =>
-                    {
-                        btn_TogglePause.Text = "Start";
-                    }));
+                    this.Invoke(new Action(() => { btn_TogglePause.Text = "Start"; }));
 
                     mreExecute.Reset();
 
@@ -189,23 +186,14 @@ namespace WebtoonDownloader
 
                 webtoonDownload.DoTask();
 
-                this.Invoke(new Action(() =>
-                    {
-                        lBox_DownloadedWebtoons.Items.Add(lBox_queue.Items[0]);
-                    }));
+                this.Invoke(new Action(() => { lBox_DownloadedWebtoons.Items.Add(lBox_queue.Items[0]); }));
 
-                this.Invoke(new Action(() =>
-                    {
-                        lBox_queue.Items.RemoveAt(0);
-                    }));
+                this.Invoke(new Action(() => { lBox_queue.Items.RemoveAt(0); }));
 
                 int EveryWebtoonCount = lBox_DownloadedWebtoons.Items.Count + lBox_queue.Items.Count;
-                double Ratio = (double)lBox_queue.Items.Count / EveryWebtoonCount * 100000;
+                int Ratio = lBox_DownloadedWebtoons.Items.Count * prgsBar_Webtoon.Maximum / EveryWebtoonCount;
 
-                this.Invoke(new Action(() =>
-                {
-                    prgsBar_Webtoon.Value = 100000 - (int)Ratio;
-                }));
+                this.Invoke(new Action(() => { prgsBar_Webtoon.Value = Ratio; }));
 
                 webtoonDownload.SaveTask("curTask.dat");
             }
