@@ -61,7 +61,7 @@ namespace WebtoonDownloader
                 }
                 else
                 {
-                    webtoonName = Webtoon.GetNameById(taskArr[i].TitleId);
+                    webtoonName = Webtoon.GetWebtoonName(taskArr[i].TitleId);
                     webtoonNameIdPairs.Add(taskArr[i].TitleId, webtoonName);
                 }
                 this.Invoke(new Action(() =>
@@ -134,7 +134,7 @@ namespace WebtoonDownloader
 
             int startNo = int.Parse(num_StartNo.Value.ToString());
             int endNo = int.Parse(num_endNo.Value.ToString());
-            string webtoonName = Webtoon.GetNameById(titleId);
+            string webtoonName = Webtoon.GetWebtoonName(titleId);
 
             for(int i = startNo ; i <= endNo ; i++)
             {

@@ -138,7 +138,7 @@ namespace LibWebtoonDownloader
             }
 
             //웹툰명 가져오기
-            string webtoonName = GetNameById(curTask.TitleId);
+            string webtoonName = GetWebtoonName(doc);
 
             //폴더 생성
             Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No.ToString("D3")}");
@@ -578,12 +578,33 @@ namespace LibWebtoonDownloader
 
 
 
+
+        public static string GetWebtoonName(HtmlDocument doc)
+        {
+            HtmlNode nodeTitle = doc.DocumentNode.SelectSingleNode("/html/head/title");
+
+            string title = nodeTitle.InnerText;
+
+            title = title.Substring(0, title.Length - 10);
+
+            return title.
+                Replace("\\", "").
+                Replace("/", "").
+                Replace(":", "").
+                Replace("*", "").
+                Replace("?", "").
+                Replace("\"", "").
+                Replace("<", "").
+                Replace(">", "").
+                Replace("|", "");
+        }
+
         /// <summary>
         /// 웹툰 Id로 이름을 찾아냅니다. 실패시 공백을 반환합니다.
         /// </summary>
         /// <param name="titleId">웹툰 Id</param>
         /// <returns>웹툰명</returns>
-        public static string GetNameById(int titleId)
+        public static string GetWebtoonName(int titleId)
         {
             if(!IsAvailable(titleId))
                 return "";
@@ -601,22 +622,14 @@ namespace LibWebtoonDownloader
             //doc = new HtmlDocument();
             //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 페이지안 __ 네이버 만화.htm", Encoding.UTF8);
 
-            HtmlNode nodeTitle = doc.DocumentNode.SelectSingleNode("/html/head/title");
+            return GetWebtoonName(doc);
+        }
 
-            string title = nodeTitle.InnerText;
-
-            title = title.Substring(0, title.Length - 10);
-
-            return title.
-                Replace("\\", "").
-                Replace("/", "").
-                Replace(":", "").
-                Replace("*", "").
-                Replace("?", "").
-                Replace("\"", "").
-                Replace("<", "").
-                Replace(">", "").
-                Replace("|", "");
+        public static string GetWebtoonName(string html)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(html);
+            return GetWebtoonName(doc);
         }
 
 
