@@ -422,7 +422,6 @@ namespace LibWebtoonDownloader
         public Semaphore downloadImagePool;
 
         public Queue<WebtoonTask> Tasks;
-        public List<WebtoonTask> GetTasks { get { return Tasks.ToList(); } }
 
         public int DownloadImageSemaphoreCount = 5;
 

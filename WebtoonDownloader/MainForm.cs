@@ -172,7 +172,7 @@ namespace WebtoonDownloader
                     break;
                 }
 
-                if(webtoonDownload.GetTasks.Count == 0)
+                if(webtoonDownload.Tasks.Count == 0)
                 {
                     isExcuting = false;
 
