@@ -118,7 +118,7 @@ namespace WebtoonDownloader
 
                 loading.pBar.PerformStep();
             }
-            motherForm.DisplayQueue();
+            motherForm.LoadQueue();
 
             using(Stream ws = new FileStream("lastDownloaded.dat", FileMode.Create))
             {
