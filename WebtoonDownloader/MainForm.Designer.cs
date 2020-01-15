@@ -18,6 +18,10 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+            stopDownloading = true;
+            mreExecute.Set();
+            downloadThread.Join();
+            loadQueueThread.Join();
         }
 
         #region Windows Form 디자이너에서 생성한 코드

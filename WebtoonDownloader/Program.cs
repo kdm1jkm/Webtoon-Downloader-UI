@@ -17,7 +17,10 @@ namespace WebtoonDownloader
             Application.SetCompatibleTextRenderingDefault(false);
             try
             {
-                Application.Run(new MainForm());
+                using(MainForm form = new MainForm())
+                {
+                    Application.Run(form);
+                }
             }
             catch(System.Net.WebException)
             {
@@ -27,6 +30,11 @@ namespace WebtoonDownloader
             //{
             //    Application.Run(new ErrorShowForm(ex.ToString()));
             //}
+            finally
+            {
+                Application.Exit();
+            }
+
         }
     }
 }

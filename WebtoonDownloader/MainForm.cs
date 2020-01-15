@@ -17,22 +17,24 @@ namespace WebtoonDownloader
     {
         public Webtoon webtoonDownload = new Webtoon();
         private bool isExcuting = false;
-        private readonly Task downloadTask;
         private readonly ManualResetEvent mreExecute = new ManualResetEvent(false);
+        private Thread downloadThread;
+        private Thread loadQueueThread;
+        private bool stopDownloading = false;
 
         public MainForm()
         {
             InitializeComponent();
-            downloadTask = new Task(DoTask);
-            downloadTask.Start();
+            downloadThread = new Thread(new ThreadStart(DoTask));
+            downloadThread.Start();
 
             if(File.Exists("curTask.dat"))
             {
                 webtoonDownload.LoadTask("curTask.dat");
             }
 
-            Task loadQueue = new Task(DisplayQueue);
-            loadQueue.Start();
+            loadQueueThread = new Thread(new ThreadStart(DisplayQueue));
+            loadQueueThread.Start();
         }
 
         public void DisplayQueue()
@@ -165,6 +167,11 @@ namespace WebtoonDownloader
             while(true)
             {
                 mreExecute.WaitOne();
+
+                if(stopDownloading)
+                {
+                    break;
+                }
 
                 if(webtoonDownload.GetTasks.Count == 0)
                 {

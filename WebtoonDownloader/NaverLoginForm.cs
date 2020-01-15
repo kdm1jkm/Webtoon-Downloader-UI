@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 using LibWebtoonDownloader;
 
@@ -30,8 +31,8 @@ namespace WebtoonDownloader
             WebtoonInfoCollection favoriteInfos = Webtoon.GetFavoriteWebtoonInfosFromAccount(tBox_id.Text, tBox_password.Text);
             favoriteInfos.Save("favoriteWebtoonInfoCollection.dat");
 
-            Task load = new Task(motherForm.loadWebtoons);
-            load.Start();
+            Thread loadThread = new Thread(new ThreadStart(motherForm.loadWebtoons));
+            loadThread.Start();
 
             this.Close();
         }
