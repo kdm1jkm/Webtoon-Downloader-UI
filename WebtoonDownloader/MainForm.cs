@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace WebtoonDownloader
 {
@@ -40,7 +41,20 @@ namespace WebtoonDownloader
         {
             Webtoon.WebtoonTask[] taskArr = webtoonDownload.Tasks.ToArray();
 
-            Dictionary<int, string> webtoonNameIdPairs = new Dictionary<int, string>();
+            Dictionary<int, string> webtoonNameIdPairs;
+
+            if(File.Exists("webtoonNameDictionary.dat"))
+            {
+                using(Stream rs = new FileStream("webtoonNameDictionary.dat", FileMode.Open))
+                {
+                    BinaryFormatter deserializer = new BinaryFormatter();
+                    webtoonNameIdPairs = (Dictionary<int, string>)deserializer.Deserialize(rs);
+                }
+            }
+            else
+            {
+                webtoonNameIdPairs = new Dictionary<int, string>();
+            }
 
             for(int i = 0 ; i < webtoonDownload.Tasks.Count ; i++)
             {
@@ -58,6 +72,12 @@ namespace WebtoonDownloader
                 {
                     lBox_queue.Items.Add(String.Format("{0}({1})", webtoonName, taskArr[i].No));
                 }));
+            }
+
+            using(Stream ws=new FileStream("webtoonNameDictionary.dat", FileMode.Create))
+            {
+                BinaryFormatter serializer = new BinaryFormatter();
+                serializer.Serialize(ws, webtoonNameIdPairs);
             }
         }
 
