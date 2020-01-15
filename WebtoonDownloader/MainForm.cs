@@ -120,20 +120,6 @@ namespace WebtoonDownloader
             num_endNo.Value = num_endNo.Maximum;
         }
 
-        private void checkBox_SelectAll_CheckedChanged(object sender, EventArgs e)
-        {
-            if(checkBox_SelectAll.Checked)
-            {
-                num_StartNo.Enabled = num_endNo.Enabled = false;
-            }
-            else
-            {
-                num_StartNo.Enabled = num_endNo.Enabled = true;
-            }
-            num_StartNo.Value = 1;
-            num_endNo.Value = num_endNo.Maximum;
-        }
-
         private void btn_AddTask_Click(object sender, EventArgs e)
         {
             if(tBox_titleId.Text.Length == 0)
@@ -273,6 +259,12 @@ namespace WebtoonDownloader
         private void num_Thread_ValueChanged(object sender, EventArgs e)
         {
             webtoonDownload.DownloadImageSemaphoreCount = (int)num_Thread.Value;
+        }
+
+        private void btn_selectWholeRange_Click(object sender, EventArgs e)
+        {
+            num_StartNo.Value = 1;
+            num_endNo.Value = num_endNo.Maximum;
         }
     }
 }

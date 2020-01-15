@@ -40,7 +40,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.num_endNo = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
-            this.checkBox_SelectAll = new System.Windows.Forms.CheckBox();
             this.btn_FileManagement = new System.Windows.Forms.Button();
             this.btn_ModifyFavorite = new System.Windows.Forms.Button();
             this.btn_AddFavorite = new System.Windows.Forms.Button();
@@ -59,6 +58,7 @@
             this.prgsBar_Webtoon = new System.Windows.Forms.ProgressBar();
             this.label7 = new System.Windows.Forms.Label();
             this.num_Thread = new System.Windows.Forms.NumericUpDown();
+            this.btn_selectWholeRange = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.num_StartNo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.num_endNo)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -164,17 +164,6 @@
             this.label4.Size = new System.Drawing.Size(17, 12);
             this.label4.TabIndex = 5;
             this.label4.Text = "화";
-            // 
-            // checkBox_SelectAll
-            // 
-            this.checkBox_SelectAll.AutoSize = true;
-            this.checkBox_SelectAll.Location = new System.Drawing.Point(162, 68);
-            this.checkBox_SelectAll.Name = "checkBox_SelectAll";
-            this.checkBox_SelectAll.Size = new System.Drawing.Size(48, 16);
-            this.checkBox_SelectAll.TabIndex = 6;
-            this.checkBox_SelectAll.Text = "전체";
-            this.checkBox_SelectAll.UseVisualStyleBackColor = true;
-            this.checkBox_SelectAll.CheckedChanged += new System.EventHandler(this.checkBox_SelectAll_CheckedChanged);
             // 
             // btn_FileManagement
             // 
@@ -366,12 +355,23 @@
             0});
             this.num_Thread.ValueChanged += new System.EventHandler(this.num_Thread_ValueChanged);
             // 
+            // btn_selectWholeRange
+            // 
+            this.btn_selectWholeRange.Location = new System.Drawing.Point(159, 65);
+            this.btn_selectWholeRange.Name = "btn_selectWholeRange";
+            this.btn_selectWholeRange.Size = new System.Drawing.Size(51, 21);
+            this.btn_selectWholeRange.TabIndex = 18;
+            this.btn_selectWholeRange.Text = "전체";
+            this.btn_selectWholeRange.UseVisualStyleBackColor = true;
+            this.btn_selectWholeRange.Click += new System.EventHandler(this.btn_selectWholeRange_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(356, 527);
+            this.Controls.Add(this.btn_selectWholeRange);
             this.Controls.Add(this.num_Thread);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.prgsBar_Webtoon);
@@ -384,7 +384,6 @@
             this.Controls.Add(this.btn_AddFavorite);
             this.Controls.Add(this.btn_ModifyFavorite);
             this.Controls.Add(this.btn_FileManagement);
-            this.Controls.Add(this.checkBox_SelectAll);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.num_endNo);
             this.Controls.Add(this.label3);
@@ -415,7 +414,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown num_endNo;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox checkBox_SelectAll;
         private System.Windows.Forms.Button btn_FileManagement;
         private System.Windows.Forms.Button btn_ModifyFavorite;
         private System.Windows.Forms.Button btn_AddFavorite;
@@ -434,6 +432,7 @@
         private System.Windows.Forms.Button btn_clrQueue;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.NumericUpDown num_Thread;
+        private System.Windows.Forms.Button btn_selectWholeRange;
     }
 }
 
