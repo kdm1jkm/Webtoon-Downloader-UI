@@ -126,6 +126,7 @@ namespace LibWebtoonDownloader
 
             if(!IsAvailable(doc))
             {
+                Tasks.Dequeue();
                 return;
             }
 
