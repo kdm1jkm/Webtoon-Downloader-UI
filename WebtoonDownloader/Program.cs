@@ -24,7 +24,7 @@ namespace WebtoonDownloader
             }
             catch(System.Net.WebException)
             {
-                Application.Run(new ErrorShowForm("Internet Connection Error.\nPlease retry after connect to internet."));
+                Application.Run(new ErrorShowForm("인터넷 연결이 원활하지 않습니다.\n인터넷에 연결되었는지 확인 후 다시 시도해 주시기 바랍니다."));
             }
             //catch(Exception ex)
             //{
