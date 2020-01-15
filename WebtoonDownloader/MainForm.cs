@@ -1,15 +1,11 @@
 ﻿using LibWebtoonDownloader;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Threading;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace WebtoonDownloader
 {
@@ -74,7 +70,7 @@ namespace WebtoonDownloader
                 }));
             }
 
-            using(Stream ws=new FileStream("webtoonNameDictionary.dat", FileMode.Create))
+            using(Stream ws = new FileStream("webtoonNameDictionary.dat", FileMode.Create))
             {
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(ws, webtoonNameIdPairs);

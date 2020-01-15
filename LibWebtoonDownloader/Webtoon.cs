@@ -1,19 +1,17 @@
 ﻿using HtmlAgilityPack;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Interactions;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Web;
-using System.Net;
 using System.IO.Compression;
+using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium;
+using System.Web;
 using System.Windows;
-using OpenQA.Selenium.Interactions;
 
 namespace LibWebtoonDownloader
 {
@@ -60,12 +58,12 @@ namespace LibWebtoonDownloader
             return string.Format("Html: {0}, Zip: {1}", Html ? "True" : "False", Zip ? "True" : "False");
         }
 
-        public static bool operator==(WebtoonFormat format, object obj)
+        public static bool operator ==(WebtoonFormat format, object obj)
         {
             return format.Equals(obj);
         }
 
-        public static bool operator!=(WebtoonFormat format, object obj)
+        public static bool operator !=(WebtoonFormat format, object obj)
         {
             return !format.Equals(obj);
         }
@@ -190,12 +188,12 @@ namespace LibWebtoonDownloader
             }
         }
 
-        public static bool operator==(MetaData left, object right)
+        public static bool operator ==(MetaData left, object right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator!=(MetaData left, object right)
+        public static bool operator !=(MetaData left, object right)
         {
             return !left.Equals(right);
         }
@@ -401,7 +399,7 @@ namespace LibWebtoonDownloader
         public override string ToString()
         {
             string result = string.Empty;
-            for(int i=0 ;i<this.Count ; i++)
+            for(int i = 0 ; i < this.Count ; i++)
             {
                 result += this[i].ToString();
                 result += "\n";
@@ -463,12 +461,12 @@ namespace LibWebtoonDownloader
                 return Url.GetHashCode() * 19 + Format.GetHashCode();
             }
 
-            public static bool operator==(WebtoonTask left, object right)
+            public static bool operator ==(WebtoonTask left, object right)
             {
                 return left.Equals(right);
             }
 
-            public static bool operator!=(WebtoonTask left, object right)
+            public static bool operator !=(WebtoonTask left, object right)
             {
                 return !left.Equals(right);
             }
@@ -558,7 +556,7 @@ namespace LibWebtoonDownloader
                 imgNum++;
 
                 //다운로드
-                Thread imageDownloadThread = new Thread(new ThreadStart(()=> { DownloadImage(src, imgSrc); }));
+                Thread imageDownloadThread = new Thread(new ThreadStart(() => { DownloadImage(src, imgSrc); }));
                 imageDownloadThreads.Add(imageDownloadThread);
                 imageDownloadThread.Start();
 
