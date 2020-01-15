@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
-using System.Threading.Tasks;
 using System.IO;
 
 namespace WebtoonDownloader

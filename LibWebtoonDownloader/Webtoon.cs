@@ -10,7 +10,6 @@ using System.Web;
 using System.Net;
 using System.IO.Compression;
 using System.Threading;
-using System.Threading.Tasks;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System.Windows;
@@ -532,10 +531,10 @@ namespace LibWebtoonDownloader
             Directory.CreateDirectory($@"src\{webtoonName}_{curTask.No.ToString("D3")}");
 
             //이미지 다운로드 멀티쓰레드
-            List<Task> imageDownloadTasks = new List<Task>();
+            List<Thread> imageDownloadThreads = new List<Thread>();
 
             //세마포어 생성
-            downloadImagePool = new Semaphore(0, DownloadImageSemaphoreCount);
+            downloadImagePool = new Semaphore(DownloadImageSemaphoreCount, DownloadImageSemaphoreCount);
 
             //이미지 태그 선택
             int imgNum = 1;
@@ -560,15 +559,13 @@ namespace LibWebtoonDownloader
                 imgNum++;
 
                 //다운로드
-                Task imageDownloadTask = new Task(new Action(() => { DownloadImage(src, imgSrc); }));
-                imageDownloadTasks.Add(imageDownloadTask);
-                imageDownloadTask.Start();
+                Thread imageDownloadThread = new Thread(new ThreadStart(()=> { DownloadImage(src, imgSrc); }));
+                imageDownloadThreads.Add(imageDownloadThread);
+                imageDownloadThread.Start();
 
                 //다운로드
                 //DownloadImage(src, imgSrc);
             }
-            //세마포어 Release
-            downloadImagePool.Release(DownloadImageSemaphoreCount);
 
             //메타데이터 생성
             MetaData curMetaData = new MetaData(webtoonName, curTask.TitleId, curTask.No, nodeImgCollection.Count);
@@ -576,7 +573,10 @@ namespace LibWebtoonDownloader
             curMetaData.Save(dir);
 
             //이미지 다운로드 종료
-            Task.WaitAll(imageDownloadTasks.ToArray());
+            foreach(Thread thread in imageDownloadThreads)
+            {
+                thread.Join();
+            }
 
             //html, zip플래그 확인 후 각각 생성
             if(curTask.Format.Html)
