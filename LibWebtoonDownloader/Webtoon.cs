@@ -621,7 +621,7 @@ namespace LibWebtoonDownloader
         {
             using(StreamWriter ws = new StreamWriter(fileName))
             {
-                ws.WriteLine(
+                ws.Write(
                     "<!DOCTYPE html>" +
                     "<head>" +
                     "<title>" +
@@ -633,9 +633,9 @@ namespace LibWebtoonDownloader
                     );
                 foreach(string img in imgs)
                 {
-                    ws.WriteLine(string.Format("<img src='{0}'>", img));
+                    ws.Write(string.Format("<img src='{0}'>", img));
                 }
-                ws.WriteLine(
+                ws.Write(
                     "</div>" +
                     "</body>"
                     );
