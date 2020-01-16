@@ -641,7 +641,7 @@ namespace LibWebtoonDownloader
         /// 네이버 웹툰 메인 페이지에서 모든 웹툰의 정보를 파싱합니다.
         /// </summary>
         /// <returns></returns>
-        public static WebtoonInfoCollection GetEveryWebtoonInfos()
+        public static o_WebtoonInfoCollection GetEveryWebtoonInfos()
         {
             //웹툰 메인 페이지 접속
             HtmlDocument doc;
@@ -652,7 +652,7 @@ namespace LibWebtoonDownloader
             doc = web.Load(url);
 
             //웹툰 정보 리스트
-            WebtoonInfoCollection webtoonInfos = new WebtoonInfoCollection();
+            o_WebtoonInfoCollection webtoonInfos = new o_WebtoonInfoCollection();
 
             //웹툰 링크 선택
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
@@ -700,7 +700,7 @@ namespace LibWebtoonDownloader
                 }
 
                 //웹툰 정보 구조체
-                WebtoonInfo tempInfo = new WebtoonInfo
+                o_WebtoonInfo tempInfo = new o_WebtoonInfo
                 {
                     Id = titleId,
                     Name = name,
@@ -712,7 +712,7 @@ namespace LibWebtoonDownloader
                 bool alreadyExistFlag = false;
 
                 //이미 리스트에 있을 경우에는기존 웹툰 정보에 요일만 추가
-                foreach(WebtoonInfo info in webtoonInfos)
+                foreach(o_WebtoonInfo info in webtoonInfos)
                 {
                     if(info.Id == titleId)
                     {
@@ -733,10 +733,10 @@ namespace LibWebtoonDownloader
         }
 
         [STAThread]
-        public static WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
+        public static o_WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
         {
-            WebtoonInfoCollection result = new WebtoonInfoCollection();
-            WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
+            o_WebtoonInfoCollection result = new o_WebtoonInfoCollection();
+            o_WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
 
             using(IWebDriver driver = new ChromeDriver())
             {
@@ -807,10 +807,10 @@ namespace LibWebtoonDownloader
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
         /// <param name="html">html생성 여부</param>
         /// <param name="zip">zip생성 여부</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos, bool html, bool zip)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, o_WebtoonInfoCollection webtoonInfos, bool html, bool zip)
         {
 
-            foreach(WebtoonInfo info in webtoonInfos)
+            foreach(o_WebtoonInfo info in webtoonInfos)
             {
                 //2중 루프 브레이크용 플래그
                 bool keepSearchingFlag = true;
@@ -902,7 +902,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, o_WebtoonInfoCollection webtoonInfos)
         {
 
             AddFavoriteTasks(startDate, endDate, webtoonInfos, true, false);
@@ -913,7 +913,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(string startDate, string endDate, WebtoonInfoCollection webtoonInfos)
+        public void AddFavoriteTasks(string startDate, string endDate, o_WebtoonInfoCollection webtoonInfos)
         {
 
             if(!(DateTime.TryParse(startDate, out DateTime startD) && DateTime.TryParse(endDate, out DateTime endD)))
@@ -929,7 +929,7 @@ namespace LibWebtoonDownloader
         /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
         /// </summary>
         /// <param name="webtooninfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(WebtoonInfoCollection webtooninfos)
+        public void AddFavoriteTasks(o_WebtoonInfoCollection webtooninfos)
         {
             AddFavoriteTasks(DateTime.MinValue, DateTime.Now, webtooninfos);
         }

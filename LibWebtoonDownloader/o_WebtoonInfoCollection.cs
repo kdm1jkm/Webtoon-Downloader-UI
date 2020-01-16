@@ -9,7 +9,7 @@ namespace LibWebtoonDownloader
     /// 웹툰 정보 리스트 클래스에 저장 및 불러오기 메소드를 추가한 클래스입니다.
     /// </summary>
     [Serializable]
-    public class WebtoonInfoCollection : List<WebtoonInfo>
+    public class o_WebtoonInfoCollection : List<o_WebtoonInfo>
     {
         public void Save(string fileName)
         {
@@ -25,7 +25,7 @@ namespace LibWebtoonDownloader
             Save("WebtoonInfos.dat");
         }
 
-        public static WebtoonInfoCollection Load(string fileName)
+        public static o_WebtoonInfoCollection Load(string fileName)
         {
             if(!File.Exists(fileName))
             {
@@ -35,14 +35,14 @@ namespace LibWebtoonDownloader
             Stream rs = new FileStream(fileName, FileMode.Open);
             BinaryFormatter deserializer = new BinaryFormatter();
 
-            WebtoonInfoCollection result = (WebtoonInfoCollection)deserializer.Deserialize(rs);
+            o_WebtoonInfoCollection result = (o_WebtoonInfoCollection)deserializer.Deserialize(rs);
 
             rs.Close();
 
             return result;
         }
 
-        public static WebtoonInfoCollection Load()
+        public static o_WebtoonInfoCollection Load()
         {
             return Load("WebtoonInfos.dat");
         }
@@ -55,7 +55,7 @@ namespace LibWebtoonDownloader
             }
             else
             {
-                WebtoonInfoCollection temp = (WebtoonInfoCollection)obj;
+                o_WebtoonInfoCollection temp = (o_WebtoonInfoCollection)obj;
                 if(this.Count == temp.Count)
                 {
                     for(int i = 0 ; i < this.Count ; i++)
@@ -76,7 +76,7 @@ namespace LibWebtoonDownloader
             unchecked
             {
                 int hash = 19;
-                foreach(WebtoonInfo info in this)
+                foreach(o_WebtoonInfo info in this)
                 {
                     hash = hash * 31 + info.GetHashCode();
                 }
@@ -85,12 +85,12 @@ namespace LibWebtoonDownloader
             }
         }
 
-        public static bool operator ==(WebtoonInfoCollection item1, object item2)
+        public static bool operator ==(o_WebtoonInfoCollection item1, object item2)
         {
             return item1.Equals(item2);
         }
 
-        public static bool operator !=(WebtoonInfoCollection item1, object item2)
+        public static bool operator !=(o_WebtoonInfoCollection item1, object item2)
         {
             return !item1.Equals(item2);
         }

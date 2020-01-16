@@ -13,15 +13,15 @@ namespace WebtoonDownloader
             loadWebtoons();
         }
 
-        private WebtoonInfoCollection getCheckedList()
+        private o_WebtoonInfoCollection getCheckedList()
         {
-            WebtoonInfoCollection favoriteWebtoonInfos = new WebtoonInfoCollection();
+            o_WebtoonInfoCollection favoriteWebtoonInfos = new o_WebtoonInfoCollection();
 
             for(int i = 0 ; i < cLstBox_WebtoonList.Items.Count ; i++)
             {
                 if(cLstBox_WebtoonList.GetItemChecked(i))
                 {
-                    favoriteWebtoonInfos.Add((WebtoonInfo)cLstBox_WebtoonList.Items[i]);
+                    favoriteWebtoonInfos.Add((o_WebtoonInfo)cLstBox_WebtoonList.Items[i]);
                 }
             }
 
@@ -37,7 +37,7 @@ namespace WebtoonDownloader
 
         public void loadWebtoons()
         {
-            WebtoonInfoCollection favoriteWebtoonInfos;
+            o_WebtoonInfoCollection favoriteWebtoonInfos;
             cLstBox_WebtoonList.Items.Clear();
 
             LoadingForm loading = new LoadingForm();
@@ -45,20 +45,20 @@ namespace WebtoonDownloader
 
             if(File.Exists("favoriteWebtoonInfoCollection.dat"))
             {
-                favoriteWebtoonInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+                favoriteWebtoonInfos = o_WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
             }
             else
             {
-                favoriteWebtoonInfos = new WebtoonInfoCollection();
+                favoriteWebtoonInfos = new o_WebtoonInfoCollection();
             }
 
             loading.pBar.PerformStep();
 
-            WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetEveryWebtoonInfos();
+            o_WebtoonInfoCollection everyWebtoonInfos = Webtoon.GetEveryWebtoonInfos();
 
             loading.pBar.PerformStep();
 
-            foreach(WebtoonInfo webtoonInfo in everyWebtoonInfos)
+            foreach(o_WebtoonInfo webtoonInfo in everyWebtoonInfos)
             {
                 cLstBox_WebtoonList.Items.Add(webtoonInfo);
 
@@ -80,8 +80,8 @@ namespace WebtoonDownloader
 
         private void EditFavoriteWebtoonsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            WebtoonInfoCollection loadedInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
-            WebtoonInfoCollection checkecInfos = getCheckedList();
+            o_WebtoonInfoCollection loadedInfos = o_WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+            o_WebtoonInfoCollection checkecInfos = getCheckedList();
             if(checkecInfos != loadedInfos)
             {
                 DialogResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "", MessageBoxButtons.YesNoCancel);
