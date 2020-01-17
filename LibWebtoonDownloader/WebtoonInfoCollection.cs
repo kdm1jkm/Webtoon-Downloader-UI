@@ -4,7 +4,7 @@ using System.IO;
 
 namespace LibWebtoonDownloader
 {
-    class WebtoonInfoCollection : List<WebtoonInfo>
+    public class WebtoonInfoCollection : List<WebtoonInfo>
     {
         public void Save(string fileName)
         {

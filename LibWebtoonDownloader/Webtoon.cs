@@ -39,8 +39,6 @@ namespace LibWebtoonDownloader
             public int TitleId { get; set; }
             public int No { get; set; }
 
-            public WebtoonFormat Format { get; set; }
-
             public string Url
             {
                 get
@@ -63,7 +61,7 @@ namespace LibWebtoonDownloader
 
             public override int GetHashCode()
             {
-                return Url.GetHashCode() * 19 + Format.GetHashCode();
+                return Url.GetHashCode();
             }
 
             public static bool operator ==(WebtoonTask left, object right)
@@ -190,35 +188,7 @@ namespace LibWebtoonDownloader
             }
 
             //html, zip플래그 확인 후 각각 생성
-            if(curTask.Format.Html)
-            {
-                Directory.CreateDirectory("html");
-                string htmlDir = string.Format(@"html\{0}_{1:000}\html.html", webtoonName, curTask.No);
-                List<string> imgs = new List<string>();
-                for(int i = 1 ; i <= curInfo.ImageCount ; i++)
-                {
-                    string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
-                    string destFileName = string.Format(@"html\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
-                    File.Copy(sourceFileName, destFileName);
-                    string imgSrc = string.Format(@"{0}.jpg", i);
-                    imgs.Add(imgSrc);
-                }
-
-                MakeHtml(htmlDir, imgs);
-            }
-            if(curTask.Format.Zip)
-            {
-                Directory.CreateDirectory("zip");
-                string srcDir = string.Format(@"src\{0}_{1:000}", webtoonName, curTask.No);
-                string zipDir = string.Format(@"zip\{0}_{1:000}.zip", webtoonName, curTask.No);
-
-                if(File.Exists(zipDir))
-                {
-                    File.Delete(zipDir);
-                }
-
-                ZipFile.CreateFromDirectory(srcDir, zipDir);
-            }
+            
 
             //Tasks에서 하나 완료
             Tasks.Dequeue();
@@ -519,11 +489,6 @@ namespace LibWebtoonDownloader
             {
                 TitleId = titleId,
                 No = no,
-                Format = new WebtoonFormat
-                {
-                    Html = html,
-                    Zip = zip
-                }
             };
 
             AddTask(task);
@@ -623,7 +588,7 @@ namespace LibWebtoonDownloader
         /// 네이버 웹툰 메인 페이지에서 모든 웹툰의 정보를 파싱합니다.
         /// </summary>
         /// <returns></returns>
-        public static o_WebtoonInfoCollection GetEveryWebtoonInfos()
+        public static WebtoonInfoCollection GetEveryWebtoonInfos()
         {
             //웹툰 메인 페이지 접속
             HtmlDocument doc;
@@ -634,7 +599,7 @@ namespace LibWebtoonDownloader
             doc = web.Load(url);
 
             //웹툰 정보 리스트
-            o_WebtoonInfoCollection webtoonInfos = new o_WebtoonInfoCollection();
+            WebtoonInfoCollection webtoonInfos = new WebtoonInfoCollection();
 
             //웹툰 링크 선택
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
@@ -682,24 +647,23 @@ namespace LibWebtoonDownloader
                 }
 
                 //웹툰 정보 구조체
-                o_WebtoonInfo tempInfo = new o_WebtoonInfo
+                WebtoonInfo tempInfo = new WebtoonInfo
                 {
                     Id = titleId,
-                    Name = name,
-                    Weekdays = new List<DayOfWeek>()
+                    WebtoonName = name
                 };
-                tempInfo.Weekdays.Add(weekday);
+                tempInfo.Weekday[weekday] = true;
 
                 //이미 리스트에 존재하는지 확인하는 플래그(여러 요일에 걸쳐서 연재하는 웹툰에 대비)
                 bool alreadyExistFlag = false;
 
                 //이미 리스트에 있을 경우에는기존 웹툰 정보에 요일만 추가
-                foreach(o_WebtoonInfo info in webtoonInfos)
+                foreach(WebtoonInfo info in webtoonInfos)
                 {
                     if(info.Id == titleId)
                     {
                         alreadyExistFlag = true;
-                        info.Weekdays.Add(weekday);
+                        info.Weekday[weekday] = true;
                         break;
                     }
                 }
@@ -715,10 +679,10 @@ namespace LibWebtoonDownloader
         }
 
         [STAThread]
-        public static o_WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
+        public static WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
         {
-            o_WebtoonInfoCollection result = new o_WebtoonInfoCollection();
-            o_WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
+            WebtoonInfoCollection result = new WebtoonInfoCollection();
+            WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
 
             using(IWebDriver driver = new ChromeDriver())
             {
@@ -789,10 +753,10 @@ namespace LibWebtoonDownloader
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
         /// <param name="html">html생성 여부</param>
         /// <param name="zip">zip생성 여부</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, o_WebtoonInfoCollection webtoonInfos, bool html, bool zip)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos, bool html, bool zip)
         {
 
-            foreach(o_WebtoonInfo info in webtoonInfos)
+            foreach(WebtoonInfo info in webtoonInfos)
             {
                 //2중 루프 브레이크용 플래그
                 bool keepSearchingFlag = true;
@@ -859,12 +823,7 @@ namespace LibWebtoonDownloader
                         WebtoonTask newTask = new WebtoonTask
                         {
                             TitleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]),
-                            No = no,
-                            Format = new WebtoonFormat
-                            {
-                                Html = html,
-                                Zip = zip
-                            }
+                            No = no
                         };
                         AddTask(newTask);
 
@@ -884,7 +843,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, o_WebtoonInfoCollection webtoonInfos)
+        public void AddFavoriteTasks(DateTime startDate, DateTime endDate, WebtoonInfoCollection webtoonInfos)
         {
 
             AddFavoriteTasks(startDate, endDate, webtoonInfos, true, false);
@@ -895,7 +854,7 @@ namespace LibWebtoonDownloader
         /// <param name="startDate">시작 날짜</param>
         /// <param name="endDate">끝 날짜</param>
         /// <param name="webtoonInfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(string startDate, string endDate, o_WebtoonInfoCollection webtoonInfos)
+        public void AddFavoriteTasks(string startDate, string endDate, WebtoonInfoCollection webtoonInfos)
         {
 
             if(!(DateTime.TryParse(startDate, out DateTime startD) && DateTime.TryParse(endDate, out DateTime endD)))
@@ -911,7 +870,7 @@ namespace LibWebtoonDownloader
         /// webtooninfos리스트에 있는 웹툰들의 지정된 날짜 사이의 회차들을 전부 task에 등록합니다.
         /// </summary>
         /// <param name="webtooninfos">웹툰 정보 리스트</param>
-        public void AddFavoriteTasks(o_WebtoonInfoCollection webtooninfos)
+        public void AddFavoriteTasks(WebtoonInfoCollection webtooninfos)
         {
             AddFavoriteTasks(DateTime.MinValue, DateTime.Now, webtooninfos);
         }

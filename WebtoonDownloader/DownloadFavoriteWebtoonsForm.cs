@@ -64,7 +64,7 @@ namespace WebtoonDownloader
 
         private void btn_download_Click(object sender, EventArgs e)
         {
-            o_WebtoonInfoCollection infos = o_WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
+            WebtoonInfoCollection infos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
 
             Func<DayOfWeek, DayOfWeek, DayOfWeek, bool> isBetween = new Func<DayOfWeek, DayOfWeek, DayOfWeek, bool>((
                 DayOfWeek start,
@@ -100,7 +100,7 @@ namespace WebtoonDownloader
 
                 if(isinPeriod)
                 {
-                    o_WebtoonInfoCollection temp = new o_WebtoonInfoCollection { infos[i] };
+                    WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
                     motherForm.webtoonDownload.AddFavoriteTasks(
                            tmpk_from.Value,
                            tmpk_to.Value.AddDays(1),

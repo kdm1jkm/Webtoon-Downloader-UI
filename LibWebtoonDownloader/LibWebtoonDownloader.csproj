@@ -58,10 +58,8 @@
     <Compile Include="Methods.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Webtoon.cs" />
-    <Compile Include="WebtoonFormat.cs" />
-    <Compile Include="o_WebtoonInfo.cs" />
-    <Compile Include="o_WebtoonInfoCollection.cs" />
     <Compile Include="WebtoonInfo.cs" />
+    <Compile Include="WebtoonInfoCollection.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
