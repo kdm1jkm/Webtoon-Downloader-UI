@@ -133,6 +133,36 @@ namespace LibWebtoonDownloader
         public bool IsAvailable { get; private set; }
         public string[] ImageSrcs { get; private set; }
 
+
+        public override string ToString()
+        {
+            return $"{WebtoonName}_{No}[{Weeks.Stringify()}]";
+        }
+        public override int GetHashCode()
+        {
+            return Url.GetHashCode();
+        }
+        public override bool Equals(object obj)
+        {
+            if(this.GetType() == obj.GetType())
+            {
+                return this.GetHashCode() == obj.GetHashCode();
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public static bool operator ==(WebtoonInfo left, object right)
+        {
+            return left.Equals(right);
+        }
+        public static bool operator !=(WebtoonInfo left, object right)
+        {
+            return !left.Equals(right);
+        }
+
         public void Save(string fileName)
         {
             BinaryFormatter serializer = new BinaryFormatter();
