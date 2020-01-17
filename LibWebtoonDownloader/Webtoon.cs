@@ -371,25 +371,9 @@ namespace LibWebtoonDownloader
 
 
 
-        /// <summary>
-        /// 웹툰의 이름으로 Id를 찾아냅니다. 실패 시 -1을 반환합니다.
-        /// </summary>
-        /// <param name="name">웹툰명</param>
-        /// <returns>
-        /// 성공: 웹툰명
-        /// 실패: -1
-        /// </returns>
-        public static int GetIdByName(string name)
+        public static int GetWebtoonId(HtmlDocument doc)
         {
-            //웹툰 이름으로 접속
-            string url = string.Format(@"https://comic.naver.com/search.nhn?m=webtoon&keyword={0}", name);
             int titleId;
-            HtmlWeb web = new HtmlWeb();
-            HtmlDocument doc;
-            doc = web.Load(url);
-            //doc = new HtmlDocument();
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\윰세포_검색_존재.html");
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\검색_결과없음.html");
 
             //첫 번째 검색결과 xpath
             HtmlNode link = doc.DocumentNode.SelectSingleNode("//div[@class=\"resultBox\"]/ul[@class=\"resultList\"]/li/h5/a");
@@ -410,6 +394,29 @@ namespace LibWebtoonDownloader
             titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
             //titleId = int.Parse(href.Split('?')[1].Split('=')[1]);
             return titleId;
+        }
+
+        /// <summary>
+        /// 웹툰의 이름으로 Id를 찾아냅니다. 실패 시 -1을 반환합니다.
+        /// </summary>
+        /// <param name="name">웹툰명</param>
+        /// <returns>
+        /// 성공: 웹툰명
+        /// 실패: -1
+        /// </returns>
+        public static int GetWebtoonId(string name)
+        {
+            //웹툰 이름으로 접속
+            string url = string.Format(@"https://comic.naver.com/search.nhn?m=webtoon&keyword={0}", name);
+            HtmlWeb web = new HtmlWeb();
+            HtmlDocument doc;
+
+            doc = web.Load(url);
+            //doc = new HtmlDocument();
+            //doc.Load(@"D:\dropbox\Downloads\test for crawling\윰세포_검색_존재.html");
+            //doc.Load(@"D:\dropbox\Downloads\test for crawling\검색_결과없음.html");
+
+            return GetWebtoonId(doc);
         }
 
 
@@ -477,7 +484,7 @@ namespace LibWebtoonDownloader
             return IsAvailable(titleId, 1);
         }
 
-        
+
         #endregion
 
 
@@ -934,5 +941,69 @@ namespace LibWebtoonDownloader
             AddFavoriteTasks(DateTime.MinValue, DateTime.Now, webtooninfos);
         }
         #endregion
+
+
+
+        public static string GetWebtoonAuthor(HtmlDocument doc)
+        {
+            HtmlNode nodeAuthor = doc.DocumentNode.SelectSingleNode("//*[@id='content']/div[@class='comicinfo']/div[@class='detail']/h2/span");
+            string result = nodeAuthor.InnerText;
+            result = result.Trim();
+
+            return result;
+        }
+
+
+
+        public static string GetWebtoonDetailInfo(HtmlDocument doc)
+        {
+            HtmlNodeCollection nodeDetailInfos = doc.DocumentNode.SelectNodes("//div[@class='detail']/p/text()");
+            string detailInfo = string.Empty;
+
+            foreach(HtmlNode node in nodeDetailInfos)
+            {
+                detailInfo += node.InnerText;
+                detailInfo += "\n";
+            }
+
+            return detailInfo.Trim();
+        }
+
+
+
+        public static string GetWebtoonGenre(HtmlDocument doc)
+        {
+            HtmlNode nodeGenre = doc.DocumentNode.SelectSingleNode("//span[@class='genre']");
+
+            return nodeGenre.InnerText;
+        }
+
+
+
+        public static int GetWebtoonImageCount(HtmlDocument doc)
+        {
+            HtmlNodeCollection nodeImgs = doc.DocumentNode.SelectNodes("//img[@alt='comic content']");
+
+            return nodeImgs.Count;
+        }
+
+
+
+        public static string[] GetWebtoonImageSrcs(HtmlDocument doc)
+        {
+            HtmlNodeCollection nodeImgs = doc.DocumentNode.SelectNodes("//img[@alt='comic content']");
+
+            string[] result = new string[nodeImgs.Count];
+
+            for(int i = 0 ; i < nodeImgs.Count ; i++)
+            {
+                HtmlNode nodeImg = nodeImgs[i];
+                HtmlAttribute attSrc = nodeImg.Attributes["src"];
+
+                result[i] = attSrc.Value;
+            }
+
+            return result;
+        }
     }
 }

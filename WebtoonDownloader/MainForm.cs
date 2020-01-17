@@ -79,7 +79,7 @@ namespace WebtoonDownloader
 
         private void btn_Search_Click(object sender, EventArgs e)
         {
-            int titleId = Webtoon.GetIdByName(tBox_WebtoonName.Text);
+            int titleId = Webtoon.GetWebtoonId(tBox_WebtoonName.Text);
 
             if(titleId == -1)
             {
