@@ -175,9 +175,13 @@ namespace LibWebtoonDownloader
             }
 
             //메타데이터 생성
-            MetaData curMetaData = new MetaData(webtoonName, curTask.TitleId, curTask.No, nodeImgCollection.Count);
+            WebtoonInfo curInfo = new WebtoonInfo
+            {
+                Id = curTask.TitleId,
+                No = curTask.No,
+            };
             string dir = string.Format(@"src\{0}_{1:000}\metaData.dat", webtoonName, curTask.No);
-            curMetaData.Save(dir);
+            curInfo.Save(dir);
 
             //이미지 다운로드 종료
             foreach(Thread thread in imageDownloadThreads)
@@ -191,7 +195,7 @@ namespace LibWebtoonDownloader
                 Directory.CreateDirectory("html");
                 string htmlDir = string.Format(@"html\{0}_{1:000}\html.html", webtoonName, curTask.No);
                 List<string> imgs = new List<string>();
-                for(int i = 1 ; i <= curMetaData.ImgCnt ; i++)
+                for(int i = 1 ; i <= curInfo.ImageCount ; i++)
                 {
                     string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
                     string destFileName = string.Format(@"html\{0}_{1:000}\{2}.jpg", webtoonName, curTask.No, i);
@@ -250,35 +254,6 @@ namespace LibWebtoonDownloader
                     "</body>"
                     );
             }
-        }
-
-        /// <summary>
-        /// 웹툰을 PC에서 보기 위해 html파일을 만듭니다.
-        /// </summary>
-        /// <param name="metaDataDir">metaData파일 경로</param>
-        public static void MakeHtml(string metaDataDir)
-        {
-            MetaData curMetaData = MetaData.Load(metaDataDir);
-            MakeHtml(curMetaData);
-        }
-
-        /// <summary>
-        /// 웹툰을 PC에서 보기 위해 html파일을 만듭니다
-        /// </summary>
-        /// <param name="curMetaData"></param>
-        public static void MakeHtml(MetaData curMetaData)
-        {
-            string fileName = string.Format(@"html\{0}_{1:000}.html", curMetaData.WebtoonName, curMetaData.No);
-
-            List<string> imgs = new List<string>();
-
-            for(int i = 1 ; i <= curMetaData.ImgCnt ; i++)
-            {
-                string temp = string.Format(@"..\src\{0}_{1:000}\{2}.jpg", curMetaData.WebtoonName, curMetaData.No, i);
-                imgs.Add(temp);
-            }
-
-            MakeHtml(fileName, imgs);
         }
 
 
