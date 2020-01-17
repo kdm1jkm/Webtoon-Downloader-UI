@@ -43,7 +43,7 @@ namespace LibWebtoonDownloader
         public string Genre { get; private set; }
 
 
-        private int id { get; set; }
+        private int id;
         public int Id
         {
             get => id;
@@ -78,7 +78,7 @@ namespace LibWebtoonDownloader
             }
         }
 
-        private int no { get; set; }
+        private int no;
         public int No
         {
             get => no;
