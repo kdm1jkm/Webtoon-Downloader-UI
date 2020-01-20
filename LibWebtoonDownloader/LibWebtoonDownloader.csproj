@@ -60,6 +60,7 @@
     <Compile Include="Webtoon.cs" />
     <Compile Include="WebtoonInfo.cs" />
     <Compile Include="WebtoonInfoCollection.cs" />
+    <Compile Include="WebtoonInfoQueue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

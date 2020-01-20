@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace LibWebtoonDownloader
 {
@@ -31,11 +33,8 @@ namespace LibWebtoonDownloader
             DetailInfo = string.Empty;
             Genre = string.Empty;
 
-            ImageCount = 0;
-
             ImageSrcs = null;
         }
-
 
         public string WebtoonName { get; set; }
         public string Author { get; set; }
@@ -60,20 +59,21 @@ namespace LibWebtoonDownloader
             }
         }
 
+        private static HtmlDocument WebtoonMainpage { get; set; } = null;
 
         public string Url { get => $"https://comic.naver.com/webtoon/detail.nhn?titleId={Id}&no={No}"; }
-        public int ImageCount { get; private set; }
+        public int ImageCount { get => ImageSrcs.Length; }
         public Dictionary<DayOfWeek, bool> Weekday { get; set; } = new Dictionary<DayOfWeek, bool>(7);
-        public DayOfWeek[] Weekdays
+        public List<DayOfWeek> Weekdays
         {
             get
             {
-                DayOfWeek[] result = new DayOfWeek[7];
+                List<DayOfWeek> result = new List<DayOfWeek>();
                 for(int i = 0 ; i < 7 ; i++)
                 {
                     if(Weekday[(DayOfWeek)i])
                     {
-                        result[result.Length] = (DayOfWeek)i;
+                        result.Add((DayOfWeek)i);
                     }
                 }
 
@@ -81,16 +81,13 @@ namespace LibWebtoonDownloader
             }
             set
             {
-                int j = 0;
-                for(int i = 0 ; i < value.Length ; i++)
+                for(int i = 0 ; i < 7 ; i++)
                 {
-                    while(j < (int)value[i])
-                    {
-                        Weekday[(DayOfWeek)j] = false;
-                        j++;
-                    }
-                    Weekday[(DayOfWeek)j] = true;
-                    j++;
+                    var weekDayQuery = from weekDay in value
+                                       where weekDay == (DayOfWeek)i
+                                       select weekDay;
+
+                    Weekday[(DayOfWeek)i] = weekDayQuery.Count() != 0;
                 }
             }
         }
@@ -100,7 +97,18 @@ namespace LibWebtoonDownloader
 
         public override string ToString()
         {
-            return $"{WebtoonName}_{No}[{Weekday.Stringify()}]";
+            if(Id == 0)
+            {
+                return "";
+            }
+            else if(No != 0)
+            {
+                return $"{WebtoonName}({No})";
+            }
+            else
+            {
+                return $"{WebtoonName}[{Weekday.Stringify()}]";
+            }
         }
         public override int GetHashCode()
         {
@@ -169,51 +177,80 @@ namespace LibWebtoonDownloader
             }
         }
 
-        public void LoadInformations()
+        public void LoadWebtoonInfo(HtmlDocument doc)
         {
-            if(Id != 0)
+            IsAvailable = Webtoon.IsAvailable(doc);
+            if(!IsAvailable)
             {
-                string url = $"https://comic.naver.com/webtoon/list.nhn?titleId={Id}";
-
-                HtmlWeb web = new HtmlWeb();
-                HtmlDocument doc;
-                doc = web.Load(url);
-
-                IsAvailable = Webtoon.IsAvailable(doc);
-                if(!IsAvailable)
-                {
-                    Initialize();
-                    return;
-                }
-                else
-                {
-                    WebtoonName = Webtoon.GetWebtoonName(doc);
-                    Author = Webtoon.GetWebtoonAuthor(doc);
-                    DetailInfo = Webtoon.GetWebtoonDetailInfo(doc);
-                    Genre = Webtoon.GetWebtoonGenre(doc);
-                }
-
-                if(No != 0)
-                {
-                    web = new HtmlWeb();
-                    doc = web.Load(Url);
-
-                    IsAvailable = Webtoon.IsAvailable(doc);
-
-                    if(!IsAvailable)
-                    {
-                        Initialize();
-                        return;
-                    }
-                    else
-                    {
-                        ImageCount = Webtoon.GetWebtoonImageCount(doc);
-                        ImageSrcs = Webtoon.GetWebtoonImageSrcs(doc);
-
-                        //ToDo: 요일 가져오기
-                    }
-                }
+                Initialize();
+                return;
             }
+            else
+            {
+                WebtoonName = Webtoon.GetWebtoonName(doc);
+                Author = Webtoon.GetWebtoonAuthor(doc);
+                DetailInfo = Webtoon.GetWebtoonDetailInfo(doc);
+                Genre = Webtoon.GetWebtoonGenre(doc);
+
+                if(WebtoonMainpage == null)
+                {
+                    string url = "https://comic.naver.com/webtoon/weekday.nhn";
+                    WebtoonMainpage = url.LoadHtmlDocument();
+                }
+
+                WebtoonInfoCollection everyInfo = Webtoon.GetEveryWebtoonInfos(WebtoonMainpage);
+                var infoQuery = from info in everyInfo
+                                where info.Id == Id
+                                select info;
+
+                var temp = infoQuery.ToArray()[0].Weekdays;
+                Weekdays = temp;
+            }
+        }
+        public void LoadWebtoonInfo()
+        {
+            string url = $"https://comic.naver.com/webtoon/list.nhn?titleId={Id}";
+
+            HtmlDocument doc = url.LoadHtmlDocument();
+
+            LoadWebtoonInfo(doc);
+        }
+
+        public void LoadDetailInfo(HtmlDocument doc)
+        {
+            IsAvailable = Webtoon.IsAvailable(doc);
+
+            if(!IsAvailable)
+            {
+                Initialize();
+                return;
+            }
+            else
+            {
+                ImageSrcs = Webtoon.GetWebtoonImageSrcs(doc);
+            }
+        }
+        public void LoadDetailInfo()
+        {
+            HtmlDocument doc = Url.LoadHtmlDocument();
+
+            LoadDetailInfo(doc);
+        }
+
+        public WebtoonInfo Copy()
+        {
+            return new WebtoonInfo()
+            {
+                Author=Author,
+                DetailInfo=DetailInfo,
+                Genre=Genre,
+                Id=Id,
+                ImageSrcs=ImageSrcs,
+                IsAvailable=IsAvailable,
+                No=No,
+                WebtoonName=WebtoonName,
+                Weekday=Weekday,
+            };
         }
     }
 }

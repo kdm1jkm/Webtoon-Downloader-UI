@@ -100,13 +100,12 @@ namespace WebtoonDownloader
 
                 if(isinPeriod)
                 {
-                    WebtoonInfoCollection temp = new WebtoonInfoCollection { infos[i] };
-                    motherForm.webtoonDownload.AddFavoriteTasks(
-                           tmpk_from.Value,
-                           tmpk_to.Value.AddDays(1),
-                           temp,
-                           checkBox_HTML.Checked,
-                           checkBox_zip.Checked);
+                    WebtoonInfoCollection favoriteInPeriod =Webtoon.WebtoonInfoInPeriod(tmpk_from.Value, tmpk_to.Value, infos[i]);
+
+                    foreach(WebtoonInfo info in favoriteInPeriod)
+                    {
+                        motherForm.curTasks.Enqueue(info);
+                    }
                 }
 
                 loading.pBar.PerformStep();

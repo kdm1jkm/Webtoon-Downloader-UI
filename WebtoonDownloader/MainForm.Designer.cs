@@ -353,7 +353,6 @@
             0,
             0,
             0});
-            this.num_Thread.ValueChanged += new System.EventHandler(this.num_Thread_ValueChanged);
             // 
             // btn_selectWholeRange
             // 

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using OpenQA.Selenium.Internal;
 
 namespace LibWebtoonDownloader
 {

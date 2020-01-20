@@ -2,6 +2,9 @@
 using LibWebtoonDownloader;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace TestWebtoonDownloader
 {
@@ -11,14 +14,20 @@ namespace TestWebtoonDownloader
         static void Main(string[] args)
         {
             WebtoonInfo info = new WebtoonInfo();
-            DayOfWeek[] week =
-            {
-                DayOfWeek.Sunday,
-                DayOfWeek.Monday,
-                DayOfWeek.Friday
-            };
+            info.Id = 570503;
 
-            info.Weekdays = week;
+            info.LoadWebtoonInfo();
+            info.No = 7;
+
+            info.LoadDetailInfo();
+
+            //info.WebtoonName = "wowwow";
+
+            //info.Weekday[DayOfWeek.Sunday] = true;
+
+            WebtoonInfo info2 = info.Copy();
+
+            return;
         }
     }
 }

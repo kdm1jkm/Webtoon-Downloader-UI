@@ -10,7 +10,7 @@ namespace WebtoonDownloader
         public EditFavoriteWebtoonsForm()
         {
             InitializeComponent();
-            loadWebtoons();
+            LoadWebtoons();
         }
 
         private WebtoonInfoCollection getCheckedList()
@@ -35,7 +35,7 @@ namespace WebtoonDownloader
             this.Close();
         }
 
-        public void loadWebtoons()
+        public void LoadWebtoons()
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
             cLstBox_WebtoonList.Items.Clear();

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 
 namespace LibWebtoonDownloader
@@ -21,6 +22,12 @@ namespace LibWebtoonDownloader
             result = result.Substring(0, result.Length - 2);
 
             return result;
+        }
+
+        public static HtmlDocument LoadHtmlDocument(this string url)
+        {
+            HtmlWeb web = new HtmlWeb();
+            return web.Load(url);
         }
     }
 }

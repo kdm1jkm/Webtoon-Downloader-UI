@@ -33,10 +33,10 @@
             this.btn_LoadFromNaverAcnt = new System.Windows.Forms.Button();
             this.btn_saveAndExit = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lbl_detailInfo = new System.Windows.Forms.Label();
+            this.pBox_thumbnail = new System.Windows.Forms.PictureBox();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_thumbnail)).BeginInit();
             this.SuspendLayout();
             // 
             // cLstBox_WebtoonList
@@ -79,8 +79,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.pictureBox1);
+            this.groupBox1.Controls.Add(this.lbl_detailInfo);
+            this.groupBox1.Controls.Add(this.pBox_thumbnail);
             this.groupBox1.Location = new System.Drawing.Point(366, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(457, 130);
@@ -88,22 +88,22 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "웹툰 정보";
             // 
-            // pictureBox1
+            // lbl_detailInfo
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(6, 20);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(125, 101);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.lbl_detailInfo.AutoSize = true;
+            this.lbl_detailInfo.Location = new System.Drawing.Point(137, 20);
+            this.lbl_detailInfo.Name = "lbl_detailInfo";
+            this.lbl_detailInfo.Size = new System.Drawing.Size(229, 60);
+            this.lbl_detailInfo.TabIndex = 1;
+            this.lbl_detailInfo.Text = "연애혁명|232[목]\r\n로맨스, 그런 건 우리에게 있을 수가 없어!\r\n신개념 개그 로맨스\r\n\r\n스토리, 개그, 드라마";
             // 
-            // label1
+            // pBox_thumbnail
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(137, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(229, 60);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "연애혁명|232[목]\r\n로맨스, 그런 건 우리에게 있을 수가 없어!\r\n신개념 개그 로맨스\r\n\r\n스토리, 개그, 드라마";
+            this.pBox_thumbnail.Location = new System.Drawing.Point(6, 20);
+            this.pBox_thumbnail.Name = "pBox_thumbnail";
+            this.pBox_thumbnail.Size = new System.Drawing.Size(125, 101);
+            this.pBox_thumbnail.TabIndex = 0;
+            this.pBox_thumbnail.TabStop = false;
             // 
             // EditFavoriteWebtoonsForm
             // 
@@ -123,7 +123,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditFavoriteWebtoonsForm_FormClosing);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_thumbnail)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -135,7 +135,7 @@
         private System.Windows.Forms.Button btn_LoadFromNaverAcnt;
         private System.Windows.Forms.Button btn_saveAndExit;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lbl_detailInfo;
+        private System.Windows.Forms.PictureBox pBox_thumbnail;
     }
 }
