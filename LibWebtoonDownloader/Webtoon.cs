@@ -61,10 +61,12 @@ namespace LibWebtoonDownloader
                     "<body>" +
                     "<div style='display:flex;flex-direction:column;align-items:center'>"
                     );
+
                 foreach(string img in imgs)
                 {
                     ws.Write(string.Format("<img src='{0}'>", img));
                 }
+
                 ws.Write(
                     "</div>" +
                     "</body>"
@@ -90,23 +92,21 @@ namespace LibWebtoonDownloader
             //주소에서 no값 파싱후 리턴
             string query = attHref.Value.Split('?')[1];
             int lastEp = int.Parse(HttpUtility.ParseQueryString(query)["no"]);
-            //lastEp = int.Parse(href.Split('?')[1].Split('&')[1].Split('=')[1]);
             return lastEp;
         }
+
         /// <summary>
         /// 한 웹툰의 최신 회차가 몇인지 찾아냅니다. 실패 시 -1을 반환합니다.
         /// </summary>
-        /// <param name="titleId">웹툰 Id</param>
+        /// <param name="id">웹툰 Id</param>
         /// <returns></returns>
-        public static int GetLatestEpisode(int titleId)
+        public static int GetLatestEpisode(int id)
         {
             //url접속
-            string url = string.Format("https://comic.naver.com/webtoon/list.nhn?titleId={0}", titleId);
+            string url = string.Format("https://comic.naver.com/webtoon/list.nhn?titleId={0}", id);
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc;
             doc = web.Load(url);
-            //doc = new HtmlDocument();
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\연애혁명 __ 네이버 만화.htm");
 
             return GetLatestEpisode(doc);
         }
@@ -134,29 +134,25 @@ namespace LibWebtoonDownloader
 
             //titleId 파싱 후 리턴
             titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
-            //titleId = int.Parse(href.Split('?')[1].Split('=')[1]);
             return titleId;
         }
 
         /// <summary>
         /// 웹툰의 이름으로 Id를 찾아냅니다. 실패 시 -1을 반환합니다.
         /// </summary>
-        /// <param name="name">웹툰명</param>
+        /// <param name="webtoonName">웹툰명</param>
         /// <returns>
         /// 성공: 웹툰명
         /// 실패: -1
         /// </returns>
-        public static int GetWebtoonId(string name)
+        public static int GetWebtoonId(string webtoonName)
         {
             //웹툰 이름으로 접속
-            string url = string.Format(@"https://comic.naver.com/search.nhn?m=webtoon&keyword={0}", name);
+            string url = string.Format(@"https://comic.naver.com/search.nhn?m=webtoon&keyword={0}", webtoonName);
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc;
 
             doc = web.Load(url);
-            //doc = new HtmlDocument();
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\윰세포_검색_존재.html");
-            //doc.Load(@"D:\dropbox\Downloads\test for crawling\검색_결과없음.html");
 
             return GetWebtoonId(doc);
         }
@@ -191,14 +187,14 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 한 웹툰의 지정된 회차가 실행 가능한지 검사합니다.
         /// </summary>
-        /// <param name="titleId">웹툰 Id</param>
+        /// <param name="id">웹툰 Id</param>
         /// <param name="no">웹툰 회차</param>
         /// <returns></returns>
-        public static bool IsAvailable(int titleId, int no)
+        public static bool IsAvailable(int id, int no)
         {
             WebtoonInfo info = new WebtoonInfo
             {
-                Id = titleId,
+                Id = id,
                 No = no
             };
 
@@ -208,11 +204,11 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 지정된 웹툰이 실행 가능한지 검사합니다.
         /// </summary>
-        /// <param name="titleId">웹툰 Id</param>
+        /// <param name="id">웹툰 Id</param>
         /// <returns></returns>
-        public static bool IsAvailable(int titleId)
+        public static bool IsAvailable(int id)
         {
-            return IsAvailable(titleId, 1);
+            return IsAvailable(id, 1);
         }
 
 
@@ -245,16 +241,16 @@ namespace LibWebtoonDownloader
         /// <summary>
         /// 웹툰 Id로 이름을 찾아냅니다. 실패시 공백을 반환합니다.
         /// </summary>
-        /// <param name="titleId">웹툰 Id</param>
+        /// <param name="id">웹툰 Id</param>
         /// <returns>웹툰명</returns>
-        public static string GetWebtoonName(int titleId)
+        public static string GetWebtoonName(int id)
         {
             HtmlDocument doc;
             HtmlWeb web = new HtmlWeb();
 
             WebtoonInfo tempInfo = new WebtoonInfo
             {
-                Id = titleId,
+                Id = id,
                 No = 1
             };
 
@@ -277,97 +273,95 @@ namespace LibWebtoonDownloader
         public static WebtoonInfoCollection GetEveryWebtoonInfos(HtmlDocument doc)
         {
             //웹툰 정보 리스트
-            WebtoonInfoCollection webtoonInfos = new WebtoonInfoCollection();
+            WebtoonInfoCollection result = new WebtoonInfoCollection();
 
             //웹툰 링크 선택
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
+            HtmlNodeCollection nodeWebtoonLinks = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
 
-            foreach(HtmlNode node in nodes)
+            for(int i = 0 ; i < nodeWebtoonLinks.Count ; i++)
             {
+                HtmlNode nodeWebtoonLink = nodeWebtoonLinks[i];
+
                 //각 웹툰 주소
-                HtmlAttribute attribute = node.Attributes["href"];
+                HtmlAttribute attWebtoonHref = nodeWebtoonLink.Attributes["href"];
 
                 //이름 파싱
-                string name = node.InnerText;
+                string webtoonName = nodeWebtoonLink.InnerText;
 
                 //주소에서 파싱을 위해 쿼리부분만 떼옴(맞는 표현인가?)
-                string query = attribute.Value.Split('?')[1].Replace("amp;", "");
+                string webtoonLinkQuery = attWebtoonHref.Value.Split('?')[1].Replace("amp;", "");
 
                 //titleID, 요일 파싱
-                int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
-                string s_weekDay = HttpUtility.ParseQueryString(query)["weekday"];
+                int titleId = int.Parse(HttpUtility.ParseQueryString(webtoonLinkQuery)["titleId"]);
+                string dayOfWeekString = HttpUtility.ParseQueryString(webtoonLinkQuery)["weekday"];
 
                 //영어로 된 요일을 숫자로 변환(월요일=0 ~ 일요일=6)
-                DayOfWeek weekday = new DayOfWeek();
-                switch(s_weekDay)
+                DayOfWeek curWebtoonDayOfWeek = new DayOfWeek();
+                switch(dayOfWeekString)
                 {
                     case "mon":
-                        weekday = DayOfWeek.Monday;
+                        curWebtoonDayOfWeek = DayOfWeek.Monday;
                         break;
                     case "tue":
-                        weekday = DayOfWeek.Tuesday;
+                        curWebtoonDayOfWeek = DayOfWeek.Tuesday;
                         break;
                     case "wed":
-                        weekday = DayOfWeek.Wednesday;
+                        curWebtoonDayOfWeek = DayOfWeek.Wednesday;
                         break;
                     case "thu":
-                        weekday = DayOfWeek.Thursday;
+                        curWebtoonDayOfWeek = DayOfWeek.Thursday;
                         break;
                     case "fri":
-                        weekday = DayOfWeek.Friday;
+                        curWebtoonDayOfWeek = DayOfWeek.Friday;
                         break;
                     case "sat":
-                        weekday = DayOfWeek.Saturday;
+                        curWebtoonDayOfWeek = DayOfWeek.Saturday;
                         break;
                     case "sun":
-                        weekday = DayOfWeek.Sunday;
+                        curWebtoonDayOfWeek = DayOfWeek.Sunday;
                         break;
                 }
-
-                //웹툰 정보 구조체
-                WebtoonInfo tempInfo = new WebtoonInfo
-                {
-                    Id = titleId,
-                    WebtoonName = name
-                };
-                tempInfo.Weekday[weekday] = true;
 
                 //이미 리스트에 존재하는지 확인하는 플래그(여러 요일에 걸쳐서 연재하는 웹툰에 대비)
                 bool alreadyExistFlag = false;
 
                 //이미 리스트에 있을 경우에는기존 웹툰 정보에 요일만 추가
-                foreach(WebtoonInfo info in webtoonInfos)
+                foreach(WebtoonInfo info in result)
                 {
                     if(info.Id == titleId)
                     {
                         alreadyExistFlag = true;
-                        info.Weekday[weekday] = true;
+                        info.Weekday[curWebtoonDayOfWeek] = true;
                         break;
                     }
                 }
 
+                //웹툰 정보 구조체
+                WebtoonInfo curWebtoonInfo = new WebtoonInfo
+                {
+                    Id = titleId,
+                    WebtoonName = webtoonName
+                };
+                curWebtoonInfo.Weekday[curWebtoonDayOfWeek] = true;
+
                 //이미 존재하지 않을 경우에는 리스트에 추가
                 if(!alreadyExistFlag)
                 {
-                    webtoonInfos.Add(tempInfo);
+                    result.Add(curWebtoonInfo);
                 }
             }
 
-            return webtoonInfos;
+            return result;
         }
+
         /// <summary>
         /// 네이버 웹툰 메인 페이지에서 모든 웹툰의 정보를 파싱합니다.
         /// </summary>
         /// <returns></returns>
         public static WebtoonInfoCollection GetEveryWebtoonInfos()
         {
-            //웹툰 메인 페이지 접속
-            HtmlDocument doc;
-            HtmlWeb web = new HtmlWeb();
             const string url = "https://comic.naver.com/webtoon/weekday.nhn";
-            //doc = new HtmlDocument();
-            //doc.Load(@"D:\dropbox\Downloads\webtoonforcrawling\frontPage.htm", Encoding.UTF8);
-            doc = web.Load(url);
+            HtmlDocument doc = url.LoadHtmlDocument();
 
             return GetEveryWebtoonInfos(doc);
         }
@@ -381,64 +375,66 @@ namespace LibWebtoonDownloader
 
             using(IWebDriver driver = new ChromeDriver())
             {
-                driver.Navigate().GoToUrl("https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fcomic.naver.com%2Fwebtoon%2Fweekday.nhn");
+                const string naverLoginUrl = "https://nid.naver.com/nidlogin.login?url=https%3A%2F%2Fcomic.naver.com%2Fwebtoon%2Fweekday.nhn";
+                driver.Navigate().GoToUrl(naverLoginUrl);
                 Actions pasteId = new Actions(driver);
                 Actions pastePassword = new Actions(driver);
 
                 IWebElement idInput = driver.FindElement(By.XPath("//*[@id='id']"));
                 Clipboard.SetText(id);
                 pasteId.MoveToElement(idInput).KeyDown(Keys.Control).SendKeys("v").KeyUp(Keys.Control).Perform();
-                //idInput.Clear();                
-                //idInput.SendKeys(id);
 
                 IWebElement passwordInput = driver.FindElement(By.XPath("//*[@id='pw']"));
                 Clipboard.SetText(password);
                 pastePassword.MoveToElement(passwordInput).Click().KeyDown(Keys.Control).SendKeys("v").KeyUp(Keys.Control).Perform();
-                //passwordInput.Clear();
-                //passwordInput.SendKeys(password);
 
                 Clipboard.Clear();
 
                 IWebElement loginBtn = driver.FindElement(By.XPath("//*[@id='log.login']"));
                 loginBtn.Click();
 
-                driver.Navigate().GoToUrl("https://comic.naver.com/webtoon/weekday.nhn");
+                const string WebtoonMainPageUrl = "https://comic.naver.com/webtoon/weekday.nhn";
+                driver.Navigate().GoToUrl(WebtoonMainPageUrl);
 
-                HtmlDocument mainHtml = new HtmlDocument();
-                mainHtml.LoadHtml(driver.PageSource);
+                HtmlDocument mainPageDoc = new HtmlDocument();
+                mainPageDoc.LoadHtml(driver.PageSource);
 
-                Task loadInfoTask;
+                HtmlNodeCollection webtoonLinkNodes = mainPageDoc.DocumentNode.SelectNodes("//*[@id='content']/div/div/div/ul/li/div/a");
 
-                HtmlNodeCollection mainNodes = mainHtml.DocumentNode.SelectNodes("//*[@id='content']/div/div/div/ul/li/div/a");
-                foreach(HtmlNode mainNode in mainNodes)
+                Task[] webtoonAddTask = new Task[webtoonLinkNodes.Count];
+
+                for(int i = 0 ; i < webtoonLinkNodes.Count ; i++)
                 {
-                    HtmlAttribute webtoonHref = mainNode.Attributes["href"];
-                    string webtoonLink = "https://comic.naver.com" + webtoonHref.Value;
+                    HtmlNode webtoonLinkNode = webtoonLinkNodes[i];
+
+                    HtmlAttribute webtoonHrefAtt = webtoonLinkNode.Attributes["href"];
+                    string webtoonLink = "https://comic.naver.com" + webtoonHrefAtt.Value;
                     webtoonLink = webtoonLink.Replace("amp;", "");
                     driver.Navigate().GoToUrl(webtoonLink);
 
-                    HtmlDocument webtoonHtml = new HtmlDocument();
-                    webtoonHtml.LoadHtml(driver.PageSource);
+                    HtmlDocument webtoonPageDoc = new HtmlDocument();
+                    webtoonPageDoc.LoadHtml(driver.PageSource);
 
-                    HtmlNode webtoonNode = webtoonHtml.DocumentNode.SelectSingleNode("//*[@id='content']/div/div/ul/li/a[@class='book_maker on']");
-                    if(webtoonNode == null)
+                    HtmlNode favoriteWebtoonNode = webtoonPageDoc.DocumentNode.SelectSingleNode("//*[@id='content']/div/div/ul/li/a[@class='book_maker on']");
+                    if(favoriteWebtoonNode == null)
                         continue;
 
-                    string query = webtoonLink.Split('?')[1];
-                    int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
+                    string webtoonLinkQuery = webtoonLink.Split('?')[1];
+                    int webtoonId = int.Parse(HttpUtility.ParseQueryString(webtoonLinkQuery)["titleId"]);
 
                     WebtoonInfo newInfo = new WebtoonInfo()
                     {
-                        Id = titleId
+                        Id = webtoonId
                     };
 
-                    loadInfoTask = new Task(new Action(() =>
+                    webtoonAddTask[i] = Task.Run(new Action(() =>
                     {
                         newInfo.LoadWebtoonInfo(driver.PageSource);
                         result.Add(newInfo);
                     }));
-                    loadInfoTask.Start();
                 }
+
+                Task.WaitAll(webtoonAddTask);
             }
             return result;
         }
@@ -470,6 +466,7 @@ namespace LibWebtoonDownloader
             }
             return result;
         }
+
         public static WebtoonInfoCollection WebtoonInfoInPeriod(DateTime startDate, DateTime endDate, HtmlDocument doc)
         {
             WebtoonInfoCollection result = new WebtoonInfoCollection();
