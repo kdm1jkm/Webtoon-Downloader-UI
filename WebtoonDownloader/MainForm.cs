@@ -5,13 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WebtoonDownloader
 {
     public partial class MainForm : Form
     {
-        public Webtoon webtoonDownload = new Webtoon();
+        public WebtoonInfoQueue curTasks;
         private bool isExcuting = false;
         private readonly ManualResetEvent mreExecute = new ManualResetEvent(false);
         private Thread downloadThread;
@@ -24,67 +25,44 @@ namespace WebtoonDownloader
             downloadThread = new Thread(new ThreadStart(DoTask));
             downloadThread.Start();
 
-            if(File.Exists("curTask.dat"))
-            {
-                webtoonDownload.LoadTask("curTask.dat");
-            }
-
             loadQueueThread = new Thread(new ThreadStart(LoadQueue));
             loadQueueThread.Start();
         }
 
         public void LoadQueue()
         {
-            Webtoon.WebtoonTask[] taskArr = webtoonDownload.Tasks.ToArray();
-
-            Dictionary<int, string> webtoonNameIdPairs;
-
-            if(File.Exists("webtoonNameDictionary.dat"))
+            if(!File.Exists("curQueue.dat"))
             {
-                using(Stream rs = new FileStream("webtoonNameDictionary.dat", FileMode.Open))
-                {
-                    BinaryFormatter deserializer = new BinaryFormatter();
-                    webtoonNameIdPairs = (Dictionary<int, string>)deserializer.Deserialize(rs);
-                }
+                curTasks = new WebtoonInfoQueue();
             }
             else
             {
-                webtoonNameIdPairs = new Dictionary<int, string>();
+                curTasks = WebtoonInfoQueue.Load("curQueue.dat");
             }
 
-            for(int i = 0 ; i < webtoonDownload.Tasks.Count ; i++)
+            WebtoonInfoCollection queueList = (WebtoonInfoCollection)curTasks.ToList();
+
+            for(int i = 0 ; i < queueList.Count ; i++)
             {
-                string webtoonName;
-                if(webtoonNameIdPairs.Keys.Contains(taskArr[i].TitleId))
-                {
-                    webtoonName = webtoonNameIdPairs[taskArr[i].TitleId];
-                }
-                else
-                {
-                    webtoonName = Webtoon.GetWebtoonName(taskArr[i].TitleId);
-                    webtoonNameIdPairs.Add(taskArr[i].TitleId, webtoonName);
-                }
                 this.Invoke(new Action(() =>
                 {
-                    lBox_queue.Items.Add(String.Format("{0}({1})", webtoonName, taskArr[i].No));
+                    lBox_queue.Items.Add(string.Format("{0}({1})", queueList[i].WebtoonName, queueList[i].No));
                 }));
-            }
-
-            using(Stream ws = new FileStream("webtoonNameDictionary.dat", FileMode.Create))
-            {
-                BinaryFormatter serializer = new BinaryFormatter();
-                serializer.Serialize(ws, webtoonNameIdPairs);
             }
         }
 
         private void btn_Search_Click(object sender, EventArgs e)
         {
-            int titleId = Webtoon.GetIdByName(tBox_WebtoonName.Text);
+            int titleId = Webtoon.GetWebtoonId(tBox_WebtoonName.Text);
 
             if(titleId == -1)
             {
                 MessageBox.Show("웹툰을 찾을 수 없습니다.");
                 return;
+            }
+            else
+            {
+                MessageBox.Show($"{Webtoon.GetWebtoonName(titleId)}({titleId})");
             }
 
             tBox_titleId.Text = titleId.ToString();
@@ -114,8 +92,10 @@ namespace WebtoonDownloader
             }
             num_endNo.Maximum = Webtoon.GetLatestEpisode(int.Parse(tBox_titleId.Text));
             num_endNo.Value = num_endNo.Maximum;
+            num_StartNo.Value = num_StartNo.Maximum;
         }
 
+        //ToDo: 여기도 한번에 받아와서 추가하는걸로 하자 어차피 WebtoonInfo쪽에서 doc으로 내용추가하는거 넣을거니까 그거이용하기
         private void btn_AddTask_Click(object sender, EventArgs e)
         {
             if(tBox_titleId.Text.Length == 0)
@@ -134,17 +114,24 @@ namespace WebtoonDownloader
 
             int startNo = int.Parse(num_StartNo.Value.ToString());
             int endNo = int.Parse(num_endNo.Value.ToString());
-            string webtoonName = Webtoon.GetWebtoonName(titleId);
+
+            WebtoonInfo baseInfo = new WebtoonInfo()
+            {
+                Id = titleId
+            };
+            baseInfo.LoadWebtoonInfo();
 
             for(int i = startNo ; i <= endNo ; i++)
             {
-                webtoonDownload.AddTask(titleId, i, checkBox_HTML.Checked, checkBox_zip.Checked);
+                WebtoonInfo curInfo = baseInfo.Copy();
+                curInfo.No = i;
 
-                string webtoonInfoString = string.Format("{0}({1})", webtoonName, i);
-                lBox_queue.Items.Add(webtoonInfoString);
+                curTasks.Enqueue(curInfo);
+
+                lBox_queue.Items.Add(curInfo);
             }
 
-            webtoonDownload.SaveTask("curTask.dat");
+            curTasks.Save("curQueue.dat");
         }
 
         private void btn_TogglePause_Click(object sender, EventArgs e)
@@ -174,7 +161,7 @@ namespace WebtoonDownloader
                     break;
                 }
 
-                if(webtoonDownload.Tasks.Count == 0)
+                if(curTasks.Count == 0)
                 {
                     isExcuting = false;
 
@@ -185,7 +172,38 @@ namespace WebtoonDownloader
                     continue;
                 }
 
-                webtoonDownload.DoTask();
+                Semaphore downloadSemaphore = new Semaphore((int)num_Thread.Value, (int)num_Thread.Value);
+
+                WebtoonInfo curInfo = curTasks.First();
+
+                if(curInfo.ImageSrcs == null)
+                {
+                    curInfo.LoadDetailInfo();
+                }
+
+                string saveDir = $@"src\{curInfo.WebtoonName}_{curInfo.No.ToString("D3")}";
+
+                if(!Directory.Exists(saveDir))
+                {
+                    Directory.CreateDirectory(saveDir);
+                }
+
+                Task[] downloadThreads = new Task[curInfo.ImageCount];
+
+                for(int i = 0 ; i < curInfo.ImageCount ; i++)
+                {
+                    Task downloadThread = new Task(new Action(() =>
+                    {
+                        downloadSemaphore.WaitOne();
+                        Webtoon.DownloadImage(curInfo.ImageSrcs[i], saveDir + $@"\{i}.jpg");
+                        downloadSemaphore.Release();
+                    }));
+
+                    downloadThreads[i] = downloadThread;
+                    downloadThread.Start();
+                }
+
+                Task.WaitAll(downloadThreads);
 
                 this.Invoke(new Action(() => { lBox_DownloadedWebtoons.Items.Add(lBox_queue.Items[0]); }));
 
@@ -196,7 +214,7 @@ namespace WebtoonDownloader
 
                 this.Invoke(new Action(() => { prgsBar_Webtoon.Value = Ratio; }));
 
-                webtoonDownload.SaveTask("curTask.dat");
+                curTasks.Save("curQueue.dat");
             }
         }
 
@@ -221,8 +239,8 @@ namespace WebtoonDownloader
             else
             {
                 lBox_queue.Items.Clear();
-                webtoonDownload.Tasks.Clear();
-                webtoonDownload.SaveTask("curTask.dat");
+                curTasks.Clear();
+                curTasks.Save("curQueue.dat");
             }
         }
 
@@ -235,7 +253,7 @@ namespace WebtoonDownloader
         {
             DownloadFavoriteWebtoonsForm form = new DownloadFavoriteWebtoonsForm(this);
             form.ShowDialog();
-            webtoonDownload.SaveTask("curTask.dat");
+            curTasks.Save("curQueue.dat");
         }
 
         private void btn_FileManagement_Click(object sender, EventArgs e)
@@ -250,11 +268,6 @@ namespace WebtoonDownloader
             {
                 e.Handled = true;
             }
-        }
-
-        private void num_Thread_ValueChanged(object sender, EventArgs e)
-        {
-            webtoonDownload.DownloadImageSemaphoreCount = (int)num_Thread.Value;
         }
 
         private void btn_selectWholeRange_Click(object sender, EventArgs e)
