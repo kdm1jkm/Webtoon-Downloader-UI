@@ -220,6 +220,12 @@ namespace LibWebtoonDownloader
 
             LoadWebtoonInfo(doc);
         }
+        public void LoadWebtoonInfo(string source)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(source);
+            LoadWebtoonInfo(doc);
+        }
 
         public void LoadDetailInfo(HtmlDocument doc)
         {

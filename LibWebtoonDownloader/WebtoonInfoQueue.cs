@@ -8,6 +8,7 @@ using System.IO;
 
 namespace LibWebtoonDownloader
 {
+    [Serializable]
     public class WebtoonInfoQueue:Queue<WebtoonInfo>
     {
         public void Save(string fileName)

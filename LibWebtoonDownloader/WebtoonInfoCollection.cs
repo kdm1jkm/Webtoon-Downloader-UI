@@ -2,9 +2,11 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using OpenQA.Selenium.Internal;
+using System;
 
 namespace LibWebtoonDownloader
 {
+    [Serializable]
     public class WebtoonInfoCollection : List<WebtoonInfo>
     {
         public void Save(string fileName)

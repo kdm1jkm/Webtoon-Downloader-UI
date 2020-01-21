@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
 
@@ -32,6 +33,7 @@ namespace LibWebtoonDownloader
 
             //다운로드와 로그 남기기
             downloader.DownloadFile(url, dir);
+
             Console.WriteLine("Download complete");
             Console.WriteLine("Url: " + url);
             Console.WriteLine("dir: " + dir);
@@ -376,7 +378,6 @@ namespace LibWebtoonDownloader
         public static WebtoonInfoCollection GetFavoriteWebtoonInfosFromAccount(string id, string password)
         {
             WebtoonInfoCollection result = new WebtoonInfoCollection();
-            WebtoonInfoCollection everyInfos = GetEveryWebtoonInfos();
 
             using(IWebDriver driver = new ChromeDriver())
             {
@@ -406,7 +407,7 @@ namespace LibWebtoonDownloader
                 HtmlDocument mainHtml = new HtmlDocument();
                 mainHtml.LoadHtml(driver.PageSource);
 
-                int i = 0;
+                Task loadInfoTask;
 
                 HtmlNodeCollection mainNodes = mainHtml.DocumentNode.SelectNodes("//*[@id='content']/div/div/div/ul/li/div/a");
                 foreach(HtmlNode mainNode in mainNodes)
@@ -426,11 +427,17 @@ namespace LibWebtoonDownloader
                     string query = webtoonLink.Split('?')[1];
                     int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
 
-                    while(!( everyInfos[i].Id == titleId ))
+                    WebtoonInfo newInfo = new WebtoonInfo()
                     {
-                        i++;
-                    }
-                    result.Add(everyInfos[i]);
+                        Id = titleId
+                    };
+
+                    loadInfoTask = new Task(new Action(() =>
+                    {
+                        newInfo.LoadWebtoonInfo(driver.PageSource);
+                        result.Add(newInfo);
+                    }));
+                    loadInfoTask.Start();
                 }
             }
             return result;
