@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using LibWebtoonDownloader;
+using System;
 using System.Threading.Tasks;
 
 namespace TestWebtoonDownloader
@@ -8,17 +10,14 @@ namespace TestWebtoonDownloader
         [STAThread]
         static void Main(string[] args)
         {
-            int i = 0;
-            int j = 0;
-            Task[] temp = new Task[2]
+            HtmlWeb web = new HtmlWeb();
+
+            HtmlDocument doc = web.Load("https://comic.naver.com/webtoon/list.nhn?titleId=723714");
+
+            foreach(HtmlNode node in doc.DocumentNode.SelectNodes("/html/body/div/div/div/div/div/p/text()"))
             {
-                Task.Run(new Action(()=>{ i = 1; })),
-                Task.Run(new Action(()=>{ j = 1; }))
-            };
-
-            Task.WaitAll(temp);
-
-            return;
+                Console.WriteLine(node.InnerText);
+            }
         }
     }
 }

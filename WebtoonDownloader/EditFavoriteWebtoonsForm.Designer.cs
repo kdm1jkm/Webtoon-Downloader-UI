@@ -84,7 +84,7 @@
             this.groupBox1.Controls.Add(this.pBox_thumbnail);
             this.groupBox1.Location = new System.Drawing.Point(366, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(457, 130);
+            this.groupBox1.Size = new System.Drawing.Size(457, 228);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "웹툰 정보";
@@ -92,7 +92,7 @@
             // lbl_detailInfo
             // 
             this.lbl_detailInfo.AutoSize = true;
-            this.lbl_detailInfo.Location = new System.Drawing.Point(137, 20);
+            this.lbl_detailInfo.Location = new System.Drawing.Point(6, 124);
             this.lbl_detailInfo.Name = "lbl_detailInfo";
             this.lbl_detailInfo.Size = new System.Drawing.Size(229, 60);
             this.lbl_detailInfo.TabIndex = 1;

@@ -544,6 +544,11 @@ namespace LibWebtoonDownloader
             HtmlNodeCollection nodeDetailInfos = doc.DocumentNode.SelectNodes("//div[@class='detail']/p/text()");
             string detailInfo = string.Empty;
 
+            if(nodeDetailInfos == null)
+            {
+                return "WEBTOON_DETAIL_INFO_NOT_FOUND";
+            }
+
             foreach(HtmlNode node in nodeDetailInfos)
             {
                 detailInfo += node.InnerText;

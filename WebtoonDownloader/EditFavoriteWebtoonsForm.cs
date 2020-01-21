@@ -39,6 +39,7 @@ namespace WebtoonDownloader
         public void LoadWebtoons()
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
+            
             cLstBox_WebtoonList.Items.Clear();
 
             LoadingForm loading = new LoadingForm();
@@ -108,13 +109,7 @@ namespace WebtoonDownloader
         {
             WebtoonInfo curInfo = (WebtoonInfo)cLstBox_WebtoonList.SelectedItem;
 
-            Task[] loading = new Task[]
-            {
-                Task.Run(new Action(()=>{curInfo.LoadWebtoonInfo();})),
-                Task.Run(new Action(()=>{curInfo.LoadDetailInfo();}))
-            };
-
-            Task.WaitAll(loading);
+            curInfo.LoadWebtoonInfo();
 
             //string tempPath = Path.GetTempFileName();
             //curInfo.ThumbnailPath = tempPath;
