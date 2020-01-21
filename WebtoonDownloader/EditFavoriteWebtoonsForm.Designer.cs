@@ -32,6 +32,11 @@
             this.btn_saveToNaverAcnt = new System.Windows.Forms.Button();
             this.btn_LoadFromNaverAcnt = new System.Windows.Forms.Button();
             this.btn_saveAndExit = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbl_detailInfo = new System.Windows.Forms.Label();
+            this.pBox_thumbnail = new System.Windows.Forms.PictureBox();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_thumbnail)).BeginInit();
             this.SuspendLayout();
             // 
             // cLstBox_WebtoonList
@@ -41,6 +46,7 @@
             this.cLstBox_WebtoonList.Name = "cLstBox_WebtoonList";
             this.cLstBox_WebtoonList.Size = new System.Drawing.Size(348, 228);
             this.cLstBox_WebtoonList.TabIndex = 0;
+            this.cLstBox_WebtoonList.SelectedIndexChanged += new System.EventHandler(this.cLstBox_WebtoonList_SelectedIndexChanged);
             // 
             // btn_saveToNaverAcnt
             // 
@@ -64,7 +70,7 @@
             // 
             // btn_saveAndExit
             // 
-            this.btn_saveAndExit.Location = new System.Drawing.Point(269, 283);
+            this.btn_saveAndExit.Location = new System.Drawing.Point(733, 283);
             this.btn_saveAndExit.Name = "btn_saveAndExit";
             this.btn_saveAndExit.Size = new System.Drawing.Size(90, 23);
             this.btn_saveAndExit.TabIndex = 2;
@@ -72,12 +78,41 @@
             this.btn_saveAndExit.UseVisualStyleBackColor = true;
             this.btn_saveAndExit.Click += new System.EventHandler(this.btn_saveAndExit_Click);
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.lbl_detailInfo);
+            this.groupBox1.Controls.Add(this.pBox_thumbnail);
+            this.groupBox1.Location = new System.Drawing.Point(366, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(457, 228);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "웹툰 정보";
+            // 
+            // lbl_detailInfo
+            // 
+            this.lbl_detailInfo.AutoSize = true;
+            this.lbl_detailInfo.Location = new System.Drawing.Point(6, 124);
+            this.lbl_detailInfo.Name = "lbl_detailInfo";
+            this.lbl_detailInfo.Size = new System.Drawing.Size(229, 60);
+            this.lbl_detailInfo.TabIndex = 1;
+            this.lbl_detailInfo.Text = "연애혁명|232[목]\r\n로맨스, 그런 건 우리에게 있을 수가 없어!\r\n신개념 개그 로맨스\r\n\r\n스토리, 개그, 드라마";
+            // 
+            // pBox_thumbnail
+            // 
+            this.pBox_thumbnail.Location = new System.Drawing.Point(6, 20);
+            this.pBox_thumbnail.Name = "pBox_thumbnail";
+            this.pBox_thumbnail.Size = new System.Drawing.Size(125, 101);
+            this.pBox_thumbnail.TabIndex = 0;
+            this.pBox_thumbnail.TabStop = false;
+            // 
             // EditFavoriteWebtoonsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(371, 318);
+            this.ClientSize = new System.Drawing.Size(835, 318);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btn_saveAndExit);
             this.Controls.Add(this.btn_LoadFromNaverAcnt);
             this.Controls.Add(this.btn_saveToNaverAcnt);
@@ -87,6 +122,9 @@
             this.ShowInTaskbar = false;
             this.Text = "EditFavoriteWebtoonsForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditFavoriteWebtoonsForm_FormClosing);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pBox_thumbnail)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -97,5 +135,8 @@
         private System.Windows.Forms.Button btn_saveToNaverAcnt;
         private System.Windows.Forms.Button btn_LoadFromNaverAcnt;
         private System.Windows.Forms.Button btn_saveAndExit;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label lbl_detailInfo;
+        private System.Windows.Forms.PictureBox pBox_thumbnail;
     }
 }

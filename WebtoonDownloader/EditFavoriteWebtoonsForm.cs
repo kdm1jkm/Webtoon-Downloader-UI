@@ -1,6 +1,7 @@
 ﻿using LibWebtoonDownloader;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WebtoonDownloader
@@ -10,10 +11,10 @@ namespace WebtoonDownloader
         public EditFavoriteWebtoonsForm()
         {
             InitializeComponent();
-            loadWebtoons();
+            LoadWebtoons();
         }
 
-        private WebtoonInfoCollection getCheckedList()
+        private WebtoonInfoCollection GetCheckedList()
         {
             WebtoonInfoCollection favoriteWebtoonInfos = new WebtoonInfoCollection();
 
@@ -30,14 +31,15 @@ namespace WebtoonDownloader
 
         private void btn_saveAndExit_Click(object sender, EventArgs e)
         {
-            getCheckedList().Save("favoriteWebtoonInfoCollection.dat");
+            GetCheckedList().Save("favoriteWebtoonInfoCollection.dat");
 
             this.Close();
         }
 
-        public void loadWebtoons()
+        public void LoadWebtoons()
         {
             WebtoonInfoCollection favoriteWebtoonInfos;
+            
             cLstBox_WebtoonList.Items.Clear();
 
             LoadingForm loading = new LoadingForm();
@@ -81,14 +83,14 @@ namespace WebtoonDownloader
         private void EditFavoriteWebtoonsForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             WebtoonInfoCollection loadedInfos = WebtoonInfoCollection.Load("favoriteWebtoonInfoCollection.dat");
-            WebtoonInfoCollection checkecInfos = getCheckedList();
+            WebtoonInfoCollection checkecInfos = GetCheckedList();
             if(checkecInfos != loadedInfos)
             {
                 DialogResult result = MessageBox.Show("변경 내용을 저장하시겠습니까?", "", MessageBoxButtons.YesNoCancel);
 
                 if(result == DialogResult.Yes)
                 {
-                    getCheckedList().Save("favoriteWebtoonInfoCollection.dat");
+                    GetCheckedList().Save("favoriteWebtoonInfoCollection.dat");
                 }
                 else if(result == DialogResult.Cancel)
                 {
@@ -101,6 +103,27 @@ namespace WebtoonDownloader
         {
             NaverLoginForm form = new NaverLoginForm(this);
             form.ShowDialog();
+        }
+
+        private void cLstBox_WebtoonList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WebtoonInfo curInfo = (WebtoonInfo)cLstBox_WebtoonList.SelectedItem;
+
+            curInfo.LoadWebtoonInfo();
+
+            //string tempPath = Path.GetTempFileName();
+            //curInfo.ThumbnailPath = tempPath;
+            //Webtoon.DownloadImage(curInfo.ThumbnailUrl, curInfo.ThumbnailPath);
+
+            pBox_thumbnail.ImageLocation = curInfo.ThumbnailUrl;
+            //pBox_thumbnail.ImageLocation = curInfo.ThumbnailPath;
+
+            string webtoonDetailInfo =
+                $"{curInfo.WebtoonName}|{curInfo.Author}[{curInfo.Weekday.Stringify()}]\n" +
+                $"{curInfo.DetailInfo}\n\n" +
+                $"{curInfo.Genre}";
+
+            lbl_detailInfo.Text = webtoonDetailInfo;
         }
     }
 }

@@ -37,7 +37,7 @@ namespace WebtoonDownloader
                 string metaDataPath = webtoonSrcDir + "\\metaData.dat";
                 if(File.Exists(metaDataPath))
                 {
-                    cLstBx_webtoonList.Items.Add(MetaData.Load(metaDataPath));
+                    cLstBx_webtoonList.Items.Add(WebtoonInfo.Load(metaDataPath));
                 }
                 else
                 {
@@ -70,12 +70,12 @@ namespace WebtoonDownloader
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
-                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+                WebtoonInfo curData = (WebtoonInfo)cLstBx_webtoonList.CheckedItems[i];
 
                 string htmlDir = $@"{path}\{curData.WebtoonName}_{curData.No}\!html.html";
                 List<string> imgs = new List<string>();
 
-                for(int j = 1 ; j <= curData.ImgCnt ; j++)
+                for(int j = 1 ; j <= curData.ImageCount ; j++)
                 {
                     string sourceFileName = string.Format(@"src\{0}_{1:000}\{2}.jpg", curData.WebtoonName, curData.No, j);
                     string destFileName = $@"{path}\{curData.WebtoonName}_{curData.No}\{j}.jpg";
@@ -124,7 +124,7 @@ namespace WebtoonDownloader
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
-                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+                WebtoonInfo curData = (WebtoonInfo)cLstBx_webtoonList.CheckedItems[i];
 
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
                 string destinationDir = $@"{path}\{curData.WebtoonName}_{curData.No}.zip";
@@ -153,7 +153,7 @@ namespace WebtoonDownloader
 
             for(int i = 0 ; i < cLstBx_webtoonList.CheckedItems.Count ; i++)
             {
-                MetaData curData = (MetaData)cLstBx_webtoonList.CheckedItems[i];
+                WebtoonInfo curData = (WebtoonInfo)cLstBx_webtoonList.CheckedItems[i];
 
                 string sourceDir = $@"src\{curData.WebtoonName}_{curData.No.ToString("D3")}";
 

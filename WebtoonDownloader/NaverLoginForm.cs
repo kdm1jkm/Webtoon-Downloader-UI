@@ -24,7 +24,7 @@ namespace WebtoonDownloader
             WebtoonInfoCollection favoriteInfos = Webtoon.GetFavoriteWebtoonInfosFromAccount(tBox_id.Text, tBox_password.Text);
             favoriteInfos.Save("favoriteWebtoonInfoCollection.dat");
 
-            Thread loadThread = new Thread(new ThreadStart(motherForm.loadWebtoons));
+            Thread loadThread = new Thread(new ThreadStart(motherForm.LoadWebtoons));
             loadThread.Start();
 
             this.Close();
