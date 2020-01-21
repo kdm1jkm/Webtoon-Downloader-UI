@@ -192,15 +192,21 @@ namespace WebtoonDownloader
 
                 for(int i = 0 ; i < curInfo.ImageCount ; i++)
                 {
-                    Task downloadThread = new Task(new Action(() =>
+                    string url = curInfo.ImageSrcs[i];
+                    string imgName = $@"\{i + 1}.jpg";
+                    Action downloadAction = new Action(() =>
                     {
                         downloadSemaphore.WaitOne();
-                        Webtoon.DownloadImage(curInfo.ImageSrcs[i], saveDir + $@"\{i}.jpg");
+                        Webtoon.DownloadImage(url, saveDir + imgName);
                         downloadSemaphore.Release();
-                    }));
+                    });
 
-                    downloadThreads[i] = downloadThread;
-                    downloadThread.Start();
+                    downloadThreads[i] = new Task(downloadAction);
+                }
+
+                foreach(Task task in downloadThreads)
+                {
+                    task.Start();
                 }
 
                 Task.WaitAll(downloadThreads);
