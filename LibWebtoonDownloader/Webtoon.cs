@@ -591,5 +591,14 @@ namespace LibWebtoonDownloader
 
             return srcs;
         }
+
+
+
+        public static string GetWebtoonThumbnailUrl(HtmlDocument doc)
+        {
+            HtmlNode nodeThumbnail = doc.DocumentNode.SelectSingleNode("//*[@id='content']/div/div/a/img");
+            HtmlAttribute attSrc = nodeThumbnail.Attributes["src"];
+            return attSrc.Value;
+        }
     }
 }

@@ -1,10 +1,5 @@
-﻿using HtmlAgilityPack;
-using LibWebtoonDownloader;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace TestWebtoonDownloader
 {
@@ -13,19 +8,15 @@ namespace TestWebtoonDownloader
         [STAThread]
         static void Main(string[] args)
         {
-            WebtoonInfo info = new WebtoonInfo();
-            info.Id = 570503;
+            int i = 0;
+            int j = 0;
+            Task[] temp = new Task[2]
+            {
+                Task.Run(new Action(()=>{ i = 1; })),
+                Task.Run(new Action(()=>{ j = 1; }))
+            };
 
-            info.LoadWebtoonInfo();
-            info.No = 7;
-
-            info.LoadDetailInfo();
-
-            //info.WebtoonName = "wowwow";
-
-            //info.Weekday[DayOfWeek.Sunday] = true;
-
-            WebtoonInfo info2 = info.Copy();
+            Task.WaitAll(temp);
 
             return;
         }

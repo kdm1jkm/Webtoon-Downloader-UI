@@ -95,6 +95,10 @@ namespace LibWebtoonDownloader
         public string[] ImageSrcs { get; private set; }
 
 
+        public string ThumbnailUrl { get; private set; }
+        public string ThumbnailPath { get; set; }
+
+
         public override string ToString()
         {
             if(Id == 0)
@@ -191,6 +195,7 @@ namespace LibWebtoonDownloader
                 Author = Webtoon.GetWebtoonAuthor(doc);
                 DetailInfo = Webtoon.GetWebtoonDetailInfo(doc);
                 Genre = Webtoon.GetWebtoonGenre(doc);
+                ThumbnailUrl = Webtoon.GetWebtoonThumbnailUrl(doc);
 
                 if(WebtoonMainpage == null)
                 {
