@@ -40,7 +40,7 @@ namespace WebtoonDownloader
                 curTasks = WebtoonInfoQueue.Load("curQueue.dat");
             }
 
-            WebtoonInfoCollection queueList = (WebtoonInfoCollection)curTasks.ToList();
+            WebtoonInfoCollection queueList = curTasks;
 
             for(int i = 0 ; i < queueList.Count ; i++)
             {

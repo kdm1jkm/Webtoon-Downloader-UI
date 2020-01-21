@@ -86,5 +86,17 @@ namespace LibWebtoonDownloader
         {
             return left.Equals(right);
         }
+
+
+
+        public static implicit operator WebtoonInfoCollection (WebtoonInfoQueue infos)
+        {
+            WebtoonInfoCollection result = new WebtoonInfoCollection();
+            foreach(WebtoonInfo info in infos.ToArray())
+            {
+                result.Add(info);
+            }
+            return result;
+        }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using HtmlAgilityPack;
 using LibWebtoonDownloader;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace TestWebtoonDownloader
 {
@@ -13,21 +10,14 @@ namespace TestWebtoonDownloader
         [STAThread]
         static void Main(string[] args)
         {
-            WebtoonInfo info = new WebtoonInfo();
-            info.Id = 570503;
+            HtmlWeb web = new HtmlWeb();
 
-            info.LoadWebtoonInfo();
-            info.No = 7;
+            HtmlDocument doc = web.Load("https://comic.naver.com/webtoon/list.nhn?titleId=723714");
 
-            info.LoadDetailInfo();
-
-            //info.WebtoonName = "wowwow";
-
-            //info.Weekday[DayOfWeek.Sunday] = true;
-
-            WebtoonInfo info2 = info.Copy();
-
-            return;
+            foreach(HtmlNode node in doc.DocumentNode.SelectNodes("/html/body/div/div/div/div/div/p/text()"))
+            {
+                Console.WriteLine(node.InnerText);
+            }
         }
     }
 }

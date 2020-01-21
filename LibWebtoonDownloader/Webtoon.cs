@@ -544,6 +544,11 @@ namespace LibWebtoonDownloader
             HtmlNodeCollection nodeDetailInfos = doc.DocumentNode.SelectNodes("//div[@class='detail']/p/text()");
             string detailInfo = string.Empty;
 
+            if(nodeDetailInfos == null)
+            {
+                return "WEBTOON_DETAIL_INFO_NOT_FOUND";
+            }
+
             foreach(HtmlNode node in nodeDetailInfos)
             {
                 detailInfo += node.InnerText;
@@ -590,6 +595,15 @@ namespace LibWebtoonDownloader
             }
 
             return srcs;
+        }
+
+
+
+        public static string GetWebtoonThumbnailUrl(HtmlDocument doc)
+        {
+            HtmlNode nodeThumbnail = doc.DocumentNode.SelectSingleNode("//*[@id='content']/div/div/a/img");
+            HtmlAttribute attSrc = nodeThumbnail.Attributes["src"];
+            return attSrc.Value;
         }
     }
 }
