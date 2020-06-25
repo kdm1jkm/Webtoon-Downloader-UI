@@ -27,12 +27,12 @@ namespace WebtoonDownloader
             to = to.AddSeconds(-to.Second);
             to = to.AddMilliseconds(-to.Millisecond);
 
-            if(File.Exists("lastDownloaded.dat"))
+            if (File.Exists("lastDownloaded.dat"))
             {
-                using(Stream ls = new FileStream("lastDownloaded.dat", FileMode.Open))
+                using (Stream ls = new FileStream("lastDownloaded.dat", FileMode.Open))
                 {
                     BinaryFormatter deserializer = new BinaryFormatter();
-                    from = (DateTime)deserializer.Deserialize(ls);
+                    from = (DateTime) deserializer.Deserialize(ls);
                 }
             }
             else
@@ -44,7 +44,7 @@ namespace WebtoonDownloader
                 from = from.AddMilliseconds(-from.Millisecond);
             }
 
-            if(from > to)
+            if (from > to)
             {
                 from = to;
                 from = from.AddHours(-from.Hour);
@@ -71,17 +71,19 @@ namespace WebtoonDownloader
                 DayOfWeek end,
                 DayOfWeek item) =>
             {
-                int startN = (int)start;
-                int endN = (int)end;
-                int itemN = (int)item;
-                if(startN > endN)
+                int startN = (int) start;
+                int endN = (int) end;
+                int itemN = (int) item;
+                if (startN > endN)
                 {
                     endN += 7;
                 }
-                if(itemN < startN)
+
+                if (itemN < startN)
                 {
                     itemN += 7;
                 }
+
                 return itemN <= endN;
             });
 
@@ -89,20 +91,21 @@ namespace WebtoonDownloader
             loading.pBar.Maximum = infos.Count;
             loading.Show();
 
-            for(int i = 0 ; i < infos.Count ; i++)
+            for (int i = 0; i < infos.Count; i++)
             {
                 bool isinPeriod = false;
 
-                foreach(DayOfWeek day in infos[i].Weekdays)
+                foreach (DayOfWeek day in infos[i].Weekdays)
                 {
                     isinPeriod |= isBetween(tmpk_from.Value.DayOfWeek, tmpk_to.Value.DayOfWeek, day);
                 }
 
-                if(isinPeriod)
+                if (isinPeriod)
                 {
-                    WebtoonInfoCollection favoriteInPeriod =Webtoon.WebtoonInfoInPeriod(tmpk_from.Value, tmpk_to.Value, infos[i]);
+                    WebtoonInfoCollection favoriteInPeriod =
+                        Webtoon.WebtoonInfoInPeriod(tmpk_from.Value, tmpk_to.Value, infos[i]);
 
-                    foreach(WebtoonInfo info in favoriteInPeriod)
+                    foreach (WebtoonInfo info in favoriteInPeriod)
                     {
                         motherForm.curTasks.Enqueue(info);
                     }
@@ -110,9 +113,10 @@ namespace WebtoonDownloader
 
                 loading.pBar.PerformStep();
             }
+
             motherForm.LoadQueue();
 
-            using(Stream ws = new FileStream("lastDownloaded.dat", FileMode.Create))
+            using (Stream ws = new FileStream("lastDownloaded.dat", FileMode.Create))
             {
                 BinaryFormatter serializer = new BinaryFormatter();
                 serializer.Serialize(ws, tmpk_from.Value.AddDays(1));
