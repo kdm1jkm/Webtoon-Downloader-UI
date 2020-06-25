@@ -10,8 +10,8 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border Background="#2ecc71" Name="btnFill" BorderThickness="0">
-                            <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#000000"/>
+                        <Border Background="#34495e" Name="btnFill" BorderThickness="0">
+                            <TextBlock Text="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#ecf0f1"/>
                         </Border>
 
                         <ControlTemplate.Triggers>
@@ -21,7 +21,7 @@
                             </Trigger>
 
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background" Value="#1abc9c" TargetName="btnFill"/>
+                                <Setter Property="Background" Value="#7f8c8d" TargetName="btnFill"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -40,7 +40,7 @@
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="VerticalAlignment" Value="Stretch"/>
             <Setter Property="Margin" Value="10"/>
-            <Setter Property="Background" Value="#16a085"/>
+            <Setter Property="Background" Value="#7f8c8d"/>
             <Setter Property="BorderThickness" Value="0"/>
         </Style>
     </Application.Resources>
