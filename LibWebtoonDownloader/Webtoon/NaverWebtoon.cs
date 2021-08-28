@@ -75,6 +75,12 @@ namespace LibWebtoonDownloader.Webtoon
             if (titleId == null) return null;
             int id = int.Parse(titleId);
 
+            return Load(id);
+        }
+
+        private static NaverWebtoon? Load(int id)
+        {
+            HtmlWeb web = new HtmlWeb();
             // 웹툰 페이지
             var webtoonUri = new Uri($"https://comic.naver.com/webtoon/list?titleId={id}");
             var webtoonDoc = web.Load(webtoonUri);
@@ -95,6 +101,37 @@ namespace LibWebtoonDownloader.Webtoon
                 Genre = genre,
                 ThumbnailUrl = thumbnailURl == null ? null : new Uri(thumbnailURl)
             };
+        }
+
+        public static IEnumerable<(string name, int Id)>? Search(string keyWord)
+        {
+            HtmlWeb web = new HtmlWeb();
+
+            // 웹 접속
+            string encodedName = UrlEncoder.Default.Encode(keyWord);
+            var searchUri = new Uri($"https://comic.naver.com/search.nhn?m=webtoon&keyword={encodedName}");
+            var searchDoc = web.Load(searchUri);
+
+            // 첫 번째 검색
+            var links = searchDoc.DocumentNode.SelectNodes(
+                "//div[@class=\"resultBox\"][1]/ul[@class=\"resultList\"]/li/h5/a"
+            );
+            if (links == null) yield break;
+            foreach (var link in links)
+            {
+                string value = link.Attributes["href"].Value;
+                string httpsComicNaverCom = "https://comic.naver.com" + value;
+                var linkUri = new Uri(httpsComicNaverCom);
+
+                // titleId
+                string? titleId = HttpUtility.ParseQueryString(linkUri.Query)["titleId"];
+                if (titleId == null) continue;
+                int id = int.Parse(titleId);
+
+                string name = link.InnerText;
+
+                yield return (name, id);
+            }
         }
 
         private static string? GetWebtoonName(HtmlDocument doc)
