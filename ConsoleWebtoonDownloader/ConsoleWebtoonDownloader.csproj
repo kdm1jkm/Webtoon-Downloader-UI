@@ -9,4 +9,8 @@
         <ProjectReference Include="..\LibWebtoonDownloader\LibWebtoonDownloader.csproj"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <PackageReference Include="ShellProgressBar" Version="5.1.0"/>
+    </ItemGroup>
+
 </Project>
