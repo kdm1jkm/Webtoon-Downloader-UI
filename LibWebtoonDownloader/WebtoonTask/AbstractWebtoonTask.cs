@@ -10,12 +10,13 @@ namespace LibWebtoonDownloader.WebtoonTask
 {
     public abstract class AbstractWebtoonTask
     {
+        public delegate void DownloadImageFinishHandler(int max, int count, int num);
+
         private const int DEFAULT_THREAD_COUNT = 3;
 
         private const string USER_AGENT =
             "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36";
 
-        private Action<int>? _onEachTaskFinished;
         private DirectoryInfo? _targetDirectory;
         private int? _threadCount;
 
@@ -24,11 +25,12 @@ namespace LibWebtoonDownloader.WebtoonTask
         private DirectoryInfo TargetDirectory
             => _targetDirectory ?? new DirectoryInfo($"download/{this}");
 
-        private Action<int> OnEachTaskFinished
-            => _onEachTaskFinished ?? (_ => { });
+        private DownloadImageFinishHandler? OnEachTaskFinished { get; set; }
 
         private int ThreadCount
             => _threadCount ?? DEFAULT_THREAD_COUNT;
+
+        public int ImageCount => ImageQueue.Count;
 
         public abstract override string ToString();
 
@@ -41,8 +43,11 @@ namespace LibWebtoonDownloader.WebtoonTask
 
                 SemaphoreSlim semaphore = new SemaphoreSlim(ThreadCount);
 
-                int count = 0;
+                int filenameCount = 0;
+                int finished = 0;
                 var tasks = new List<Task>();
+
+                int max = ImageQueue.Count;
 
                 while (!ImageQueue.IsEmpty)
                 {
@@ -51,16 +56,16 @@ namespace LibWebtoonDownloader.WebtoonTask
                         continue;
 
                     string extension = address.ToString().Split(".")[^1];
-                    string fileName = Path.Combine(TargetDirectory.FullName, $"{++count:D4}.{extension}");
+                    string fileName = Path.Combine(TargetDirectory.FullName, $"{++filenameCount:D4}.{extension}");
 
                     WebClient client = new WebClient();
                     client.Headers.Add(HttpRequestHeader.UserAgent, USER_AGENT);
 
-                    int localCount = count;
-
-                    var task = client.DownloadFileTaskAsync(address, fileName).ContinueWith(_ =>
+                    int count = filenameCount;
+                    var task = client.DownloadFileTaskAsync(address, fileName).ContinueWith(t =>
                     {
-                        OnEachTaskFinished(localCount);
+                        OnEachTaskFinished?.Invoke(max, ++finished, count);
+                        tasks.Remove(t);
                         semaphore.Release();
                     });
                     tasks.Add(task);
@@ -76,9 +81,9 @@ namespace LibWebtoonDownloader.WebtoonTask
             return this;
         }
 
-        public AbstractWebtoonTask SetOnEachTaskFinished(Action<int> action)
+        public AbstractWebtoonTask SetOnEachTaskFinished(DownloadImageFinishHandler action)
         {
-            _onEachTaskFinished = action;
+            OnEachTaskFinished = action;
             return this;
         }
 
