@@ -1,8 +1,8 @@
 ﻿namespace LibWebtoonDownloader
 {
-    public static class Util
+    internal static class Util
     {
-        public static string ReplaceSpecialCharacter(this string str)
+        internal static string ReplaceSpecialCharacter(this string str)
         {
             return str.Replace("\\", "＼")
                 .Replace("/", "／")
