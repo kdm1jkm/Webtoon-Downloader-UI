@@ -3,6 +3,17 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <AssemblyName>Webtoon.net</AssemblyName>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageId>Webtoon.net</PackageId>
+        <PackageVersion>0.0.1</PackageVersion>
+        <Title>Webtoon downloader package</Title>
+        <Authors>kdm1jkm</Authors>
+        <Description>Webtoon downloader package</Description>
+        <RepositoryUrl>https://github.com/kdm1jkm/Webtoon.net</RepositoryUrl>
+        <RepositoryType>github</RepositoryType>
+        <AssemblyVersion>0.0.1</AssemblyVersion>
+        <FileVersion>0.0.1</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
