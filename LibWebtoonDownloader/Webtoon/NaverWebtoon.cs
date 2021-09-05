@@ -100,13 +100,13 @@ namespace LibWebtoonDownloader.Webtoon
             string? thumbnailURl = GetWebtoonThumbnailUrl(webtoonDoc);
 
             return new NaverWebtoon(
-                id: id,
-                doc: webtoonDoc,
-                webtoonName: name,
-                description: $"({genre})_{detailInfo}",
-                uri: webtoonUri,
-                author: author,
-                thumbnailUrl: thumbnailURl == null ? null : new Uri(thumbnailURl)
+                id,
+                webtoonDoc,
+                name,
+                $"({genre})_{detailInfo}",
+                webtoonUri,
+                author,
+                thumbnailURl == null ? null : new Uri(thumbnailURl)
             );
         }
 
