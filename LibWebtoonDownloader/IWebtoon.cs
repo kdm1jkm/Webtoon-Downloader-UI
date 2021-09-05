@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using LibWebtoonDownloader.WebtoonTask;
 
-namespace LibWebtoonDownloader.Webtoon
+namespace LibWebtoonDownloader
 {
     /// <summary>
     ///     한 웹툰 종류를 나타냄. 여기에서 IWebtoonTask 생성.

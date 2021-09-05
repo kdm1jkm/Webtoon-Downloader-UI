@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text.Encodings.Web;
 using System.Web;
 using HtmlAgilityPack;
-using LibWebtoonDownloader.WebtoonTask;
 
-namespace LibWebtoonDownloader.Webtoon
+namespace LibWebtoonDownloader.NaverWebtoon
 {
     public class NaverWebtoon : IWebtoon
     {
