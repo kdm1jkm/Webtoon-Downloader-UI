@@ -95,28 +95,10 @@ namespace LibWebtoonDownloader.NaverWebtoon
 
         public static NaverWebtoon? Load(string webtoonName)
         {
-            HtmlWeb web = new HtmlWeb();
+            var webtoonList = GetEveryWebtoon();
 
-            // 웹 접속
-            string encodedName = UrlEncoder.Default.Encode(webtoonName);
-            var searchUri = new Uri($"https://comic.naver.com/search.nhn?m=webtoon&keyword={encodedName}");
-            var searchDoc = web.Load(searchUri);
-
-            // 첫 번째 검색
-            var link = searchDoc.DocumentNode.SelectSingleNode(
-                "//div[@class=\"resultBox\"][1]/ul[@class=\"resultList\"]/li/h5/a"
-            );
-            if (link == null) return null;
-            string value = link.Attributes["href"].Value;
-            string httpsComicNaverCom = "https://comic.naver.com" + value;
-            var linkUri = new Uri(httpsComicNaverCom);
-
-            // titleId
-            string? titleId = HttpUtility.ParseQueryString(linkUri.Query)["titleId"];
-            if (titleId == null) return null;
-            int id = int.Parse(titleId);
-
-            return Load(id);
+            var searchResult = webtoonList.FirstOrDefault(result => result.Name == webtoonName);
+            return searchResult == null ? null : Load(searchResult.Id);
         }
 
         private static NaverWebtoon? Load(int id)
