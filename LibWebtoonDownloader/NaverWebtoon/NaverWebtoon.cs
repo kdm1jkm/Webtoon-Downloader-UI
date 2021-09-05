@@ -9,6 +9,8 @@ namespace LibWebtoonDownloader.NaverWebtoon
 {
     public class NaverWebtoon : IWebtoon
     {
+        private static List<NaverWebtoonSearchResult>? _webtoonList;
+
         private NaverWebtoon(int id, HtmlDocument doc, string webtoonName, string description, Uri uri, string author,
             Uri? thumbnailUrl)
         {
@@ -54,6 +56,41 @@ namespace LibWebtoonDownloader.NaverWebtoon
         public AbstractWebtoonTask GetTask(int no)
         {
             return new NaverWebtoonTask(Id, no, this);
+        }
+
+        public static List<NaverWebtoonSearchResult> GetEveryWebtoon()
+        {
+            if (_webtoonList != null) return _webtoonList;
+
+            var result = new List<NaverWebtoonSearchResult>();
+
+            var doc = new HtmlWeb().Load("https://comic.naver.com/webtoon/weekday");
+
+            //웹툰 링크 선택
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
+
+            foreach (HtmlNode node in nodes)
+            {
+                //각 웹툰 주소
+                HtmlAttribute attribute = node.Attributes["href"];
+
+                //이름 파싱
+                string name = node.InnerText;
+
+                //주소에서 파싱을 위해 쿼리부분만 떼옴(맞는 표현인가?)
+                string query = attribute.Value.Split('?')[1].Replace("amp;", "");
+
+                //titleID, 요일 파싱
+                int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
+
+                if (result.Any(webtoon => webtoon.Id == titleId)) continue;
+
+                result.Add(new NaverWebtoonSearchResult(titleId, name));
+            }
+
+            _webtoonList = result;
+
+            return _webtoonList;
         }
 
         public static NaverWebtoon? Load(string webtoonName)
@@ -109,7 +146,7 @@ namespace LibWebtoonDownloader.NaverWebtoon
             );
         }
 
-        public static IEnumerable<(string name, int Id)>? Search(string keyWord)
+        public static IEnumerable<NaverWebtoonSearchResult> Search(string keyWord)
         {
             HtmlWeb web = new HtmlWeb();
 
@@ -136,7 +173,7 @@ namespace LibWebtoonDownloader.NaverWebtoon
 
                 string name = link.InnerText;
 
-                yield return (name, id);
+                yield return new NaverWebtoonSearchResult(id, name);
             }
         }
 
