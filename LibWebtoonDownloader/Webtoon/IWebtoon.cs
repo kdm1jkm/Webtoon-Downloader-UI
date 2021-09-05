@@ -10,13 +10,12 @@ namespace LibWebtoonDownloader.Webtoon
     public interface IWebtoon
     {
         public string WebtoonName { get; }
-        public string? Author { get; }
-        public string? DetailInfo { get; }
-        public string? Genre { get; }
+        public string Author { get; }
+        public string Description { get; }
         public Uri Uri { get; }
         public Uri? ThumbnailUrl { get; }
 
         public IEnumerable<AbstractWebtoonTask>? GetEveryTask();
-        AbstractWebtoonTask GetTaskByNo(int no);
+        AbstractWebtoonTask? GetTask(int number);
     }
 }

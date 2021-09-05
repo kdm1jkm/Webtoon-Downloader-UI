@@ -10,22 +10,26 @@ namespace LibWebtoonDownloader.Webtoon
 {
     public class NaverWebtoon : IWebtoon
     {
-        private NaverWebtoon(string webtoonName, Uri uri, HtmlDocument doc)
+        private NaverWebtoon(int id, HtmlDocument doc, string webtoonName, string description, Uri uri, string author,
+            Uri? thumbnailUrl)
         {
-            WebtoonName = webtoonName;
-            Uri = uri;
+            Id = id;
             Doc = doc;
+            WebtoonName = webtoonName;
+            Description = description;
+            Uri = uri;
+            Author = author;
+            ThumbnailUrl = thumbnailUrl;
         }
 
-        private int Id { get; init; }
+        private int Id { get; }
         private HtmlDocument Doc { get; }
 
         public string WebtoonName { get; }
+        public string Description { get; }
         public Uri Uri { get; }
-        public string? Author { get; private init; }
-        public string? DetailInfo { get; private init; }
-        public string? Genre { get; private init; }
-        public Uri? ThumbnailUrl { get; private init; }
+        public string Author { get; }
+        public Uri? ThumbnailUrl { get; }
 
         public IEnumerable<AbstractWebtoonTask>? GetEveryTask()
         {
@@ -40,14 +44,15 @@ namespace LibWebtoonDownloader.Webtoon
             string? no = HttpUtility.ParseQueryString(href.Query)["no"];
             if (no == null) return null;
 
-            int lastEp = int.Parse(no);
+
+            if (!int.TryParse(no, out int lastEp)) return null;
 
             return Enumerable
                 .Range(1, lastEp)
                 .Select(i => new NaverWebtoonTask(Id, i, this));
         }
 
-        public AbstractWebtoonTask GetTaskByNo(int no)
+        public AbstractWebtoonTask GetTask(int no)
         {
             return new NaverWebtoonTask(Id, no, this);
         }
@@ -89,18 +94,20 @@ namespace LibWebtoonDownloader.Webtoon
             if (name == null) return null;
 
             string? author = GetWebtoonAuthor(webtoonDoc);
+            if (author == null) return null;
             string? detailInfo = GetWebtoonDetailInfo(webtoonDoc);
             string? genre = GetWebtoonGenre(webtoonDoc);
             string? thumbnailURl = GetWebtoonThumbnailUrl(webtoonDoc);
 
-            return new NaverWebtoon(name, webtoonUri, webtoonDoc)
-            {
-                Id = id,
-                Author = author,
-                DetailInfo = detailInfo,
-                Genre = genre,
-                ThumbnailUrl = thumbnailURl == null ? null : new Uri(thumbnailURl)
-            };
+            return new NaverWebtoon(
+                id: id,
+                doc: webtoonDoc,
+                webtoonName: name,
+                description: $"({genre})_{detailInfo}",
+                uri: webtoonUri,
+                author: author,
+                thumbnailUrl: thumbnailURl == null ? null : new Uri(thumbnailURl)
+            );
         }
 
         public static IEnumerable<(string name, int Id)>? Search(string keyWord)
@@ -175,6 +182,5 @@ namespace LibWebtoonDownloader.Webtoon
         {
             return $"[NaverWebtoon]{Author}-{WebtoonName}({Id})";
         }
-        // holy shit! - 도현
     }
 }
