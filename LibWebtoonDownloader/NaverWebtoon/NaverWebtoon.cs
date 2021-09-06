@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Web;
+using Fastenshtein;
 using HtmlAgilityPack;
 
 namespace LibWebtoonDownloader.NaverWebtoon
@@ -130,33 +130,13 @@ namespace LibWebtoonDownloader.NaverWebtoon
 
         public static IEnumerable<NaverWebtoonSearchResult> Search(string keyWord)
         {
-            HtmlWeb web = new HtmlWeb();
+            var webtoonList = GetEveryWebtoon();
 
-            // 웹 접속
-            string encodedName = UrlEncoder.Default.Encode(keyWord);
-            var searchUri = new Uri($"https://comic.naver.com/search.nhn?m=webtoon&keyword={encodedName}");
-            var searchDoc = web.Load(searchUri);
-
-            // 첫 번째 검색
-            var links = searchDoc.DocumentNode.SelectNodes(
-                "//div[@class=\"resultBox\"][1]/ul[@class=\"resultList\"]/li/h5/a"
-            );
-            if (links == null) yield break;
-            foreach (var link in links)
-            {
-                string value = link.Attributes["href"].Value;
-                string httpsComicNaverCom = "https://comic.naver.com" + value;
-                var linkUri = new Uri(httpsComicNaverCom);
-
-                // titleId
-                string? titleId = HttpUtility.ParseQueryString(linkUri.Query)["titleId"];
-                if (titleId == null) continue;
-                int id = int.Parse(titleId);
-
-                string name = link.InnerText;
-
-                yield return new NaverWebtoonSearchResult(id, name);
-            }
+            return webtoonList
+                .Select(result => (SearchResult: result, Distance: Levenshtein.Distance(result.Name, keyWord)))
+                .Where(it => it.Distance != Math.Max(keyWord.Length, it.SearchResult.Name.Length))
+                .OrderBy(it => it.Distance)
+                .Select(it => it.SearchResult);
         }
 
         private static string? GetWebtoonName(HtmlDocument doc)
