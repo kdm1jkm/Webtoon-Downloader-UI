@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibWebtoonDownloader", "LibWebtoonDownloader\LibWebtoonDownloader.csproj", "{2348EF92-4263-4F1D-87E8-094712A5BD2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleWebtoonDownloader", "ConsoleWebtoonDownloader\ConsoleWebtoonDownloader.csproj", "{3DD2FDF6-99A0-43D5-9191-34B871BE526C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{2348EF92-4263-4F1D-87E8-094712A5BD2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2348EF92-4263-4F1D-87E8-094712A5BD2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2348EF92-4263-4F1D-87E8-094712A5BD2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DD2FDF6-99A0-43D5-9191-34B871BE526C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DD2FDF6-99A0-43D5-9191-34B871BE526C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DD2FDF6-99A0-43D5-9191-34B871BE526C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DD2FDF6-99A0-43D5-9191-34B871BE526C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
