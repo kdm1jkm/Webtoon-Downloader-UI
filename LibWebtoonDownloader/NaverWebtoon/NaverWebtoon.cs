@@ -1,31 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Encodings.Web;
 using System.Web;
+using Fastenshtein;
 using HtmlAgilityPack;
-using LibWebtoonDownloader.WebtoonTask;
 
-namespace LibWebtoonDownloader.Webtoon
+namespace LibWebtoonDownloader.NaverWebtoon
 {
     public class NaverWebtoon : IWebtoon
     {
-        private NaverWebtoon(string webtoonName, Uri uri, HtmlDocument doc)
+        private static List<NaverWebtoonSearchResult>? _webtoonList;
+
+        private NaverWebtoon(int id, HtmlDocument doc, string webtoonName, string description, Uri uri, string author,
+            Uri? thumbnailUrl)
         {
-            WebtoonName = webtoonName;
-            Uri = uri;
+            Id = id;
             Doc = doc;
+            WebtoonName = webtoonName;
+            Description = description;
+            Uri = uri;
+            Author = author;
+            ThumbnailUrl = thumbnailUrl;
         }
 
-        private int Id { get; init; }
+        private int Id { get; }
         private HtmlDocument Doc { get; }
 
         public string WebtoonName { get; }
+        public string Description { get; }
         public Uri Uri { get; }
-        public string? Author { get; private init; }
-        public string? DetailInfo { get; private init; }
-        public string? Genre { get; private init; }
-        public Uri? ThumbnailUrl { get; private init; }
+        public string Author { get; }
+        public Uri? ThumbnailUrl { get; }
 
         public IEnumerable<AbstractWebtoonTask>? GetEveryTask()
         {
@@ -40,42 +45,60 @@ namespace LibWebtoonDownloader.Webtoon
             string? no = HttpUtility.ParseQueryString(href.Query)["no"];
             if (no == null) return null;
 
-            int lastEp = int.Parse(no);
+
+            if (!int.TryParse(no, out int lastEp)) return null;
 
             return Enumerable
                 .Range(1, lastEp)
                 .Select(i => new NaverWebtoonTask(Id, i, this));
         }
 
-        public AbstractWebtoonTask GetTaskByNo(int no)
+        public AbstractWebtoonTask GetTask(int no)
         {
             return new NaverWebtoonTask(Id, no, this);
         }
 
+        public static List<NaverWebtoonSearchResult> GetEveryWebtoon()
+        {
+            if (_webtoonList != null) return _webtoonList;
+
+            var result = new List<NaverWebtoonSearchResult>();
+
+            var doc = new HtmlWeb().Load("https://comic.naver.com/webtoon/weekday");
+
+            //웹툰 링크 선택
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id='content']/div[4]/div/div/ul/li/a");
+
+            foreach (HtmlNode node in nodes)
+            {
+                //각 웹툰 주소
+                HtmlAttribute attribute = node.Attributes["href"];
+
+                //이름 파싱
+                string name = node.InnerText;
+
+                //주소에서 파싱을 위해 쿼리부분만 떼옴(맞는 표현인가?)
+                string query = attribute.Value.Split('?')[1].Replace("amp;", "");
+
+                //titleID, 요일 파싱
+                int titleId = int.Parse(HttpUtility.ParseQueryString(query)["titleId"]);
+
+                if (result.Any(webtoon => webtoon.Id == titleId)) continue;
+
+                result.Add(new NaverWebtoonSearchResult(titleId, name));
+            }
+
+            _webtoonList = result;
+
+            return _webtoonList;
+        }
+
         public static NaverWebtoon? Load(string webtoonName)
         {
-            HtmlWeb web = new HtmlWeb();
+            var webtoonList = GetEveryWebtoon();
 
-            // 웹 접속
-            string encodedName = UrlEncoder.Default.Encode(webtoonName);
-            var searchUri = new Uri($"https://comic.naver.com/search.nhn?m=webtoon&keyword={encodedName}");
-            var searchDoc = web.Load(searchUri);
-
-            // 첫 번째 검색
-            var link = searchDoc.DocumentNode.SelectSingleNode(
-                "//div[@class=\"resultBox\"][1]/ul[@class=\"resultList\"]/li/h5/a"
-            );
-            if (link == null) return null;
-            string value = link.Attributes["href"].Value;
-            string httpsComicNaverCom = "https://comic.naver.com" + value;
-            var linkUri = new Uri(httpsComicNaverCom);
-
-            // titleId
-            string? titleId = HttpUtility.ParseQueryString(linkUri.Query)["titleId"];
-            if (titleId == null) return null;
-            int id = int.Parse(titleId);
-
-            return Load(id);
+            var searchResult = webtoonList.FirstOrDefault(result => result.Name == webtoonName);
+            return searchResult == null ? null : Load(searchResult.Id);
         }
 
         private static NaverWebtoon? Load(int id)
@@ -89,49 +112,31 @@ namespace LibWebtoonDownloader.Webtoon
             if (name == null) return null;
 
             string? author = GetWebtoonAuthor(webtoonDoc);
+            if (author == null) return null;
             string? detailInfo = GetWebtoonDetailInfo(webtoonDoc);
             string? genre = GetWebtoonGenre(webtoonDoc);
             string? thumbnailURl = GetWebtoonThumbnailUrl(webtoonDoc);
 
-            return new NaverWebtoon(name, webtoonUri, webtoonDoc)
-            {
-                Id = id,
-                Author = author,
-                DetailInfo = detailInfo,
-                Genre = genre,
-                ThumbnailUrl = thumbnailURl == null ? null : new Uri(thumbnailURl)
-            };
+            return new NaverWebtoon(
+                id,
+                webtoonDoc,
+                name,
+                $"({genre})_{detailInfo}",
+                webtoonUri,
+                author,
+                thumbnailURl == null ? null : new Uri(thumbnailURl)
+            );
         }
 
-        public static IEnumerable<(string name, int Id)>? Search(string keyWord)
+        public static IEnumerable<NaverWebtoonSearchResult> Search(string keyWord)
         {
-            HtmlWeb web = new HtmlWeb();
+            var webtoonList = GetEveryWebtoon();
 
-            // 웹 접속
-            string encodedName = UrlEncoder.Default.Encode(keyWord);
-            var searchUri = new Uri($"https://comic.naver.com/search.nhn?m=webtoon&keyword={encodedName}");
-            var searchDoc = web.Load(searchUri);
-
-            // 첫 번째 검색
-            var links = searchDoc.DocumentNode.SelectNodes(
-                "//div[@class=\"resultBox\"][1]/ul[@class=\"resultList\"]/li/h5/a"
-            );
-            if (links == null) yield break;
-            foreach (var link in links)
-            {
-                string value = link.Attributes["href"].Value;
-                string httpsComicNaverCom = "https://comic.naver.com" + value;
-                var linkUri = new Uri(httpsComicNaverCom);
-
-                // titleId
-                string? titleId = HttpUtility.ParseQueryString(linkUri.Query)["titleId"];
-                if (titleId == null) continue;
-                int id = int.Parse(titleId);
-
-                string name = link.InnerText;
-
-                yield return (name, id);
-            }
+            return webtoonList
+                .Select(result => (SearchResult: result, Distance: Levenshtein.Distance(result.Name, keyWord)))
+                .Where(it => it.Distance != Math.Max(keyWord.Length, it.SearchResult.Name.Length))
+                .OrderBy(it => it.Distance)
+                .Select(it => it.SearchResult);
         }
 
         private static string? GetWebtoonName(HtmlDocument doc)
@@ -175,6 +180,5 @@ namespace LibWebtoonDownloader.Webtoon
         {
             return $"[NaverWebtoon]{Author}-{WebtoonName}({Id})";
         }
-        // holy shit! - 도현
     }
 }

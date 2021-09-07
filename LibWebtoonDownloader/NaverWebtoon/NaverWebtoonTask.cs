@@ -3,9 +3,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
-using LibWebtoonDownloader.Webtoon;
 
-namespace LibWebtoonDownloader.WebtoonTask
+namespace LibWebtoonDownloader.NaverWebtoon
 {
     public class NaverWebtoonTask : AbstractWebtoonTask
     {
