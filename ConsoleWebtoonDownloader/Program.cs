@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using LibWebtoonDownloader.NaverWebtoon;
 
 namespace ConsoleWebtoonDownloader
 {
@@ -6,7 +8,11 @@ namespace ConsoleWebtoonDownloader
     {
         private static void Main(string[] args)
         {
-            Console.Out.WriteLine("Hello, World!");
+            var results = NaverWebtoon
+                .Search("갓오하")
+                .Select(result => $"{result.Name}({result.Id})");
+
+            foreach (string s in results) Console.Out.WriteLine(s);
         }
     }
 }
